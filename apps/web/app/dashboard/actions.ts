@@ -12,6 +12,7 @@ import {
   type ActionResult,
   computeQueueState,
   logger,
+  isVipUser,
 } from "@cliplane/shared";
 
 export interface CreateJobResponse {
@@ -30,8 +31,11 @@ export async function createJobAction(
     // 1. Authenticate user
     const user = await getAuthenticatedUser();
 
-    // 2. Rate limit job creations (10 jobs / hour / user)
-    await enforceRateLimit("jobCreate", user.id);
+    // 2. Rate limit job creations (VIP users bypass limits)
+    const isVip = isVipUser(user.email);
+    if (!isVip) {
+      await enforceRateLimit("jobCreate", user.id);
+    }
 
     // 3. Extract and parse input data
     const sourceType = formData.get("sourceType") as "upload" | "url";
@@ -71,7 +75,9 @@ export async function createJobAction(
       await validateDirectVideoUrl(parsed.data.sourceUrl);
     }
 
-    // 5. Insert new job in 'free' lane with 'queued' status
+    // 5. Insert new job in 'priority' lane for VIP user (100% free), or 'free' lane for standard users
+    const lane = isVip ? "priority" : "free";
+
     const { data: newJob, error: insertError } = await supabase
       .from("jobs")
       .insert({
@@ -80,7 +86,7 @@ export async function createJobAction(
         source_path: parsed.data.sourceType === "upload" ? parsed.data.sourcePath : null,
         source_url: parsed.data.sourceType === "url" ? parsed.data.sourceUrl : null,
         status: "queued",
-        lane: "free",
+        lane,
         attempts: 0,
       })
       .select("id")
@@ -100,7 +106,8 @@ export async function createJobAction(
       jobId: newJob.id,
       details: {
         sourceType: parsed.data.sourceType,
-        lane: "free",
+        lane,
+        isVip,
       },
     });
 

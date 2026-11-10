@@ -7,6 +7,7 @@ import {
   errorResult,
   type ActionResult,
   type PaymentProviderType,
+  isVipUser,
 } from "@cliplane/shared";
 import { getAuthenticatedUser, createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -74,6 +75,46 @@ export async function initiateCheckoutAction(
 
       if (job.lane === "priority") {
         return errorResult("This job is already in the Priority lane.", "BAD_REQUEST");
+      }
+    }
+
+    // VIP users get 100% free immediate upgrades and priority passes
+    if (isVipUser(user.email)) {
+      if (input.jobId) {
+        await supabase
+          .from("jobs")
+          .update({ lane: "priority", updated_at: new Date().toISOString() })
+          .eq("id", input.jobId);
+
+        logBusinessEvent({
+          event: "upgrade_applied",
+          userId: user.id,
+          jobId: input.jobId,
+          details: { lane: "priority", method: "vip_free_access" },
+        });
+
+        return successResult({
+          paymentId: `vip_${Date.now()}`,
+          checkoutUrl: `/jobs/${input.jobId}?upgraded=true`,
+          status: "completed",
+        });
+      } else {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("priority_credits")
+          .eq("id", user.id)
+          .single();
+        const currentCredits = profile?.priority_credits || 0;
+        await supabase
+          .from("profiles")
+          .update({ priority_credits: currentCredits + 10, updated_at: new Date().toISOString() })
+          .eq("id", user.id);
+
+        return successResult({
+          paymentId: `vip_${Date.now()}`,
+          checkoutUrl: `/dashboard?bundle=added`,
+          status: "completed",
+        });
       }
     }
 
@@ -173,6 +214,29 @@ export async function redeemPriorityCreditAction(
 
     if (job.lane === "priority") {
       return errorResult("This job is already in the Priority lane.", "BAD_REQUEST");
+    }
+
+    // VIP users can redeem unlimited priority credits for free
+    if (isVipUser(user.email)) {
+      await supabase
+        .from("jobs")
+        .update({
+          lane: "priority",
+          updated_at: new Date().toISOString(),
+        })
+        .eq("id", job.id);
+
+      logBusinessEvent({
+        event: "upgrade_applied",
+        userId: user.id,
+        jobId: job.id,
+        details: {
+          method: "vip_free_redemption",
+          remainingCredits: 9999,
+        },
+      });
+
+      return successResult({ remainingCredits: 9999 });
     }
 
     // 2. Verify priority credit balance

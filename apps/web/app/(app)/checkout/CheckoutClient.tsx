@@ -14,9 +14,10 @@ import {
 
 interface CheckoutClientProps {
   userCredits: number;
+  isVip?: boolean;
 }
 
-export function CheckoutClient({ userCredits }: CheckoutClientProps) {
+export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const jobId = searchParams.get("jobId") || "";
@@ -79,6 +80,38 @@ export function CheckoutClient({ userCredits }: CheckoutClientProps) {
           Instant worker processing. Truthful queue priority with zero artificial waiting window.
         </p>
       </div>
+
+      {/* VIP Free Access Card */}
+      {isVip && (
+        <div className="rounded-[4px] border-2 border-emerald-500 bg-emerald-50/60 p-5 space-y-3">
+          <div className="flex items-center justify-between">
+            <div>
+              <span className="text-[11px] font-mono uppercase tracking-wider text-emerald-700 font-bold">
+                VIP Access Active
+              </span>
+              <h3 className="font-serif text-lg text-[var(--text-primary)]">
+                Unlimited Free Priority Upgrades Enabled
+              </h3>
+            </div>
+            <span className="text-2xl">👑</span>
+          </div>
+          <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            Your account has 100% free access to all priority lane processing, skipping all lines at zero cost ($0.00).
+          </p>
+          <button
+            type="button"
+            onClick={handleCheckout}
+            disabled={isSubmitting}
+            className="button-primary text-xs !py-3 w-full font-semibold bg-emerald-600 hover:bg-emerald-700 cursor-pointer"
+          >
+            {isSubmitting
+              ? "Activating Free Priority Pass..."
+              : isBundle
+              ? "Claim 10 Free Priority Credits ($0.00)"
+              : `Upgrade Job #${jobId.slice(0, 8)} to Priority Free ($0.00)`}
+          </button>
+        </div>
+      )}
 
       {/* Credit Redemption Option (If user already has credits) */}
       {jobId && userCredits > 0 && (

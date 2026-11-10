@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getAuthenticatedUser, createClient } from "@/lib/supabase/server";
+import { isVipUser } from "@cliplane/shared";
 import { CheckoutClient } from "./CheckoutClient";
 
 export const metadata: Metadata = {
@@ -30,7 +31,7 @@ export default async function CheckoutPage() {
         </div>
       }
     >
-      <CheckoutClient userCredits={userCredits} />
+      <CheckoutClient userCredits={userCredits} isVip={isVipUser(user.email)} />
     </Suspense>
   );
 }

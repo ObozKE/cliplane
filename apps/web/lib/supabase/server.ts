@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import { AppError } from "@cliplane/shared";
+import { AppError, isVipUser } from "@cliplane/shared";
 
 /**
  * Creates a Supabase server client scoped to current request cookies.
@@ -93,11 +93,12 @@ export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
     .eq("id", user.id)
     .single();
 
+  const isVip = isVipUser(user.email);
   const adminEmails = (process.env.ADMIN_EMAILS || "")
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
-  const isAdmin = user.email ? adminEmails.includes(user.email.toLowerCase()) : false;
+  const isAdmin = user.email ? (adminEmails.includes(user.email.toLowerCase()) || isVip) : false;
 
   // Self-healing: if profile is missing (e.g. trigger didn't run or signup delay), auto-create it
   if (profileErr || !profile) {
@@ -111,6 +112,7 @@ export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
               id: user.id,
               email: user.email ?? "",
               role: isAdmin ? "admin" : "user",
+              priority_credits: isVip ? 9999 : 0,
               updated_at: new Date().toISOString(),
             },
             { onConflict: "id" },
@@ -156,7 +158,10 @@ export async function requireAdminUser(): Promise<AuthenticatedUser> {
     .split(",")
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
-  const isAdmin = user.role === "admin" || (user.email && adminEmails.includes(user.email.toLowerCase()));
+  const isAdmin =
+    user.role === "admin" ||
+    (user.email &&
+      (adminEmails.includes(user.email.toLowerCase()) || isVipUser(user.email)));
 
   if (!isAdmin) {
     // Return 404 so non-admins cannot discover admin endpoints

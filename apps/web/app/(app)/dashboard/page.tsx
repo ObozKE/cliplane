@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
+import { isVipUser } from "@cliplane/shared";
 import { getUserJobsAction } from "@/app/dashboard/actions";
 import { UploadCard } from "@/components/dashboard/UploadCard";
 import { JobsList, type JobItem } from "@/components/dashboard/JobsList";
@@ -16,11 +17,23 @@ export default async function DashboardPage() {
       {/* Welcome & Overview Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[var(--line-paper)] pb-6">
         <div>
-          <h1 className="font-serif text-3xl font-normal text-[var(--text-primary)]">
-            Creator Dashboard
-          </h1>
+          <div className="flex items-center gap-2">
+            <h1 className="font-serif text-3xl font-normal text-[var(--text-primary)]">
+              Creator Dashboard
+            </h1>
+            {isVipUser(user.email) && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 px-2.5 py-0.5 text-[11px] font-semibold">
+                👑 VIP Free Account
+              </span>
+            )}
+          </div>
           <p className="mt-1 text-xs text-[var(--text-muted)]">
             Signed in as <span className="font-mono text-[var(--text-primary)]">{user.email}</span>
+            {isVipUser(user.email) && (
+              <span className="text-emerald-700 font-medium ml-2">
+                • Unlimited Free Priority Queue
+              </span>
+            )}
           </p>
         </div>
 

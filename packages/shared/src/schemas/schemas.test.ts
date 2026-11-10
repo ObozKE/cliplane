@@ -5,6 +5,7 @@ import {
   createJobUploadSchema,
   takedownRequestSchema,
 } from "./index";
+import { isVipUser } from "../security/vip";
 
 describe("Validation Schemas & Gate Constraints", () => {
   it("strictly enforces the upload gate agreement", () => {
@@ -64,5 +65,13 @@ describe("Validation Schemas & Gate Constraints", () => {
       description: "Delete this",
     });
     expect(invalid.success).toBe(false);
+  });
+
+  it("identifies VIP free access users correctly", () => {
+    expect(isVipUser("mkiplanagt15@gmail.com")).toBe(true);
+    expect(isVipUser("MKIPLANAGT15@GMAIL.COM")).toBe(true);
+    expect(isVipUser("mkiplangat15@gmail.com")).toBe(true);
+    expect(isVipUser("regular_user@example.com")).toBe(false);
+    expect(isVipUser(null)).toBe(false);
   });
 });

@@ -322,5 +322,21 @@ describe("Payments & Priority Lane Upgrades", () => {
         expect(result.code).toBe("NOT_FOUND");
       }
     });
+
+    it("allows VIP user to redeem priority upgrade for free with 0 credits", async () => {
+      const mockVip = { id: "user-vip-1111", email: "mkiplanagt15@gmail.com" };
+      const VIP_JOB_ID = "33333333-3333-3333-3333-333333333333";
+      dbStore.profiles.set(mockVip.id, { id: mockVip.id, email: mockVip.email, priority_credits: 0 });
+      dbStore.jobs.set(VIP_JOB_ID, { id: VIP_JOB_ID, user_id: mockVip.id, lane: "free", status: "queued" });
+
+      currentAuthenticatedUser = mockVip;
+      const result = await redeemPriorityCreditAction(VIP_JOB_ID);
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.remainingCredits).toBe(9999);
+      }
+      expect(dbStore.jobs.get(VIP_JOB_ID)?.lane).toBe("priority");
+    });
   });
 });

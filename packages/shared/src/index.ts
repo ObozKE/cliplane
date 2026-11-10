@@ -6,3 +6,4 @@ export * from "./queue/index";
 export * from "./security/ssrf";
 export * from "./logger/index";
 export * from "./payments/types";
+export * from "./security/vip";
