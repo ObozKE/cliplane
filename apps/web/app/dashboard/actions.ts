@@ -11,6 +11,7 @@ import {
   successResult,
   type ActionResult,
   computeQueueState,
+  logger,
 } from "@cliplane/shared";
 
 export interface CreateJobResponse {
@@ -140,20 +141,32 @@ export async function createJobAction(
  * Retrieves all jobs for the currently authenticated user.
  */
 export async function getUserJobsAction() {
-  const user = await getAuthenticatedUser();
-  const supabase = await createClient();
+  try {
+    const user = await getAuthenticatedUser();
+    const supabase = await createClient();
 
-  const { data: jobs, error } = await supabase
-    .from("jobs")
-    .select("id, source_type, source_path, source_url, status, lane, attempts, created_at, started_at, finished_at")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
+    const { data: jobs, error } = await supabase
+      .from("jobs")
+      .select("id, source_type, source_path, source_url, status, lane, attempts, created_at, started_at, finished_at")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
-  if (error) {
-    throw new Error("Failed to load user jobs");
+    if (error) {
+      if (error.code === "PGRST205") {
+        logger.warn(
+          "Supabase tables not detected (PGRST205). Please run 'supabase/migrations/20261110000000_init_schema.sql' in your Supabase project SQL Editor.",
+        );
+      } else {
+        logger.warn({ error: error.message, code: error.code, userId: user.id }, "Could not fetch user jobs");
+      }
+      return [];
+    }
+
+    return jobs || [];
+  } catch (err) {
+    logger.error({ err }, "Error in getUserJobsAction");
+    return [];
   }
-
-  return jobs || [];
 }
 
 /**
