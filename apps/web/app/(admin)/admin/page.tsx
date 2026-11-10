@@ -1,56 +1,69 @@
+import type { Metadata } from "next";
 import { requireAdminUser } from "@/lib/supabase/server";
+import {
+  getAdminDashboardStatsAction,
+  getAdminJobsAction,
+  getAdminTakedownsAction,
+  getAdminUsersAction,
+  getAdminAuditLogAction,
+} from "./actions";
+import { AdminDashboardClient } from "./AdminDashboardClient";
+
+export const metadata: Metadata = {
+  title: "Admin Console — ClipName",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 export default async function AdminPage() {
   await requireAdminUser();
 
+  const [
+    statsResult,
+    jobsResult,
+    takedownsResult,
+    usersResult,
+    auditResult,
+  ] = await Promise.all([
+    getAdminDashboardStatsAction(),
+    getAdminJobsAction(),
+    getAdminTakedownsAction(),
+    getAdminUsersAction(),
+    getAdminAuditLogAction(),
+  ]);
+
+  const defaultStats = {
+    totalJobs: 0,
+    queuedPriorityJobs: 0,
+    queuedFreeJobs: 0,
+    processingJobs: 0,
+    completedJobs24h: 0,
+    failedJobs24h: 0,
+    pendingTakedowns: 0,
+    totalUsers: 0,
+    bannedUsers: 0,
+  };
+
   return (
     <div className="space-y-6">
-      <div className="border-b border-[var(--line-paper)] pb-4">
-        <h1 className="font-serif text-2xl font-normal text-[var(--text-primary)]">
+      <div className="border-b border-border pb-4">
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">
           System Administration Console
         </h1>
-        <p className="mt-1 text-xs text-[var(--text-muted)]">
-          Manage system throughput, compliance takedown notices, and review moderation logs
+        <p className="text-xs text-muted-foreground mt-1">
+          Monitor real-time queue health, inspect jobs, review DMCA takedown notices, and manage creator moderation.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="card-paper p-5 bg-[var(--bg-card)]">
-          <span className="block text-xs uppercase tracking-wider text-[var(--text-muted)]">
-            Worker State
-          </span>
-          <span className="mt-2 block font-serif text-2xl font-normal text-green-600">
-            Active
-          </span>
-          <span className="mt-1 block text-xs text-[var(--text-muted)]">
-            Concurrency: 2 workers
-          </span>
-        </div>
-
-        <div className="card-paper p-5 bg-[var(--bg-card)]">
-          <span className="block text-xs uppercase tracking-wider text-[var(--text-muted)]">
-            Takedown Requests
-          </span>
-          <span className="mt-2 block font-serif text-2xl font-normal text-[var(--text-primary)]">
-            0 Pending
-          </span>
-          <span className="mt-1 block text-xs text-[var(--text-muted)]">
-            DMCA / Infringement notices
-          </span>
-        </div>
-
-        <div className="card-paper p-5 bg-[var(--bg-card)]">
-          <span className="block text-xs uppercase tracking-wider text-[var(--text-muted)]">
-            Audit Events
-          </span>
-          <span className="mt-2 block font-serif text-2xl font-normal text-[var(--text-primary)]">
-            Immutable
-          </span>
-          <span className="mt-1 block text-xs text-[var(--text-muted)]">
-            All administrative actions logged
-          </span>
-        </div>
-      </div>
+      <AdminDashboardClient
+        initialStats={statsResult.success ? statsResult.data : defaultStats}
+        initialJobs={jobsResult.success ? jobsResult.data : []}
+        initialTakedowns={takedownsResult.success ? takedownsResult.data : []}
+        initialUsers={usersResult.success ? usersResult.data : []}
+        initialAuditLog={auditResult.success ? auditResult.data : []}
+      />
     </div>
   );
 }

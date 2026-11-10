@@ -114,9 +114,15 @@ export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
  */
 export async function requireAdminUser(): Promise<AuthenticatedUser> {
   const user = await getAuthenticatedUser();
-  if (user.role !== "admin") {
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  const isAdmin = user.role === "admin" || (user.email && adminEmails.includes(user.email.toLowerCase()));
+
+  if (!isAdmin) {
     // Return 404 so non-admins cannot discover admin endpoints
     throw AppError.notFound();
   }
-  return user;
+  return { ...user, role: "admin" };
 }
