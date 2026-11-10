@@ -61,6 +61,8 @@ export default function MarketingLayout({
           </p>
           <div className="flex flex-wrap gap-5 pt-4 border-t border-[var(--line-paper)]">
             <span>© {new Date().getFullYear()} ClipName. Precision clipping.</span>
+            <Link href="/learn" className="hover:underline">Tutorials</Link>
+            <Link href="/pricing" className="hover:underline">Pricing</Link>
             <Link href="/terms" className="hover:underline">Terms of Service</Link>
             <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
             <Link href="/dmca" className="hover:underline">Copyright & Takedowns</Link>
