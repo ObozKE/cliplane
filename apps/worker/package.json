@@ -1,5 +1,5 @@
 {
-  "name": "@clipname/worker",
+  "name": "@cliplane/worker",
   "version": "1.0.0",
   "private": true,
   "main": "src/index.ts",
@@ -11,7 +11,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@clipname/shared": "workspace:*",
+    "@cliplane/shared": "workspace:*",
     "@supabase/supabase-js": "^2.49.1",
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.39.3",

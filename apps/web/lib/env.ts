@@ -1,4 +1,4 @@
-import { validateWebEnv, type WebEnv } from "@clipname/shared";
+import { validateWebEnv, type WebEnv } from "@cliplane/shared";
 
 // Validate web environment immediately on boot
 export const env: WebEnv = validateWebEnv({

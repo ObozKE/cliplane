@@ -64,7 +64,7 @@ Meta's creator monetization architecture differs by region:
 
 ## 4. Truthful Expectations & Summary
 
-1. **ClipName is a utility, not an income guarantee:** Our tool provides vertical aspect ratio conversion, automated highlight detection, and fast rendering to save you hours of manual editing.
+1. **ClipLane is a utility, not an income guarantee:** Our tool provides vertical aspect ratio conversion, automated highlight detection, and fast rendering to save you hours of manual editing.
 2. **Views and followers require sustained consistency:** No software can force users to watch or subscribe. Your skill, personality, and curation are what build an audience.
 3. **Always review platform terms regularly:** Platforms adjust their view calculation rules, RPM rates, and program qualifications frequently.
 
@@ -72,5 +72,5 @@ Meta's creator monetization architecture differs by region:
 
 ## Required Legal Notices
 
-- *Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.*
+- *Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.*
 - *Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.*

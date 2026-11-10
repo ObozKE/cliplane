@@ -1,5 +1,5 @@
 -- ============================================================================
--- ClipName Database Schema Migration: 20261110000000_init_schema.sql
+-- ClipLane Database Schema Migration: 20261110000000_init_schema.sql
 -- Implements all tables, constraints, indexes, RLS policies, and the atomic claim function.
 -- ============================================================================
 

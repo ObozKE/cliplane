@@ -13,7 +13,7 @@ export default function AuthLayout({
             CN
           </span>
           <span className="font-serif text-2xl tracking-tight text-[var(--text-primary)]">
-            ClipName
+            ClipLane
           </span>
         </Link>
       </div>

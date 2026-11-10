@@ -12,10 +12,10 @@ export default function MarketingLayout({
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2.5 text-decoration-none">
             <span className="flex h-6 w-6 items-center justify-center rounded-[2px] bg-[var(--text-primary)] text-[var(--accent-on)] text-xs font-bold font-mono">
-              CN
+              CL
             </span>
             <span className="font-serif text-xl tracking-tight text-[var(--text-primary)]">
-              ClipName
+              ClipLane
             </span>
           </Link>
 
@@ -54,13 +54,13 @@ export default function MarketingLayout({
       <footer className="border-t border-[var(--line-paper)] bg-[var(--bg-subtle)] py-12">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 text-xs text-[var(--text-muted)] space-y-4">
           <p className="leading-relaxed">
-            Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
+            Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
           </p>
           <p>
             Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.
           </p>
           <div className="flex flex-wrap gap-5 pt-4 border-t border-[var(--line-paper)]">
-            <span>© {new Date().getFullYear()} ClipName. Precision clipping.</span>
+            <span>© {new Date().getFullYear()} ClipLane. Precision clipping.</span>
             <Link href="/learn" className="hover:underline">Tutorials</Link>
             <Link href="/pricing" className="hover:underline">Pricing</Link>
             <Link href="/terms" className="hover:underline">Terms of Service</Link>

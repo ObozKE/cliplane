@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { type PaymentProviderType, logger } from "@clipname/shared";
+import { type PaymentProviderType, logger } from "@cliplane/shared";
 import { getPaymentProvider, executePaymentConfirmation } from "@/lib/payments";
 
 interface RouteParams {

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type { PaymentProviderType } from "@clipname/shared";
+import type { PaymentProviderType } from "@cliplane/shared";
 import {
   initiateCheckoutAction,
   redeemPriorityCreditAction,

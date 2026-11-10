@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import { validateWorkerEnv, type WorkerEnv } from "@clipname/shared";
+import { validateWorkerEnv, type WorkerEnv } from "@cliplane/shared";
 
 dotenv.config();
 

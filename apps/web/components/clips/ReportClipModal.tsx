@@ -66,7 +66,7 @@ export function ReportClipModal({ clipId, isOpen, onClose }: ReportClipModalProp
             Report Content or Copyright
           </h2>
           <p className="mt-1 text-xs text-[var(--text-muted)] leading-relaxed">
-            ClipName strictly enforces content ownership policies. We investigate all notices within 24 hours.
+            ClipLane strictly enforces content ownership policies. We investigate all notices within 24 hours.
           </p>
         </div>
 
@@ -129,7 +129,7 @@ export function ReportClipModal({ clipId, isOpen, onClose }: ReportClipModalProp
                 required
                 value={contentUrl}
                 onChange={(e) => setContentUrl(e.target.value)}
-                placeholder="https://clipname.tech/jobs/..."
+                placeholder="https://cliplane.tech/jobs/..."
                 className="input-paper mt-1 w-full text-xs"
               />
             </div>

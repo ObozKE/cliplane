@@ -1,7 +1,7 @@
 services:
-  # ClipName Background Processing Worker (Node.js 22 + FFmpeg)
+  # ClipLane Background Processing Worker (Node.js 22 + FFmpeg)
   - type: worker
-    name: clipname-worker
+    name: cliplane-worker
     runtime: docker
     dockerfilePath: apps/worker/Dockerfile
     dockerContext: .

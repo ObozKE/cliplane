@@ -44,7 +44,7 @@ describe("Part 10 — Production Pre-Deployment & Integrity Checklist", () => {
     });
 
     it("RULE 2 & 3: Mandatory disclaimers are present on footer, pricing, terms, and tutorials", () => {
-      const requiredDisclaimer = "Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings.";
+      const requiredDisclaimer = "Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings.";
       const publisherDisclaimerRegex = /not affiliated with or endorsed by rockstar games or take-two interactive/i;
 
       const checkFiles = [
@@ -65,8 +65,8 @@ describe("Part 10 — Production Pre-Deployment & Integrity Checklist", () => {
     });
 
     it("RULE 4: No trademark misuse — app name, domain, and branding avoid publisher marks", () => {
-      const appName = "ClipName";
-      const domain = "clipname.tech";
+      const appName = "ClipLane";
+      const domain = "cliplane.tech";
 
       expect(appName.toLowerCase()).not.toContain("gta");
       expect(appName.toLowerCase()).not.toContain("rockstar");

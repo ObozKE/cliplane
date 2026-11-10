@@ -1,5 +1,5 @@
 /**
- * Highlight Scoring Engine for ClipName Worker
+ * Highlight Scoring Engine for ClipLane Worker
  *
  * Evaluates audio energy bursts (EBU R128 momentary loudness) and visual
  * dynamics (scene cuts) over sliding windows to rank gameplay moments.

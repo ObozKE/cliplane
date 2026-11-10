@@ -10,14 +10,14 @@ import {
   generateSyntheticTestVideo,
 } from "./renderer";
 import { calculateHighlightWindows } from "./scorer";
-import { AppError } from "@clipname/shared";
+import { AppError } from "@cliplane/shared";
 
 describe("FFmpeg Renderer & Video Pipeline", () => {
   let testDir: string;
   let syntheticVideoPath: string;
 
   beforeAll(async () => {
-    testDir = fs.mkdtempSync(path.join(os.tmpdir(), "clipname_test_"));
+    testDir = fs.mkdtempSync(path.join(os.tmpdir(), "cliplane_test_"));
     syntheticVideoPath = path.join(testDir, "test_gameplay_fixture.mp4");
 
     // Generate a 60-second synthetic gameplay fixture with audio bursts at 10s, 30s, and 50s

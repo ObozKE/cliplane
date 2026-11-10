@@ -34,7 +34,7 @@ If your clip places important text or HUD elements along the bottom 20% or right
 - **Top 15%:** Keep free of essential text (channel search bar and live icons sit here).
 - **Bottom 20%:** Keep clear of crucial gameplay info (caption text, hashtags, and sound title sit here).
 - **Right 15%:** Keep clear of primary focus (action buttons: like, comment, bookmark, share).
-- **Safe Center (70%):** The centered 16:9 gameplay rendered by ClipName sits cleanly in the safest zone of the vertical canvas.
+- **Safe Center (70%):** The centered 16:9 gameplay rendered by ClipLane sits cleanly in the safest zone of the vertical canvas.
 
 ---
 
@@ -52,4 +52,4 @@ By default, some mobile apps compress uploads heavily over cellular data.
 
 1. **Clear, Descriptive Titles:** Use 1–2 descriptive sentences highlighting the game and specific event (e.g., *"Clean sniper collateral in the final circle"* rather than *"omg look at this #viral #fyp"*).
 2. **Relevant Game Tags:** Include the specific game name and subcategory (e.g. `#fps #sniper #gameplay`). Avoid 30 spam hashtags.
-3. **Thumbnail Selection:** Choose a frame where the crosshair is centered or high action is evident. ClipName automatically extracts a frame-accurate JPG thumbnail for every clip.
+3. **Thumbnail Selection:** Choose a frame where the crosshair is centered or high action is evident. ClipLane automatically extracts a frame-accurate JPG thumbnail for every clip.

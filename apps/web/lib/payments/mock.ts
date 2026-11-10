@@ -6,7 +6,7 @@ import type {
   WebhookVerificationParams,
   WebhookVerificationResult,
   QueryStatusResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 
 /**
  * Mock payment provider for zero-cost local development and automated CI testing.

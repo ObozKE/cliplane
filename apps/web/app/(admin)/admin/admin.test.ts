@@ -12,7 +12,7 @@ import { GET as healthCheckGet } from "@/app/api/health/route";
 
 const adminUser = {
   id: "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa",
-  email: "admin@clipname.tech",
+  email: "admin@cliplane.tech",
   role: "admin" as const,
 };
 
@@ -38,7 +38,7 @@ const dbStore = {
     ["33333333-3333-3333-3333-333333333333", { id: "33333333-3333-3333-3333-333333333333", job_id: "11111111-1111-1111-1111-111111111111", storage_path: "clips/clip1.mp4", thumbnail_path: "clips/thumb1.jpg" }],
   ]),
   takedowns: new Map<string, { id: string; reporter_name: string; reporter_email: string; content_url: string; clip_id: string | null; description: string; status: string; created_at: string }>([
-    ["44444444-4444-4444-4444-444444444444", { id: "44444444-4444-4444-4444-444444444444", reporter_name: "Legal Agent", reporter_email: "legal@studio.com", content_url: "https://clipname.tech/jobs/1", clip_id: "33333333-3333-3333-3333-333333333333", description: "Infringing clip", status: "pending", created_at: new Date().toISOString() }],
+    ["44444444-4444-4444-4444-444444444444", { id: "44444444-4444-4444-4444-444444444444", reporter_name: "Legal Agent", reporter_email: "legal@studio.com", content_url: "https://cliplane.tech/jobs/1", clip_id: "33333333-3333-3333-3333-333333333333", description: "Infringing clip", status: "pending", created_at: new Date().toISOString() }],
   ]),
   auditLog: [] as { actor_id: string; action: string; target_type: string; target_id: string | null; payload: any; created_at: string }[],
 };
@@ -207,7 +207,7 @@ describe("Part 9 — Admin Console, Moderation & Observability", () => {
     dbStore.jobs.set("11111111-1111-1111-1111-111111111111", { id: "11111111-1111-1111-1111-111111111111", user_id: regularUser.id, lane: "free", status: "failed", error_code: "CORRUPT_MEDIA", error_message: "Format error", retries: 1, created_at: new Date().toISOString() });
     dbStore.jobs.set("22222222-2222-2222-2222-222222222222", { id: "22222222-2222-2222-2222-222222222222", user_id: regularUser.id, lane: "priority", status: "queued", retries: 0, created_at: new Date().toISOString() });
     dbStore.clips.set("33333333-3333-3333-3333-333333333333", { id: "33333333-3333-3333-3333-333333333333", job_id: "11111111-1111-1111-1111-111111111111", storage_path: "clips/clip1.mp4", thumbnail_path: "clips/thumb1.jpg" });
-    dbStore.takedowns.set("44444444-4444-4444-4444-444444444444", { id: "44444444-4444-4444-4444-444444444444", reporter_name: "Legal Agent", reporter_email: "legal@studio.com", content_url: "https://clipname.tech/jobs/1", clip_id: "33333333-3333-3333-3333-333333333333", description: "Infringing clip", status: "pending", created_at: new Date().toISOString() });
+    dbStore.takedowns.set("44444444-4444-4444-4444-444444444444", { id: "44444444-4444-4444-4444-444444444444", reporter_name: "Legal Agent", reporter_email: "legal@studio.com", content_url: "https://cliplane.tech/jobs/1", clip_id: "33333333-3333-3333-3333-333333333333", description: "Infringing clip", status: "pending", created_at: new Date().toISOString() });
   });
 
   describe("RBAC & Security: requireAdminUser", () => {

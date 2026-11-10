@@ -4,12 +4,12 @@ slug: "how-the-clipper-works"
 order: 1
 category: "Technology & Pipeline"
 readTime: 4
-summary: "Understand the deterministic FFmpeg pipeline behind ClipName: EBU R128 loudness bursts, scene cut thresholds, and 9:16 vertical formatting."
+summary: "Understand the deterministic FFmpeg pipeline behind ClipLane: EBU R128 loudness bursts, scene cut thresholds, and 9:16 vertical formatting."
 ---
 
 # How the Clipper Works: Audio Loudness & Scene Detection
 
-ClipName does not use black-box "viral AI" or make speculative promises about internet algorithms. Instead, it runs a deterministic, physics-based signal processing pipeline powered by industry-standard open-source tools: **FFmpeg** and **EBU R128**.
+ClipLane does not use black-box "viral AI" or make speculative promises about internet algorithms. Instead, it runs a deterministic, physics-based signal processing pipeline powered by industry-standard open-source tools: **FFmpeg** and **EBU R128**.
 
 Understanding how this pipeline works helps you record footage that extracts the highest-quality highlight moments.
 
@@ -28,7 +28,7 @@ When you upload gameplay footage or provide a direct video URL:
 
 Action in games—shootouts, explosions, clutch revives, high-speed vehicle impacts, team callouts—invariably manifests as sudden peaks in audio energy.
 
-ClipName passes the audio stream through an **EBU R128 momentary loudness filter** (`-af ebur128`):
+ClipLane passes the audio stream through an **EBU R128 momentary loudness filter** (`-af ebur128`):
 - Loudness is measured in **LUFS** (Loudness Units relative to Full Scale) over sliding 400ms integration windows.
 - The pipeline establishes an audio loudness baseline across the full video.
 - Moments where loudness spikes significantly above the median baseline are registered as high-energy audio burst candidates.
@@ -58,7 +58,7 @@ The pipeline merges the audio and visual signal vectors:
 
 Landscape gameplay (16:9, 1920x1080) looks terrible when cropped into a narrow 9:16 slit because HUD elements, crosshairs, and minimaps get cut off.
 
-ClipName renders a dual-layer composite with FFmpeg:
+ClipLane renders a dual-layer composite with FFmpeg:
 - **Background Layer:** The source video is scaled to cover 1080x1920 and blurred with a Gaussian blur filter (`gblur=sigma=20:steps=2`), filling the vertical frame with matched ambient lighting and colors.
 - **Foreground Layer:** The crisp original 16:9 gameplay sits uncropped and centered at native aspect ratio (`scale=1080:608`).
 - **Encoding:** Rendered with H.264 at CRF 23 with AAC stereo audio and `+faststart` atom placement for instantaneous mobile playback.

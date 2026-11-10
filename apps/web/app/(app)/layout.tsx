@@ -23,10 +23,10 @@ export default async function AppLayout({
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="flex items-center gap-2.5">
               <span className="flex h-6 w-6 items-center justify-center rounded-[2px] bg-[var(--text-primary)] text-[var(--accent-on)] text-xs font-bold font-mono">
-                CN
+                CL
               </span>
               <span className="font-serif text-xl tracking-tight text-[var(--text-primary)]">
-                ClipName
+                ClipLane
               </span>
             </Link>
 
@@ -89,7 +89,7 @@ export default async function AppLayout({
 
       {/* Persistent Disclaimer Footer */}
       <footer className="border-t border-[var(--line-paper)] bg-[var(--bg-subtle)] py-6 text-center text-[11px] text-[var(--text-muted)]">
-        <p>Results vary. ClipName does not guarantee views or earnings. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
+        <p>Results vary. ClipLane does not guarantee views or earnings. Not affiliated with Rockstar Games or Take-Two Interactive.</p>
       </footer>
     </div>
   );

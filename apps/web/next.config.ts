@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const allowedOrigins = (
   process.env.ALLOWED_ORIGINS ||
-  "http://localhost:3000,http://127.0.0.1:3000,https://clipname.tech,https://www.clipname.tech"
+  "http://localhost:3000,http://127.0.0.1:3000,https://cliplane.tech,https://www.cliplane.tech"
 )
   .split(",")
   .map((o) => o.trim())
@@ -11,7 +11,7 @@ const allowedOrigins = (
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  transpilePackages: ["@clipname/shared"],
+  transpilePackages: ["@cliplane/shared"],
   experimental: {
     serverActions: {
       allowedOrigins,

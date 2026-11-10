@@ -10,7 +10,7 @@ import {
 import { AdminDashboardClient } from "./AdminDashboardClient";
 
 export const metadata: Metadata = {
-  title: "Admin Console — ClipName",
+  title: "Admin Console — ClipLane",
   robots: {
     index: false,
     follow: false,

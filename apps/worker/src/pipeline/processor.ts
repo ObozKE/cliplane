@@ -3,7 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import crypto from "node:crypto";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { AppError, logger, logBusinessEvent } from "@clipname/shared";
+import { AppError, logger, logBusinessEvent } from "@cliplane/shared";
 import { downloadMedia } from "./downloader";
 import {
   probeVideo,
@@ -85,7 +85,7 @@ export async function processJob(
 
   // 2. Create isolated temporary working directory
   const tempDir = fs.mkdtempSync(
-    path.join(os.tmpdir(), `clipname_job_${job.id}_`),
+    path.join(os.tmpdir(), `cliplane_job_${job.id}_`),
   );
 
   const downloadedMediaFile = path.join(tempDir, "input_media.mp4");

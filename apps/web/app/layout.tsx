@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ClipName — Precision Gameplay Vertical Clip Generation",
+  title: "ClipLane — Precision Gameplay Vertical Clip Generation",
   description: "Automated, highlight-scored 9:16 vertical gameplay clipping for creators. Zero false claims, 100% honest queue.",
 };
 

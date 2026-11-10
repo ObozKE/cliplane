@@ -25,7 +25,7 @@ export default async function AdminLayout({
                 AD
               </span>
               <span className="font-serif text-lg tracking-tight text-[var(--text-panel)]">
-                ClipName Admin
+                ClipLane Admin
               </span>
             </Link>
 

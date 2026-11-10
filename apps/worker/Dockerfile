@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# ClipName Worker Service Dockerfile
+# ClipLane Worker Service Dockerfile
 # Production-ready container with Node.js 22 & FFmpeg
 # -----------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ COPY packages/shared/package.json ./packages/shared/
 COPY apps/worker/package.json ./apps/worker/
 
 # Install workspace dependencies for shared and worker only
-RUN pnpm install --frozen-lockfile --filter @clipname/shared --filter @clipname/worker
+RUN pnpm install --frozen-lockfile --filter @cliplane/shared --filter @cliplane/worker
 
 # -----------------------------------------------------------------------------
 # Builder Stage
@@ -44,7 +44,7 @@ COPY packages/shared/ ./packages/shared/
 COPY apps/worker/ ./apps/worker/
 
 # Build shared package
-RUN pnpm --filter @clipname/shared build
+RUN pnpm --filter @cliplane/shared build
 
 # -----------------------------------------------------------------------------
 # Production Runner Stage
@@ -67,4 +67,4 @@ RUN useradd -m -u 1001 workeruser && chown -R workeruser:workeruser /app
 USER workeruser
 
 # Start worker loop
-CMD ["pnpm", "--filter", "@clipname/worker", "start"]
+CMD ["pnpm", "--filter", "@cliplane/worker", "start"]

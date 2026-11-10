@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — ClipName",
-  description: "Learn how ClipName protects your data, media privacy, and enforces our 3-day retention policy.",
+  title: "Privacy Policy — ClipLane",
+  description: "Learn how ClipLane protects your data, media privacy, and enforces our 3-day retention policy.",
 };
 
 export default function PrivacyPage() {
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             <strong>Temporary Media Files:</strong> Source videos uploaded via TUS and generated 9:16 vertical MP4 clips and JPG thumbnails are stored in private Supabase Storage buckets accessible only through short-lived (signed) URLs.
           </li>
           <li>
-            <strong>Payment Data:</strong> Payment transactions are handled directly through authorized third-party gateways (Stripe, Crypto processors, M-Pesa). ClipName never stores full credit card numbers or private crypto keys.
+            <strong>Payment Data:</strong> Payment transactions are handled directly through authorized third-party gateways (Stripe, Crypto processors, M-Pesa). ClipLane never stores full credit card numbers or private crypto keys.
           </li>
         </ul>
 
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
           2. The 3-Day Media Deletion Lifecycle
         </h2>
         <p>
-          Unlike platforms that retain your media indefinitely, ClipName operates a strict automated retention cleanup job:
+          Unlike platforms that retain your media indefinitely, ClipLane operates a strict automated retention cleanup job:
         </p>
         <p className="text-xs text-[var(--text-muted)] leading-relaxed">
           Every hour, our worker scans for completed or failed processing jobs older than <strong>3 calendar days</strong>. All associated raw video files in the private <code>uploads</code> bucket, rendered vertical clips in the <code>clips</code> bucket, and thumbnail files are irrevocably purged from disk and cloud storage.
@@ -72,7 +72,7 @@ export default function PrivacyPage() {
           5. Your Rights & Account Erasure
         </h2>
         <p>
-          You may request full deletion of your account, job history, and associated records at any time by contacting our support team at <code className="font-mono">support@clipname.tech</code>.
+          You may request full deletion of your account, job history, and associated records at any time by contacting our support team at <code className="font-mono">support@cliplane.tech</code>.
         </p>
       </section>
     </article>

@@ -1,6 +1,6 @@
-# ClipName Design System Specification
+# ClipLane Design System Specification
 **Visual Archetype:** Extracted directly from [Carefront](https://carefront.webflow.io/).
-**Product:** ClipName (`clipname.tech`) — Precision vertical gameplay highlight generator.
+**Product:** ClipLane (`cliplane.tech`) — Precision vertical gameplay highlight generator.
 
 ---
 

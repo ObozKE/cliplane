@@ -5,14 +5,14 @@ import { checkRateLimit } from "@/lib/rate-limit";
 // Mock Supabase Server Client & Auth
 const mockUser = {
   id: "11111111-1111-1111-1111-111111111111",
-  email: "creator@clipname.tech",
+  email: "creator@cliplane.tech",
   role: "user",
   bannedAt: null,
 };
 
 const otherUser = {
   id: "22222222-2222-2222-2222-222222222222",
-  email: "victim@clipname.tech",
+  email: "victim@cliplane.tech",
   role: "user",
   bannedAt: null,
 };

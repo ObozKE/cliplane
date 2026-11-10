@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { AppError, logger } from "@clipname/shared";
+import { AppError, logger } from "@cliplane/shared";
 
 export interface UploadClipResult {
   clipStoragePath: string;

@@ -69,5 +69,5 @@ Every publisher has an official document governing video creation. You should **
 
 ## Required Legal Notices
 
-- *Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.*
+- *Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.*
 - *Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.*

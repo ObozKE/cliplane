@@ -1,5 +1,5 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { logger } from "@clipname/shared";
+import { logger } from "@cliplane/shared";
 
 export interface CleanupOptions {
   supabase: SupabaseClient;

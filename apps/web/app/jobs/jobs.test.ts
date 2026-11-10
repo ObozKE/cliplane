@@ -183,8 +183,8 @@ describe("Clips & Guardrails Actions", () => {
 
       expect(result.success).toBe(true);
       if (result.success) {
-        expect(result.data.downloadUrl).toContain("download=clipname_highlight_");
-        expect(result.data.filename).toBe("clipname_highlight_clip-ali.mp4");
+        expect(result.data.downloadUrl).toContain("download=cliplane_highlight_");
+        expect(result.data.filename).toBe("cliplane_highlight_clip-ali.mp4");
       }
     });
 
@@ -206,7 +206,7 @@ describe("Clips & Guardrails Actions", () => {
       const result = await reportClipAction({
         reporterName: "Acme Copyright Enforcement",
         reporterEmail: "legal@acme.com",
-        contentUrl: "https://clipname.tech/jobs/job-alice-1",
+        contentUrl: "https://cliplane.tech/jobs/job-alice-1",
         clipId: "11111111-1111-1111-1111-111111111111",
         description: "This clip contains proprietary gameplay footage without publisher authorization.",
       });

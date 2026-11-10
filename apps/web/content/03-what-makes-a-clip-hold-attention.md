@@ -42,7 +42,7 @@ flowchart LR
 
 ## 2. The Ideal Length: Why 15–45 Seconds Wins
 
-Why does ClipName set its highlight window bounds between **15 and 45 seconds**?
+Why does ClipLane set its highlight window bounds between **15 and 45 seconds**?
 
 - **Under 15 Seconds:** Often too brief for the viewer to comprehend what game is being played or understand the skill involved.
 - **15 to 30 Seconds:** The highest completion-rate bracket on vertical video feeds. A viewer who watches a 25-second clip to the end yields 100% average percentage viewed (APV).

@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import { AppError } from "@clipname/shared";
+import { AppError } from "@cliplane/shared";
 
 /**
  * Creates a Supabase server client scoped to current request cookies.

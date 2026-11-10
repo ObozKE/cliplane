@@ -1,6 +1,6 @@
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
-import { AppError } from "@clipname/shared";
+import { AppError } from "@cliplane/shared";
 
 // In-memory fallback map for local development or when Upstash Redis is not configured
 interface MemoryRecord {

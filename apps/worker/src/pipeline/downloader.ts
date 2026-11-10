@@ -2,7 +2,7 @@ import fs from "node:fs";
 import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { AppError, validateDirectVideoUrl, logger } from "@clipname/shared";
+import { AppError, validateDirectVideoUrl, logger } from "@cliplane/shared";
 
 export interface DownloadOptions {
   supabase: SupabaseClient;
@@ -123,7 +123,7 @@ export async function downloadMedia(options: DownloadOptions): Promise<{ sizeByt
       const response = await fetch(job.source_url, {
         signal: controller.signal,
         headers: {
-          "User-Agent": "ClipName-Worker/1.0",
+          "User-Agent": "ClipLane-Worker/1.0",
         },
       });
 

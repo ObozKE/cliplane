@@ -13,7 +13,7 @@ describe("Row Level Security (RLS) Policy Verification", () => {
   const mockProfiles = [
     { id: userA, email: "userA@example.com", role: "user", bannedAt: null },
     { id: userB, email: "userB@example.com", role: "user", bannedAt: null },
-    { id: adminUser, email: "admin@clipname.tech", role: "admin", bannedAt: null },
+    { id: adminUser, email: "admin@cliplane.tech", role: "admin", bannedAt: null },
   ];
 
   const mockJobs = [

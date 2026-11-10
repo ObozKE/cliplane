@@ -6,7 +6,7 @@ import type {
   WebhookVerificationParams,
   WebhookVerificationResult,
   QueryStatusResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 
 /**
  * Cryptocurrency payment provider supporting Bitcoin, Ethereum, and USDT/USDC payments.

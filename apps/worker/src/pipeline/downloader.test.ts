@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import path from "node:path";
 import os from "node:os";
 import { downloadMedia } from "./downloader";
-import { AppError } from "@clipname/shared";
+import { AppError } from "@cliplane/shared";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 describe("Downloader Pipeline & Security Controls", () => {

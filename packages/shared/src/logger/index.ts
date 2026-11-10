@@ -25,7 +25,7 @@ export const logger = pino({
   },
   timestamp: pino.stdTimeFunctions.isoTime,
   base: {
-    service: process.env.SERVICE_NAME || "clipname-app",
+    service: process.env.SERVICE_NAME || "cliplane-app",
     env: process.env.NODE_ENV || "development",
   },
   formatters: {

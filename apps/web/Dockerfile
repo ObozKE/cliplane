@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# ClipName Web Application Dockerfile
+# ClipLane Web Application Dockerfile
 # Production-ready multi-stage Next.js 15 container
 # -----------------------------------------------------------------------------
 
@@ -20,7 +20,7 @@ COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/web/package.json ./apps/web/
 
-RUN pnpm install --frozen-lockfile --filter @clipname/shared --filter @clipname/web
+RUN pnpm install --frozen-lockfile --filter @cliplane/shared --filter @cliplane/web
 
 # -----------------------------------------------------------------------------
 # Builder Stage
@@ -34,8 +34,8 @@ COPY apps/web/ ./apps/web/
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
 
-RUN pnpm --filter @clipname/shared build
-RUN pnpm --filter @clipname/web build
+RUN pnpm --filter @cliplane/shared build
+RUN pnpm --filter @cliplane/web build
 
 # -----------------------------------------------------------------------------
 # Production Runner Stage
@@ -61,4 +61,4 @@ USER nextjs
 
 EXPOSE 3000
 
-CMD ["pnpm", "--filter", "@clipname/web", "start"]
+CMD ["pnpm", "--filter", "@cliplane/web", "start"]

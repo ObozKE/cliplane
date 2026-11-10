@@ -23,7 +23,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "pnpm --filter @clipname/web dev",
+    command: "pnpm --filter @cliplane/web dev",
     port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 120000,

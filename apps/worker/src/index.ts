@@ -1,5 +1,5 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { logger } from "@clipname/shared";
+import { logger } from "@cliplane/shared";
 import { workerEnv } from "./env";
 import { processJob, type JobRecord } from "./pipeline/processor";
 import { runRetentionCleanup } from "./cleanup";
@@ -110,12 +110,12 @@ export async function claimNextJob(client: SupabaseClient): Promise<JobRecord | 
 export async function startWorkerLoop(): Promise<void> {
   logger.info(
     {
-      service: "clipname-worker",
+      service: "cliplane-worker",
       workerId: workerEnv.WORKER_ID,
       concurrency: workerEnv.WORKER_CONCURRENCY,
       pollIntervalMs: workerEnv.POLL_INTERVAL_MS,
     },
-    "🚀 ClipName Worker loop started",
+    "🚀 ClipLane Worker loop started",
   );
 
   while (isRunning) {

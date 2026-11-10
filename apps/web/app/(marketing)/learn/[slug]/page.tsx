@@ -24,11 +24,11 @@ export async function generateMetadata({ params }: LessonPageProps): Promise<Met
   const { slug } = await params;
   const tutorial = getTutorialBySlug(slug);
   if (!tutorial) {
-    return { title: "Lesson Not Found — ClipName" };
+    return { title: "Lesson Not Found — ClipLane" };
   }
 
   return {
-    title: `${tutorial.title} — ClipName Tutorials`,
+    title: `${tutorial.title} — ClipLane Tutorials`,
     description: tutorial.summary,
   };
 }
@@ -151,7 +151,7 @@ export default async function LessonPage({ params }: LessonPageProps) {
           <span>Notice & Disclaimers</span>
         </div>
         <p>
-          Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
+          Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
         </p>
         <p className="text-[11px] text-muted-foreground/80">
           Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.

@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { MockConfirmClient } from "./MockConfirmClient";
 
 export const metadata: Metadata = {
-  title: "Simulate Payment — ClipName Sandbox",
+  title: "Simulate Payment — ClipLane Sandbox",
 };
 
 export default function MockConfirmPage() {

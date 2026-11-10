@@ -7,7 +7,7 @@ import {
   errorResult,
   type ActionResult,
   type PaymentProviderType,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 import { getAuthenticatedUser, createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import {

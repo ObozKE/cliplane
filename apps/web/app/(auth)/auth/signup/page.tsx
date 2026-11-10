@@ -44,7 +44,7 @@ export default function SignUpPage() {
           Check your email
         </h2>
         <p className="mt-2 text-xs text-[var(--text-muted)] leading-relaxed">
-          We sent a verification link to your email address. Follow the link to activate your ClipName account.
+          We sent a verification link to your email address. Follow the link to activate your ClipLane account.
         </p>
         <div className="mt-6">
           <Link href="/auth/login" className="button-outline text-xs !py-2 !px-4">

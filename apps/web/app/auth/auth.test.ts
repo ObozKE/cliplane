@@ -58,7 +58,7 @@ describe("Part 3 Auth & Security Verifications", () => {
       });
 
       const formData = new FormData();
-      formData.append("email", "newcreator@clipname.tech");
+      formData.append("email", "newcreator@cliplane.tech");
       formData.append("password", "SuperSecretPassword123!");
 
       const result = await signUpWithEmail(formData);
@@ -77,7 +77,7 @@ describe("Part 3 Auth & Security Verifications", () => {
       });
 
       const formData = new FormData();
-      formData.append("email", "creator@clipname.tech");
+      formData.append("email", "creator@cliplane.tech");
       formData.append("password", "WrongPassword123!");
 
       const result = await signInWithEmail(formData);
@@ -104,7 +104,7 @@ describe("Part 3 Auth & Security Verifications", () => {
       });
 
       const formData = new FormData();
-      formData.append("email", "banned@clipname.tech");
+      formData.append("email", "banned@cliplane.tech");
       formData.append("password", "ValidPassword123!");
 
       const result = await signInWithEmail(formData);
@@ -131,7 +131,7 @@ describe("Part 3 Auth & Security Verifications", () => {
       });
 
       const formData = new FormData();
-      formData.append("email", "active@clipname.tech");
+      formData.append("email", "active@cliplane.tech");
       formData.append("password", "CorrectPassword123!");
       formData.append("redirect", "/dashboard");
 
@@ -148,7 +148,7 @@ describe("Part 3 Auth & Security Verifications", () => {
       mockResetPasswordForEmail.mockResolvedValueOnce({ data: {}, error: null });
 
       const formData = new FormData();
-      formData.append("email", "creator@clipname.tech");
+      formData.append("email", "creator@cliplane.tech");
 
       const result = await requestPasswordReset(formData);
       expect(result.success).toBe(true);

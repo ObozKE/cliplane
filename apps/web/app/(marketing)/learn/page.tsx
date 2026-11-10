@@ -5,7 +5,7 @@ import { getAllTutorials } from "@/lib/tutorials";
 import { getTutorialProgressAction } from "./actions";
 
 export const metadata: Metadata = {
-  title: "Creator Tutorials & Video Guidelines — ClipName",
+  title: "Creator Tutorials & Video Guidelines — ClipLane",
   description: "Learn how the clipping pipeline works, recording clean gameplay in OBS, pacing high-retention vertical clips, and game publisher copyright policies.",
 };
 
@@ -114,7 +114,7 @@ export default async function LearnIndexPage() {
           <span>Product & Publisher Disclaimers</span>
         </div>
         <p>
-          Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
+          Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
         </p>
         <p className="text-[11px] text-muted-foreground/80">
           Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive. All trademarks, service marks, and company names are the property of their respective owners.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "pnpm --filter @clipname/shared build && pnpm --filter @clipname/web build",
+  "buildCommand": "pnpm --filter @cliplane/shared build && pnpm --filter @cliplane/web build",
   "outputDirectory": "apps/web/.next",
   "installCommand": "pnpm install",
   "headers": [

@@ -6,7 +6,7 @@ import {
   successResult,
   errorResult,
   type ActionResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 import { requireAdminUser, createClient } from "@/lib/supabase/server";
 
 const uuidSchema = z.string().uuid("Invalid UUID format");

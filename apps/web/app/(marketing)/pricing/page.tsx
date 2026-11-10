@@ -6,7 +6,7 @@ import {
 } from "@/lib/payments/constants";
 
 export const metadata: Metadata = {
-  title: "Pricing & Processing Lanes — ClipName",
+  title: "Pricing & Processing Lanes — ClipLane",
   description: "Transparent pricing for gameplay highlight clipping. Free community lane or Priority processing with USD, Crypto, or M-Pesa.",
 };
 
@@ -201,7 +201,7 @@ export default function PricingPage() {
           Required Disclaimers & Fair Use Notice
         </p>
         <p>
-          Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
+          Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
         </p>
         <p className="text-[var(--text-muted)]">
           Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.

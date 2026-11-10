@@ -1,4 +1,4 @@
-# ClipName
+# ClipLane
 
 Gameplay clip-generation web app producing 9:16 vertical clips with highlight scoring and transparent queues.
 
@@ -36,8 +36,8 @@ Copy-Item .env.example apps/worker/.env
 pnpm dev
 
 # Or run specific apps
-pnpm --filter @clipname/web dev
-pnpm --filter @clipname/worker dev
+pnpm --filter @cliplane/web dev
+pnpm --filter @cliplane/worker dev
 ```
 
 ---
@@ -73,11 +73,11 @@ pnpm build
 2. **Deploy Web App**: Deploy `apps/web` to Vercel with all production environment variables set.
 3. **Deploy Worker Service**: Build and deploy worker container:
    ```bash
-   docker build -f apps/worker/Dockerfile -t clipname-worker:latest .
+   docker build -f apps/worker/Dockerfile -t cliplane-worker:latest .
    ```
 4. **Health Check Verification**:
    ```bash
-   curl -f https://clipname.tech/api/health
+   curl -f https://cliplane.tech/api/health
    ```
 
 ### Rollback Steps

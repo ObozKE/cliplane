@@ -7,7 +7,7 @@ import {
   type WebhookVerificationParams,
   type WebhookVerificationResult,
   type QueryStatusResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 
 /**
  * M-Pesa Daraja payment provider for East African mobile money payments.

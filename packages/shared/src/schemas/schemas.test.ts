@@ -51,7 +51,7 @@ describe("Validation Schemas & Gate Constraints", () => {
     const valid = takedownRequestSchema.safeParse({
       reporterName: "Content Owner",
       reporterEmail: "legal@copyright.org",
-      contentUrl: "https://clipname.tech/clips/123",
+      contentUrl: "https://cliplane.tech/clips/123",
       description: "This footage is taken directly from my livestream without permission.",
     });
     expect(valid.success).toBe(true);
@@ -60,7 +60,7 @@ describe("Validation Schemas & Gate Constraints", () => {
     const invalid = takedownRequestSchema.safeParse({
       reporterName: "Content Owner",
       reporterEmail: "legal@copyright.org",
-      contentUrl: "https://clipname.tech/clips/123",
+      contentUrl: "https://cliplane.tech/clips/123",
       description: "Delete this",
     });
     expect(invalid.success).toBe(false);

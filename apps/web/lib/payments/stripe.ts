@@ -7,7 +7,7 @@ import type {
   WebhookVerificationParams,
   WebhookVerificationResult,
   QueryStatusResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 
 /**
  * Stripe Payment Provider for USD credit and debit card payments.
@@ -39,8 +39,8 @@ export class StripePaymentProvider implements PaymentProvider {
                 currency: "usd",
                 product_data: {
                   name: params.jobId
-                    ? "ClipName Priority Lane Upgrade (1 Job)"
-                    : "ClipName Creator Pack (5 Priority Credits)",
+                    ? "ClipLane Priority Lane Upgrade (1 Job)"
+                    : "ClipLane Creator Pack (5 Priority Credits)",
                   description: params.jobId
                     ? `Instant worker processing for Job #${params.jobId.slice(0, 8)}`
                     : "5 credits to process gameplay highlights in the priority lane",

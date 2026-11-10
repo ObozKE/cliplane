@@ -122,7 +122,7 @@ describe("Part 8 — Tutorials & Curriculum", () => {
         expect(lesson.content).toContain("https://www.xbox.com/en-us/developers/rules");
 
         // Mandatory disclaimer
-        expect(lesson.content).toContain("Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings.");
+        expect(lesson.content).toContain("Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings.");
         expect(lesson.content).toContain("Not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.");
       }
     });

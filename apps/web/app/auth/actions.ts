@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { enforceRateLimit } from "@/lib/rate-limit";
-import { errorResult, successResult, type ActionResult } from "@clipname/shared";
+import { errorResult, successResult, type ActionResult } from "@cliplane/shared";
 
 const authEmailSchema = z.object({
   email: z.string().email("Please provide a valid email address").toLowerCase().trim(),

@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { checkRateLimit, enforceRateLimit } from "./rate-limit";
-import { AppError } from "@clipname/shared";
+import { AppError } from "@cliplane/shared";
 
 describe("Rate Limiter — Hostile Traffic Protection", () => {
   const testIp = "192.0.2.42";

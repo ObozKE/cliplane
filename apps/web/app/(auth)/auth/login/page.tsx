@@ -35,7 +35,7 @@ function LoginForm() {
     <div>
       <div className="text-center mb-6">
         <h1 className="font-serif text-2xl font-normal text-[var(--text-primary)]">
-          Sign In to ClipName
+          Sign In to ClipLane
         </h1>
         <p className="mt-1 text-xs text-[var(--text-muted)]">
           Manage your video jobs and download ready-to-post clips

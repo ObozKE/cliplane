@@ -98,7 +98,7 @@ export function TakedownForm() {
           required
           value={contentUrl}
           onChange={(e) => setContentUrl(e.target.value)}
-          placeholder="https://clipname.tech/jobs/..."
+          placeholder="https://cliplane.tech/jobs/..."
           className="input-paper mt-1 w-full text-xs"
         />
       </div>

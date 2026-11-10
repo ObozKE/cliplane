@@ -11,7 +11,7 @@ import {
   successResult,
   type ActionResult,
   computeQueueState,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 
 export interface CreateJobResponse {
   jobId: string;

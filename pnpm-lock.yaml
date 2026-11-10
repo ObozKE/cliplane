@@ -193,7 +193,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@clipname/shared':
+      '@cliplane/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@radix-ui/react-dialog':
@@ -299,7 +299,7 @@ importers:
 
   apps/worker:
     dependencies:
-      '@clipname/shared':
+      '@cliplane/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@supabase/supabase-js':

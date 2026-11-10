@@ -5,7 +5,7 @@ import { z } from "zod";
  */
 export const commonEnvSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  NEXT_PUBLIC_APP_NAME: z.string().default("ClipName"),
+  NEXT_PUBLIC_APP_NAME: z.string().default("ClipLane"),
   NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
   ALLOWED_ORIGINS: z.string().default("http://localhost:3000,http://127.0.0.1:3000"),
 
@@ -29,8 +29,8 @@ export const commonEnvSchema = z.object({
   PAYMENT_PROVIDER: z.enum(["mock", "stripe", "crypto", "mpesa"]).default("mock"),
 
   // Admin & Compliance
-  ADMIN_EMAIL: z.string().email().default("admin@clipname.tech"),
-  COPYRIGHT_CONTACT_EMAIL: z.string().email().default("copyright@clipname.tech"),
+  ADMIN_EMAIL: z.string().email().default("admin@cliplane.tech"),
+  COPYRIGHT_CONTACT_EMAIL: z.string().email().default("copyright@cliplane.tech"),
 });
 
 /**

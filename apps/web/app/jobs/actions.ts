@@ -7,7 +7,7 @@ import {
   successResult,
   errorResult,
   type ActionResult,
-} from "@clipname/shared";
+} from "@cliplane/shared";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
 import { createClient } from "@/lib/supabase/server";
 import { checkRateLimit } from "@/lib/rate-limit";
@@ -133,7 +133,7 @@ export async function getClipDownloadUrlAction(
       return errorResult("You do not have permission to download this clip.", "FORBIDDEN");
     }
 
-    const filename = `clipname_highlight_${clip.id.slice(0, 8)}.mp4`;
+    const filename = `cliplane_highlight_${clip.id.slice(0, 8)}.mp4`;
 
     const { data, error: signError } = await supabase.storage
       .from("clips")
@@ -195,7 +195,7 @@ export async function reportClipAction(
     .single();
 
   if (error || !data) {
-    return errorResult("Failed to record report. Please contact copyright@clipname.tech directly.", "INTERNAL_ERROR");
+    return errorResult("Failed to record report. Please contact copyright@cliplane.tech directly.", "INTERNAL_ERROR");
   }
 
   logBusinessEvent({

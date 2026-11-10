@@ -18,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@clipname/shared": path.resolve(__dirname, "./packages/shared/src/index.ts"),
+      "@cliplane/shared": path.resolve(__dirname, "./packages/shared/src/index.ts"),
       "@": path.resolve(__dirname, "./apps/web"),
     },
   },

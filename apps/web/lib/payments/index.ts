@@ -2,8 +2,8 @@ import type {
   PaymentProvider,
   PaymentProviderType,
   PaymentStatus,
-} from "@clipname/shared";
-import { logBusinessEvent, logger } from "@clipname/shared";
+} from "@cliplane/shared";
+import { logBusinessEvent, logger } from "@cliplane/shared";
 import { createClient } from "@/lib/supabase/server";
 import { MockPaymentProvider } from "./mock";
 import { CryptoPaymentProvider } from "./crypto";

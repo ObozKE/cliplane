@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — ClipName",
-  description: "Terms of Service, acceptable use guidelines, and footage ownership policies for ClipName.",
+  title: "Terms of Service — ClipLane",
+  description: "Terms of Service, acceptable use guidelines, and footage ownership policies for ClipLane.",
 };
 
 export default function TermsPage() {
@@ -23,10 +23,10 @@ export default function TermsPage() {
           Mandatory Platform & Earnings Disclaimer
         </p>
         <p>
-          Results vary. ClipName is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
+          Results vary. ClipLane is a clipping tool and does not guarantee views, followers, or earnings. Game publishers and platforms set their own rules on game footage and monetization — check them before you post.
         </p>
         <p className="text-[var(--text-muted)]">
-          ClipName is an independent software tool and is not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.
+          ClipLane is an independent software tool and is not affiliated with or endorsed by Rockstar Games or Take-Two Interactive.
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export default function TermsPage() {
           1. Acceptance of Terms
         </h2>
         <p>
-          By creating an account, accessing `clipname.tech`, or utilizing our video clipping services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you must not use our service.
+          By creating an account, accessing `cliplane.tech`, or utilizing our video clipping services, you agree to be bound by these Terms of Service. If you do not agree to these terms, you must not use our service.
         </p>
 
         <h2 className="font-serif text-xl sm:text-2xl font-normal text-[var(--text-primary)] pt-4">
@@ -60,7 +60,7 @@ export default function TermsPage() {
           3. Real Queue Architecture & Service Lanes
         </h2>
         <p>
-          ClipName provides two distinct processing tiers:
+          ClipLane provides two distinct processing tiers:
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-xs text-[var(--text-muted)]">
           <li>
@@ -82,21 +82,21 @@ export default function TermsPage() {
           5. Repeat Infringer Policy & Account Termination
         </h2>
         <p>
-          ClipName adheres strictly to the Digital Millennium Copyright Act (DMCA). In accordance with our repeat-infringer policy, we will terminate the accounts of users who are found to repeatedly infringe the intellectual property rights of copyright holders.
+          ClipLane adheres strictly to the Digital Millennium Copyright Act (DMCA). In accordance with our repeat-infringer policy, we will terminate the accounts of users who are found to repeatedly infringe the intellectual property rights of copyright holders.
         </p>
 
         <h2 className="font-serif text-xl sm:text-2xl font-normal text-[var(--text-primary)] pt-4">
           6. Limitation of Liability & No Earnings Warranty
         </h2>
         <p>
-          ClipName is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make zero warranties or representations regarding social media reach, audience engagement, viral performance, algorithmic favorability, platform monetization approval, or financial income.
+          ClipLane is provided on an &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; basis. We make zero warranties or representations regarding social media reach, audience engagement, viral performance, algorithmic favorability, platform monetization approval, or financial income.
         </p>
 
         <h2 className="font-serif text-xl sm:text-2xl font-normal text-[var(--text-primary)] pt-4">
           7. Contact Information
         </h2>
         <p>
-          Questions regarding these Terms of Service or copyright inquiries should be directed to: <code className="font-mono">copyright@clipname.tech</code>.
+          Questions regarding these Terms of Service or copyright inquiries should be directed to: <code className="font-mono">copyright@cliplane.tech</code>.
         </p>
       </section>
     </article>

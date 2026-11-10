@@ -1,5 +1,5 @@
 {
-  "name": "@clipname/web",
+  "name": "@cliplane/web",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@clipname/shared": "workspace:*",
+    "@cliplane/shared": "workspace:*",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-label": "^2.1.2",

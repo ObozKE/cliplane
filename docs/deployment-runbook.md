@@ -1,11 +1,11 @@
-# ClipName (`clipname.tech`) — Production Deployment Runbook
+# ClipLane (`cliplane.tech`) — Production Deployment Runbook
 
-Complete step-by-step guide to deploying ClipName to production with a **100% $0 operating cost** using generous free tiers:
+Complete step-by-step guide to deploying ClipLane to production with a **100% $0 operating cost** using generous free tiers:
 - **Web Frontend:** Vercel Hobby Tier ($0/mo)
 - **Database, Auth & Storage:** Supabase Free Tier ($0/mo)
 - **Rate Limiting:** Upstash Redis Free Tier ($0/mo) or In-Memory fallback
 - **Worker (FFmpeg):** Render Free Docker Worker ($0/mo) or local/Docker background service
-- **Custom Domain:** `clipname.tech`
+- **Custom Domain:** `cliplane.tech`
 
 ---
 
@@ -29,8 +29,8 @@ Complete step-by-step guide to deploying ClipName to production with a **100% $0
    - Under `Source`, toggle **ON** replication for the `jobs` table so live queue and processing updates broadcast to the web dashboard.
 6. **Authentication Settings:**
    - Navigate to **Authentication → URL Configuration**:
-     - Site URL: `https://clipname.tech`
-     - Redirect URLs: `https://clipname.tech/auth/callback`, `http://localhost:3000/auth/callback`
+     - Site URL: `https://cliplane.tech`
+     - Redirect URLs: `https://cliplane.tech/auth/callback`, `http://localhost:3000/auth/callback`
 
 ---
 
@@ -40,7 +40,7 @@ Complete step-by-step guide to deploying ClipName to production with a **100% $0
 2. Under **REST API**, copy:
    - `UPSTASH_REDIS_REST_URL`
    - `UPSTASH_REDIS_REST_TOKEN`
-3. *Note:* If you leave these blank, ClipName automatically activates its built-in in-memory rate limiter fallback with zero configuration.
+3. *Note:* If you leave these blank, ClipLane automatically activates its built-in in-memory rate limiter fallback with zero configuration.
 
 ---
 
@@ -52,7 +52,7 @@ Complete step-by-step guide to deploying ClipName to production with a **100% $0
 4. Configure **Environment Variables** in Vercel:
    ```bash
    NODE_ENV=production
-   NEXT_PUBLIC_APP_URL=https://clipname.tech
+   NEXT_PUBLIC_APP_URL=https://cliplane.tech
    NEXT_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
    NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
    SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
@@ -62,10 +62,10 @@ Complete step-by-step guide to deploying ClipName to production with a **100% $0
    STRIPE_SECRET_KEY=sk_live_...
    STRIPE_WEBHOOK_SECRET=whsec_...
    CRYPTO_WEBHOOK_SECRET=your_512_bit_secret_here
-   ADMIN_EMAILS=admin@clipname.tech,martinkiplangat45@gmail.com
-   ALLOWED_ORIGINS=https://clipname.tech,https://www.clipname.tech
+   ADMIN_EMAILS=admin@cliplane.tech,martinkiplangat45@gmail.com
+   ALLOWED_ORIGINS=https://cliplane.tech,https://www.cliplane.tech
    ```
-5. Add your custom domain `clipname.tech` in **Project Settings → Domains**:
+5. Add your custom domain `cliplane.tech` in **Project Settings → Domains**:
    - Add `A` record pointing `@` to `76.76.21.21`
    - Add `CNAME` record pointing `www` to `cname.vercel-dns.com`
 6. Deploy! Vercel handles automated SSL/TLS provisioning.
@@ -79,7 +79,7 @@ The background worker claims pending jobs from PostgreSQL and runs FFmpeg audio 
 ### Option A: Render.com Free Docker Worker ($0)
 1. Push your repository to GitHub.
 2. In [render.com](https://render.com), click **New → Blueprint** and connect the repository.
-3. Render automatically detects `render.yaml` and provisions `clipname-worker` using `apps/worker/Dockerfile`.
+3. Render automatically detects `render.yaml` and provisions `cliplane-worker` using `apps/worker/Dockerfile`.
 4. Fill in the two sync environment variables: `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
 
 ### Option B: Docker Container (Any host or local workstation)
@@ -94,7 +94,7 @@ docker compose up -d worker
 winget install Gyan.FFmpeg --accept-source-agreements --accept-package-agreements
 
 # Run worker daemon
-pnpm --filter @clipname/worker start
+pnpm --filter @cliplane/worker start
 ```
 
 ---
@@ -103,22 +103,22 @@ pnpm --filter @clipname/worker start
 
 ### Stripe Webhook Configuration
 1. In Stripe Dashboard → **Developers → Webhooks → Add endpoint**:
-   - Endpoint URL: `https://clipname.tech/api/webhooks/payments/stripe`
+   - Endpoint URL: `https://cliplane.tech/api/webhooks/payments/stripe`
    - Events to listen for: `checkout.session.completed`
 2. Copy the Signing Secret (`whsec_...`) into `STRIPE_WEBHOOK_SECRET`.
 
 ### Crypto Webhook Configuration
-- Endpoint: `https://clipname.tech/api/webhooks/payments/crypto`
+- Endpoint: `https://cliplane.tech/api/webhooks/payments/crypto`
 - Include the HTTP header `X-Crypto-Signature: <hmac-sha512(rawBody, CRYPTO_WEBHOOK_SECRET)>`
 
 ### M-Pesa (Daraja API) Webhook
-- Endpoint: `https://clipname.tech/api/webhooks/payments/mpesa`
+- Endpoint: `https://cliplane.tech/api/webhooks/payments/mpesa`
 
 ---
 
 ## 6. Scheduled 3-Day Media Retention Cleanup
 
-ClipName enforces a strict **3-day retention policy** on all uploaded gameplay media and rendered vertical clips.
+ClipLane enforces a strict **3-day retention policy** on all uploaded gameplay media and rendered vertical clips.
 
 ### Option A: Worker Scheduled Daemon
 The worker service automatically runs the retention cleanup routine on a scheduled interval using `apps/worker/src/cleanup.ts`.
