@@ -8,7 +8,6 @@ import { createClient } from "@/lib/supabase/server";
 import { MockPaymentProvider } from "./mock";
 import { CryptoPaymentProvider } from "./crypto";
 import { StripePaymentProvider } from "./stripe";
-import { MpesaPaymentProvider } from "./mpesa";
 
 import {
   PRIORITY_JOB_PRICE_USD,
@@ -26,7 +25,6 @@ const providers: Record<PaymentProviderType, PaymentProvider> = {
   mock: new MockPaymentProvider(),
   crypto: new CryptoPaymentProvider(),
   stripe: new StripePaymentProvider(),
-  mpesa: new MpesaPaymentProvider(),
 };
 
 /**

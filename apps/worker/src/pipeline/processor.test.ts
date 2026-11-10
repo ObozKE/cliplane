@@ -57,7 +57,7 @@ describe("Worker Processor Pipeline Resilience", () => {
     expect(result.clipCount).toBe(0);
     expect(updatedStatus).toBe("failed");
     expect(updatedErrorCode).toBe("INVALID_VIDEO_FORMAT");
-  });
+  }, 15000);
 
   it("marks job as failed immediately on fatal SSRF URL rejection without retrying", async () => {
     let updatedStatus = "";

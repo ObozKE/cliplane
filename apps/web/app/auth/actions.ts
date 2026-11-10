@@ -69,7 +69,7 @@ export async function signInWithEmail(formData: FormData): Promise<ActionResult<
       return errorResult("Invalid email or password.", "UNAUTHORIZED");
     }
 
-    // 4. Check if account is suspended / banned
+    // 4. Check if account is suspended / banned (or ensure profile exists)
     const { data: profile } = await supabase
       .from("profiles")
       .select("role, banned_at")
@@ -79,6 +79,20 @@ export async function signInWithEmail(formData: FormData): Promise<ActionResult<
     if (profile?.banned_at) {
       await supabase.auth.signOut();
       return errorResult("This account has been suspended.", "FORBIDDEN");
+    }
+
+    if (!profile) {
+      // Ensure profile row exists
+      try {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          email: data.user.email ?? email,
+          role: "user",
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "id" });
+      } catch {
+        // Ignore upsert error if already exists
+      }
     }
 
     const redirectTo = (formData.get("redirect") as string) || "/dashboard";
@@ -125,6 +139,19 @@ export async function signUpWithEmail(formData: FormData): Promise<ActionResult<
 
     if (error) {
       return errorResult(error.message, "BAD_REQUEST");
+    }
+
+    if (data.user) {
+      try {
+        await supabase.from("profiles").upsert({
+          id: data.user.id,
+          email: data.user.email ?? email,
+          role: "user",
+          updated_at: new Date().toISOString(),
+        }, { onConflict: "id" });
+      } catch {
+        // Ignore upsert error if already handled
+      }
     }
 
     const requiresEmailConfirmation = !data.session;

@@ -26,7 +26,7 @@ export const commonEnvSchema = z.object({
   // Pricing
   PRIORITY_JOB_PRICE_USD: z.coerce.number().positive().default(2.99),
   PRIORITY_BUNDLE_PRICE_USD: z.coerce.number().positive().default(9.99),
-  PAYMENT_PROVIDER: z.enum(["mock", "stripe", "crypto", "mpesa"]).default("mock"),
+  PAYMENT_PROVIDER: z.enum(["mock", "stripe", "crypto"]).default("mock"),
 
   // Admin & Compliance
   ADMIN_EMAIL: z.string().email().default("admin@cliplane.tech"),
@@ -47,7 +47,6 @@ export const webEnvSchema = commonEnvSchema.extend({
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   CRYPTO_COMMERCE_API_KEY: z.string().optional(),
   CRYPTO_WEBHOOK_SECRET: z.string().optional(),
-  MPESA_CALLBACK_SECRET: z.string().min(16).optional().default("local_dev_mpesa_secret_test_key_32chars"),
 });
 
 /**

@@ -72,7 +72,7 @@ export interface AuthenticatedUser {
 /**
  * Strictly verifies authentication session via supabase.auth.getUser()
  * NEVER trusts getSession() alone.
- * Checks banned_at status from public.profiles.
+ * Checks banned_at status from public.profiles with self-healing profile creation.
  */
 export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
   const supabase = await createClient();
@@ -87,14 +87,52 @@ export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
   }
 
   // Fetch profile to verify role and ban status
-  const { data: profile, error: profileErr } = await supabase
+  let { data: profile, error: profileErr } = await supabase
     .from("profiles")
     .select("role, banned_at")
     .eq("id", user.id)
     .single();
 
+  const adminEmails = (process.env.ADMIN_EMAILS || "")
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+  const isAdmin = user.email ? adminEmails.includes(user.email.toLowerCase()) : false;
+
+  // Self-healing: if profile is missing (e.g. trigger didn't run or signup delay), auto-create it
   if (profileErr || !profile) {
-    throw AppError.unauthorized("User profile could not be loaded.");
+    try {
+      if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        const serviceClient = createServiceRoleClient();
+        const { data: createdProfile } = await serviceClient
+          .from("profiles")
+          .upsert(
+            {
+              id: user.id,
+              email: user.email ?? "",
+              role: isAdmin ? "admin" : "user",
+              updated_at: new Date().toISOString(),
+            },
+            { onConflict: "id" },
+          )
+          .select("role, banned_at")
+          .single();
+
+        if (createdProfile) {
+          profile = createdProfile;
+        }
+      }
+    } catch {
+      // Continue to fallback if service role operation fails
+    }
+
+    // Graceful fallback: do NOT crash valid sessions with 401 if profile row is pending
+    if (!profile) {
+      profile = {
+        role: isAdmin ? "admin" : "user",
+        banned_at: null,
+      };
+    }
   }
 
   if (profile.banned_at) {
@@ -104,7 +142,7 @@ export async function getAuthenticatedUser(): Promise<AuthenticatedUser> {
   return {
     id: user.id,
     email: user.email ?? "",
-    role: (profile.role as "user" | "admin") || "user",
+    role: (profile.role as "user" | "admin") || (isAdmin ? "admin" : "user"),
     bannedAt: profile.banned_at,
   };
 }

@@ -111,9 +111,6 @@ pnpm --filter @cliplane/worker start
 - Endpoint: `https://cliplane.tech/api/webhooks/payments/crypto`
 - Include the HTTP header `X-Crypto-Signature: <hmac-sha512(rawBody, CRYPTO_WEBHOOK_SECRET)>`
 
-### M-Pesa (Daraja API) Webhook
-- Endpoint: `https://cliplane.tech/api/webhooks/payments/mpesa`
-
 ---
 
 ## 6. Scheduled 3-Day Media Retention Cleanup

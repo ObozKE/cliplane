@@ -23,7 +23,6 @@ export function CheckoutClient({ userCredits }: CheckoutClientProps) {
   const isBundle = searchParams.get("bundle") === "true" || !jobId;
 
   const [selectedProvider, setSelectedProvider] = useState<PaymentProviderType>("stripe");
-  const [phoneNumber, setPhoneNumber] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isRedeeming, setIsRedeeming] = useState(false);
@@ -38,7 +37,6 @@ export function CheckoutClient({ userCredits }: CheckoutClientProps) {
     const result = await initiateCheckoutAction({
       jobId: jobId || undefined,
       provider: selectedProvider,
-      phoneNumber: selectedProvider === "mpesa" ? phoneNumber : undefined,
       isBundle,
     });
 
@@ -193,27 +191,7 @@ export function CheckoutClient({ userCredits }: CheckoutClientProps) {
             </div>
           </label>
 
-          {/* 3. M-Pesa */}
-          <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
-            selectedProvider === "mpesa"
-              ? "border-[var(--accent-default)] bg-blue-50/20"
-              : "border-[var(--line-paper)] hover:border-[var(--text-muted)]"
-          }`}>
-            <input
-              type="radio"
-              name="provider"
-              value="mpesa"
-              checked={selectedProvider === "mpesa"}
-              onChange={() => setSelectedProvider("mpesa")}
-              className="mt-0.5 text-[var(--accent-default)]"
-            />
-            <div className="text-xs">
-              <strong className="block text-[var(--text-primary)] font-medium">M-Pesa (East Africa Mobile Money)</strong>
-              <span className="text-[var(--text-muted)]">Instant STK push to your Safaricom mobile line in KES.</span>
-            </div>
-          </label>
-
-          {/* 4. Mock / Sandbox Simulator (Dev / Free-Tier Friendly) */}
+          {/* 3. Mock / Sandbox Simulator (Dev / Free-Tier Friendly) */}
           <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
             selectedProvider === "mock"
               ? "border-[var(--accent-default)] bg-blue-50/20"
@@ -233,26 +211,6 @@ export function CheckoutClient({ userCredits }: CheckoutClientProps) {
             </div>
           </label>
         </div>
-
-        {/* Conditional M-Pesa Phone Field */}
-        {selectedProvider === "mpesa" && (
-          <div className="p-4 rounded-[4px] bg-[var(--bg-subtle)] border border-[var(--line-paper)] space-y-2">
-            <label className="block text-xs font-medium text-[var(--text-primary)]">
-              Safaricom Mobile Number (07XXXXXXXX or 254...)
-            </label>
-            <input
-              type="tel"
-              required
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              placeholder="0712345678"
-              className="input-paper w-full text-xs"
-            />
-            <p className="text-[11px] text-[var(--text-muted)]">
-              An STK push for ~KES {Math.round(amount * 130)} will be prompted on this phone.
-            </p>
-          </div>
-        )}
 
         <button
           type="submit"
