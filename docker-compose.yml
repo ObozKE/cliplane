@@ -1,0 +1,42 @@
+services:
+  # Background FFmpeg Worker Service
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    container_name: clipname-worker
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+      - WORKER_CONCURRENCY=${WORKER_CONCURRENCY:-2}
+      - RETENTION_DAYS=${RETENTION_DAYS:-3}
+    tmpfs:
+      - /tmp:rw,size=2G,mode=1777
+
+  # Next.js Web Application (Optional containerized mode)
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+    container_name: clipname-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY}
+      - UPSTASH_REDIS_REST_URL=${UPSTASH_REDIS_REST_URL}
+      - UPSTASH_REDIS_REST_TOKEN=${UPSTASH_REDIS_REST_TOKEN}
+      - PAYMENT_PROVIDER=${PAYMENT_PROVIDER:-mock}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${STRIPE_WEBHOOK_SECRET}
+      - CRYPTO_WEBHOOK_SECRET=${CRYPTO_WEBHOOK_SECRET}
+      - ADMIN_EMAILS=${ADMIN_EMAILS}
+    profiles:
+      - full-stack

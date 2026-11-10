@@ -1,0 +1,23 @@
+services:
+  # ClipName Background Processing Worker (Node.js 22 + FFmpeg)
+  - type: worker
+    name: clipname-worker
+    runtime: docker
+    dockerfilePath: apps/worker/Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: LOG_LEVEL
+        value: info
+      - key: WORKER_CONCURRENCY
+        value: "2"
+      - key: RETENTION_DAYS
+        value: "3"
