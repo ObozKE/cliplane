@@ -272,7 +272,7 @@ export function AdminDashboardClient({
                 <Activity className="w-4 h-4 text-sky-400" />
                 <div>
                   <p className="font-semibold text-foreground">Rate Limiter</p>
-                  <p className="text-sky-400">Active (Upstash / Memory)</p>
+                  <p className="text-sky-400">Active (Upstashrate limiter of requests / Memory)</p>
                 </div>
               </div>
             </div>

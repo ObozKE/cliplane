@@ -10,7 +10,8 @@ export interface DownloadOptions {
     id: string;
     user_id: string;
     source_type: "upload" | "url";
-    storage_path: string | null;
+    storage_path?: string | null;
+    source_path?: string | null;
     source_url: string | null;
   };
   destPath: string;
@@ -32,16 +33,17 @@ export async function downloadMedia(options: DownloadOptions): Promise<{ sizeByt
   } = options;
 
   if (job.source_type === "upload") {
-    if (!job.storage_path) {
+    const rawPath = job.source_path || job.storage_path;
+    if (!rawPath) {
       throw new AppError({
         code: "MISSING_STORAGE_PATH",
-        message: "Job marked as upload but storage_path is missing",
+        message: "Job marked as upload but storage_path / source_path is missing",
         status: 400,
       });
     }
 
     // IDOR safety check on path prefix: must belong to the job's user_id
-    if (!job.storage_path.startsWith(`${job.user_id}/`)) {
+    if (!rawPath.startsWith(`${job.user_id}/`)) {
       throw new AppError({
         code: "STORAGE_IDOR_VIOLATION",
         message: "Storage path does not match user ownership prefix",
@@ -50,13 +52,13 @@ export async function downloadMedia(options: DownloadOptions): Promise<{ sizeByt
     }
 
     logger.info(
-      { jobId: job.id, storagePath: job.storage_path },
+      { jobId: job.id, storagePath: rawPath },
       "Downloading upload from Supabase Storage",
     );
 
     const { data, error } = await supabase.storage
       .from("uploads")
-      .download(job.storage_path);
+      .download(rawPath);
 
     if (error || !data) {
       throw new AppError({

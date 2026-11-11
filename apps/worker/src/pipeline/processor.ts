@@ -18,15 +18,17 @@ export interface JobRecord {
   id: string;
   user_id: string;
   lane: "free" | "priority";
-  status: "queued" | "processing" | "complete" | "failed" | "cancelled";
+  status: "uploaded" | "queued" | "processing" | "complete" | "failed" | "canceled" | "rejected";
   source_type: "upload" | "url";
   source_url: string | null;
-  storage_path: string | null;
-  original_filename: string | null;
-  duration_seconds: number | null;
-  retries: number;
+  source_path?: string | null;
+  storage_path?: string | null;
+  original_filename?: string | null;
+  duration_seconds?: number | null;
+  attempts?: number;
+  retries?: number;
   error_code: string | null;
-  error_message: string | null;
+  error_message?: string | null;
 }
 
 export interface ProcessorOptions {
@@ -102,11 +104,10 @@ export async function processJob(
     // 4. Validate & inspect media container via FFprobe
     const probe = await probeVideo(downloadedMediaFile, maxDurationSeconds);
 
-    // Update job duration in database
+    // Update job timestamp in database
     await supabase
       .from("jobs")
       .update({
-        duration_seconds: Math.round(probe.duration),
         updated_at: new Date().toISOString(),
       })
       .eq("id", job.id);
@@ -219,7 +220,7 @@ export async function processJob(
       .from("jobs")
       .update({
         status: "complete",
-        completed_at: new Date().toISOString(),
+        finished_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
       .eq("id", job.id);
@@ -246,9 +247,6 @@ export async function processJob(
   } catch (err: unknown) {
     const isAppError = err instanceof AppError;
     const errorCode = isAppError ? err.code : "PROCESSING_ERROR";
-    const userSafeMessage = isAppError
-      ? err.message
-      : "An unexpected error occurred during video processing. Please try again or check your footage.";
 
     logger.error(
       {
@@ -271,18 +269,18 @@ export async function processJob(
       "INVALID_CONTENT_TYPE",
       "STORAGE_IDOR_VIOLATION",
       "NO_HIGHLIGHTS_DETECTED",
+      "MISSING_STORAGE_PATH",
     ].includes(errorCode);
 
-    const currentRetries = job.retries || 0;
-    if (!isFatal && currentRetries < 3) {
+    const currentAttempts = job.attempts ?? job.retries ?? 0;
+    if (!isFatal && currentAttempts < 3) {
       // Retryable error: re-queue with backoff
       await supabase
         .from("jobs")
         .update({
           status: "queued",
-          retries: currentRetries + 1,
+          attempts: currentAttempts + 1,
           error_code: errorCode,
-          error_message: userSafeMessage,
           updated_at: new Date().toISOString(),
         })
         .eq("id", job.id);
@@ -292,9 +290,9 @@ export async function processJob(
         .from("jobs")
         .update({
           status: "failed",
-          retries: currentRetries + 1,
+          attempts: currentAttempts + 1,
           error_code: errorCode,
-          error_message: userSafeMessage,
+          finished_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         })
         .eq("id", job.id);
@@ -305,7 +303,7 @@ export async function processJob(
         userId: job.user_id,
         details: {
           errorCode,
-          retries: currentRetries + 1,
+          attempts: currentAttempts + 1,
         },
       });
     }
