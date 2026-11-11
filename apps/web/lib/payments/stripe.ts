@@ -17,10 +17,13 @@ export class StripePaymentProvider implements PaymentProvider {
   private readonly secretKey?: string;
   private readonly webhookSecret?: string;
   private stripeClient?: Stripe;
+  
 
   constructor(secretKey?: string, webhookSecret?: string) {
     this.secretKey = secretKey || process.env.STRIPE_SECRET_KEY;
     this.webhookSecret = webhookSecret || process.env.STRIPE_WEBHOOK_SECRET;
+    
+    
     if (this.secretKey) {
       this.stripeClient = new Stripe(this.secretKey);
     }

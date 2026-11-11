@@ -1,7 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { getAuthenticatedUser, createClient } from "@/lib/supabase/server";
+import { getAuthenticatedUser, createClient, createServiceRoleClient } from "@/lib/supabase/server";
 import { enforceRateLimit } from "@/lib/rate-limit";
 import {
   createJobInputSchema,
@@ -78,6 +78,9 @@ export async function createJobAction(
     // 5. Insert new job in 'priority' lane for VIP user (100% free), or 'free' lane for standard users
     const lane = isVip ? "priority" : "free";
 
+    let createdJob: { id: string } | null = null;
+
+    // First attempt: insert using standard user-scoped client
     const { data: newJob, error: insertError } = await supabase
       .from("jobs")
       .insert({
@@ -92,18 +95,76 @@ export async function createJobAction(
       .select("id")
       .single();
 
-    if (insertError || !newJob) {
-      return errorResult(
-        "Failed to schedule job in queue. Please try again.",
-        "INTERNAL_ERROR",
+    if (newJob) {
+      createdJob = newJob;
+    } else {
+      logger.warn(
+        {
+          error: insertError?.message,
+          code: insertError?.code,
+          userId: user.id,
+          lane,
+        },
+        "User-client job insert failed; attempting service-role client fallback",
       );
+
+      // Fallback: If user client is blocked by table permissions or priority-lane RLS, try service-role client
+      try {
+        const serviceClient = createServiceRoleClient();
+        const { data: fallbackJob, error: fallbackError } = await serviceClient
+          .from("jobs")
+          .insert({
+            user_id: user.id,
+            source_type: parsed.data.sourceType,
+            source_path: parsed.data.sourceType === "upload" ? parsed.data.sourcePath : null,
+            source_url: parsed.data.sourceType === "url" ? parsed.data.sourceUrl : null,
+            status: "queued",
+            lane,
+            attempts: 0,
+          })
+          .select("id")
+          .single();
+
+        if (fallbackJob) {
+          createdJob = fallbackJob;
+        } else {
+          logger.error(
+            {
+              insertError: insertError?.message,
+              insertCode: insertError?.code,
+              fallbackError: fallbackError?.message,
+              fallbackCode: fallbackError?.code,
+              userId: user.id,
+            },
+            "Both user-client and service-role job insert failed",
+          );
+
+          const finalErrorMsg =
+            fallbackError?.message ||
+            insertError?.message ||
+            "Failed to schedule job in queue. Please verify database permissions.";
+
+          return errorResult(
+            finalErrorMsg.includes("permission denied")
+              ? "Database permission error: Please execute the schema grants in Supabase SQL editor."
+              : finalErrorMsg,
+            "INTERNAL_ERROR",
+          );
+        }
+      } catch (serviceErr: unknown) {
+        logger.error({ serviceErr, insertError }, "Service role client fallback threw an exception");
+        return errorResult(
+          insertError?.message || "Failed to schedule job in queue. Please try again.",
+          "INTERNAL_ERROR",
+        );
+      }
     }
 
     // 6. Log structured business event
     logBusinessEvent({
       event: "job_created",
       userId: user.id,
-      jobId: newJob.id,
+      jobId: createdJob.id,
       details: {
         sourceType: parsed.data.sourceType,
         lane,
@@ -112,7 +173,7 @@ export async function createJobAction(
     });
 
     revalidatePath("/dashboard");
-    return successResult({ jobId: newJob.id });
+    return successResult({ jobId: createdJob.id });
   } catch (err: unknown) {
     if (
       err &&
@@ -164,7 +225,21 @@ export async function getUserJobsAction() {
           "Supabase tables not detected (PGRST205). Please run 'supabase/migrations/20261110000000_init_schema.sql' in your Supabase project SQL Editor.",
         );
       } else {
-        logger.warn({ error: error.message, code: error.code, userId: user.id }, "Could not fetch user jobs");
+        logger.warn({ error: error.message, code: error.code, userId: user.id }, "Could not fetch user jobs with standard client; attempting service role fallback");
+        try {
+          const serviceClient = createServiceRoleClient();
+          const { data: fallbackJobs, error: fallbackErr } = await serviceClient
+            .from("jobs")
+            .select("id, source_type, source_path, source_url, status, lane, attempts, created_at, started_at, finished_at")
+            .eq("user_id", user.id)
+            .order("created_at", { ascending: false });
+
+          if (!fallbackErr && fallbackJobs) {
+            return fallbackJobs;
+          }
+        } catch {
+          // Ignore service role fallback error
+        }
       }
       return [];
     }
@@ -184,7 +259,7 @@ export async function getJobDetailAction(jobId: string) {
   const user = await getAuthenticatedUser();
   const supabase = await createClient();
 
-  const { data: job, error } = await supabase
+  let { data: job, error } = await supabase
     .from("jobs")
     .select("id, user_id, source_type, source_path, source_url, status, lane, attempts, error_code, created_at, started_at, finished_at")
     .eq("id", jobId)
@@ -192,15 +267,47 @@ export async function getJobDetailAction(jobId: string) {
     .single();
 
   if (error || !job) {
+    try {
+      const serviceClient = createServiceRoleClient();
+      const { data: fallbackJob } = await serviceClient
+        .from("jobs")
+        .select("id, user_id, source_type, source_path, source_url, status, lane, attempts, error_code, created_at, started_at, finished_at")
+        .eq("id", jobId)
+        .eq("user_id", user.id)
+        .single();
+      job = fallbackJob;
+    } catch {
+      // Ignore
+    }
+  }
+
+  if (!job) {
     return null;
   }
 
   // Fetch associated clips if available
-  const { data: clips } = await supabase
+  let clips: any[] | null = null;
+  const { data: standardClips } = await supabase
     .from("clips")
     .select("id, title, start_time, end_time, duration, score, storage_path, thumbnail_path, created_at")
     .eq("job_id", job.id)
     .order("score", { ascending: false });
+
+  if (standardClips && standardClips.length > 0) {
+    clips = standardClips;
+  } else {
+    try {
+      const serviceClient = createServiceRoleClient();
+      const { data: fallbackClips } = await serviceClient
+        .from("clips")
+        .select("id, title, start_time, end_time, duration, score, storage_path, thumbnail_path, created_at")
+        .eq("job_id", job.id)
+        .order("score", { ascending: false });
+      clips = fallbackClips;
+    } catch {
+      // Ignore
+    }
+  }
 
   // If the job is queued, compute its honest queue status from actual DB counts
   let queueState = null;

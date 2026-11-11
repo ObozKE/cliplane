@@ -48,7 +48,7 @@ describe("Database Migrations & Schema Integrity", () => {
     const migrationPath = path.resolve(__dirname, "../../../../supabase/migrations/20261110000000_init_schema.sql");
     const rawSql = fs.readFileSync(migrationPath, "utf-8");
 
-    // Remove single-line comments, plpgsql blocks, triggers, extensions, and policies for pure DDL execution
+    // Remove single-line comments, plpgsql blocks, triggers, extensions, policies, and privileges for pure DDL execution
     const ddlSql = rawSql
       .replace(/--.*$/gm, "")
       .replace(/timezone\('utc'::text,\s*now\(\)\)/g, "now()")
@@ -57,7 +57,10 @@ describe("Database Migrations & Schema Integrity", () => {
       .replace(/DROP TRIGGER[\s\S]*?;/gi, "")
       .replace(/CREATE TRIGGER[\s\S]*?;/gi, "")
       .replace(/ALTER TABLE[\s\S]*?ENABLE ROW LEVEL SECURITY;/gi, "")
-      .replace(/CREATE POLICY[\s\S]*?;/gi, "");
+      .replace(/DROP POLICY[\s\S]*?;/gi, "")
+      .replace(/CREATE POLICY[\s\S]*?;/gi, "")
+      .replace(/ALTER DEFAULT PRIVILEGES[\s\S]*?;/gi, "")
+      .replace(/GRANT[\s\S]*?;/gi, "");
 
     const statements = ddlSql
       .split(";")

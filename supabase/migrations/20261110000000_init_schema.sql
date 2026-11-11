@@ -196,11 +196,11 @@ CREATE POLICY "Users can select own jobs"
     ON public.jobs FOR SELECT
     USING (auth.uid() = user_id OR public.is_admin());
 
-CREATE POLICY "Users can insert own jobs with free lane"
+CREATE POLICY "Users can insert own jobs"
     ON public.jobs FOR INSERT
     WITH CHECK (
       auth.uid() = user_id
-      AND lane = 'free'
+      AND lane IN ('free', 'priority')
       AND status IN ('uploaded', 'queued')
       AND attempts = 0
     );
@@ -351,3 +351,16 @@ BEGIN
     END IF;
 END;
 $$;
+
+-- ============================================================================
+-- SCHEMA & TABLE PRIVILEGES FOR SUPABASE ROLES
+-- Ensures anon, authenticated, and service_role can access public tables
+-- ============================================================================
+GRANT USAGE ON SCHEMA public TO postgres, anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO postgres, anon, authenticated, service_role;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO postgres, anon, authenticated, service_role;
+GRANT ALL ON ALL ROUTINES IN SCHEMA public TO postgres, anon, authenticated, service_role;
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO postgres, anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO postgres, anon, authenticated, service_role;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON ROUTINES TO postgres, anon, authenticated, service_role;

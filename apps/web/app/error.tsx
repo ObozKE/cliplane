@@ -39,7 +39,7 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
           Something went wrong
         </h2>
         <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          An unexpected error occurred while processing your request. Please try again or return to the dashboard.
+          we encountered an error while processing your request please try again later.
         </p>
         {error.digest && (
           <p className="mt-3 text-xs text-neutral-400 font-mono">
