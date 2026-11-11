@@ -141,10 +141,10 @@ export function AutoclipsHero() {
             <div className="mt-3 flex flex-wrap justify-center items-center gap-2 text-xs text-gray-500">
               <span className="text-gray-400">Try:</span>
               {[
-                "Minecraft Parkour & Peter Griffin",
-                "GTA V Impossible Stunts",
-                "Call of Duty 1v4 Clutch",
-                "Subway Surfers True Crime Story",
+                "GTA 6 Vice City Neon Cruise",
+                "GTA 5 5-Star Police Chase",
+                "GTA 6 Lucia & Jason Heist",
+                "GTA 5 Trevor Stunt Plane",
               ].map((s) => (
                 <button
                   key={s}
@@ -193,8 +193,9 @@ export function AutoclipsHero() {
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm">
-                3D Animated Studio 2.0
+              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-[#15E49E] animate-pulse" />
+                GTA 6 • Vice City Neon Drive
               </span>
               <button
                 type="button"
@@ -218,8 +219,9 @@ export function AutoclipsHero() {
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm">
-                Character Explainer
+              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
+                GTA 5 • 5-Star Police Chase
               </span>
             </div>
 
@@ -235,8 +237,9 @@ export function AutoclipsHero() {
                 className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
-              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm">
-                ClipLane Faceless
+              <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
+                <span className="h-2 w-2 rounded-full bg-[#15E49E] animate-pulse" />
+                GTA 6 • Lucia &amp; Jason Heist
               </span>
             </div>
           </div>

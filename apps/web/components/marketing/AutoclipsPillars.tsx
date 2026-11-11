@@ -41,23 +41,23 @@ export function AutoclipsPillars() {
 
         {/* 3 Pillar Cards */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {/* Card 1: Character Explainer (Most Popular) */}
+          {/* Card 1: GTA 6 Vice City Cinematics (Most Popular) */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-black shadow-[0_30px_60px_-35px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#15E49E]">
-                  <Users className="h-5 w-5 text-black" />
+                  <Film className="h-5 w-5 text-black" />
                 </span>
                 <span className="rounded-full bg-black px-2.5 py-1 text-xs font-bold text-white">
-                  Most Popular
+                  Trending
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">Character Explainer</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">GTA 6 Vice City Cinematics</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                Go viral without showing your face
+                Next-gen neon aesthetics &amp; story trailers
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Create viral videos with cartoon characters talking over satisfying high-velocity gameplay. Perfect for building faceless channels that pull millions of views on autopilot.
+                Transform raw GTA 6 footage, Vice City neon strip cruises, and Lucia &amp; Jason story moments into viral 9:16 vertical clips with dynamic blurred background fills.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
@@ -65,20 +65,20 @@ export function AutoclipsPillars() {
             </p>
           </div>
 
-          {/* Card 2: 3D Animation Studio 2.0 */}
+          {/* Card 2: GTA 5 Heists & Escapes */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-gray-200 shadow-sm flex flex-col justify-between hover:border-gray-400 transition-colors">
             <div>
               <div className="flex items-center justify-between">
                 <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-[#15E49E]">
-                  <Film className="h-5 w-5 text-black" />
+                  <Zap className="h-5 w-5 text-black" />
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">3D Animation Studio 2.0</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">GTA 5 Heists &amp; Pursuits</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                Hollywood quality, creator budget
+                5-Star police chases &amp; bank jobs
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Generate high-energy, high-retention 3D gameplay cutaways and cinematic camera angles with blurred ambient background fill. 100% automated formatting for mobile.
+                Turn intense Los Santos 5-star police pursuits, high-velocity highway weaving, and Paleto Bay bank heists into algorithm-ready vertical Shorts and TikToks.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
@@ -86,7 +86,7 @@ export function AutoclipsPillars() {
             </p>
           </div>
 
-          {/* Card 3: Faceless Videos */}
+          {/* Card 3: FiveM & Roleplay Highlights */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-gray-200 shadow-sm flex flex-col justify-between hover:border-gray-400 transition-colors">
             <div>
               <div className="flex items-center justify-between">
@@ -94,12 +94,12 @@ export function AutoclipsPillars() {
                   <Video className="h-5 w-5 text-black" />
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">Faceless Gaming Clips</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">FiveM &amp; Gameplay Highlights</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                Build passive income channels
+                Streamer VODs into top 3 clutch moments
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Turn your long Twitch/YouTube stream recordings into 3 curated, highest-clutch highlights scored by audio bursts and visual scene switches.
+                Turn your long Twitch/YouTube stream recordings into 3 curated, highest-clutch highlights scored by voice reaction bursts and visual scene switches.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
