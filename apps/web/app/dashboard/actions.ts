@@ -6,6 +6,7 @@ import { enforceRateLimit } from "@/lib/rate-limit";
 import {
   createJobInputSchema,
   validateDirectVideoUrl,
+  isYouTubeUrl,
   logBusinessEvent,
   errorResult,
   successResult,
@@ -71,8 +72,13 @@ export async function createJobAction(
         );
       }
     } else if (parsed.data.sourceType === "url") {
-      // Validate direct URL format and ensure no private/loopback/cloud metadata IP (SSRF)
-      await validateDirectVideoUrl(parsed.data.sourceUrl);
+      const allowSocial = formData.get("allowSocial") === "true";
+      if (allowSocial && isYouTubeUrl(parsed.data.sourceUrl)) {
+        // Explicitly allowed YouTube stream
+      } else {
+        // Validate direct URL format and ensure no private/loopback/cloud metadata IP (SSRF)
+        await validateDirectVideoUrl(parsed.data.sourceUrl);
+      }
     }
 
     // 5. Insert new job in 'priority' lane for VIP user (100% free), or 'free' lane for standard users

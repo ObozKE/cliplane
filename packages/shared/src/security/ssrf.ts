@@ -15,6 +15,28 @@ const BLOCKED_HOST_PATTERNS = [
 ];
 
 /**
+ * Checks whether a given URL string points to a supported YouTube video URL.
+ */
+export function isYouTubeUrl(urlString: string): boolean {
+  try {
+    const parsed = new URL(urlString);
+    const host = parsed.hostname.toLowerCase();
+    const isYtHost =
+      host === "youtube.com" ||
+      host === "www.youtube.com" ||
+      host === "m.youtube.com" ||
+      host === "youtu.be";
+
+    return (
+      isYtHost &&
+      (parsed.protocol === "https:" || parsed.protocol === "http:")
+    );
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Checks whether an IP address is private, loopback, link-local, carrier-grade NAT, or cloud metadata.
  */
 export function isPrivateOrReservedIP(ipString: string): boolean {

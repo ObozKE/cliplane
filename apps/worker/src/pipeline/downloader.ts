@@ -1,8 +1,128 @@
 import fs from "node:fs";
+import path from "node:path";
+import { spawn } from "node:child_process";
 import { pipeline } from "node:stream/promises";
 import { Readable } from "node:stream";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { AppError, validateDirectVideoUrl, logger } from "@cliplane/shared";
+import { AppError, validateDirectVideoUrl, isYouTubeUrl, logger } from "@cliplane/shared";
+import { getBinaryPaths } from "./renderer";
+
+/**
+ * Downloads a YouTube video or stream segment using yt-dlp.
+ */
+async function downloadYouTubeVideo(
+  sourceUrl: string,
+  destPath: string,
+  timeoutMs: number,
+  maxSizeBytes: number,
+): Promise<{ sizeBytes: number }> {
+  let ytDlpCmd = "py";
+  let prefixArgs = ["-m", "yt_dlp"];
+
+  const candidateScript = path.join(
+    process.env.LOCALAPPDATA || "C:\\Users\\Admin\\AppData\\Local",
+    "Programs",
+    "Python",
+    "Python313",
+    "Scripts",
+    "yt-dlp.exe",
+  );
+  if (fs.existsSync(candidateScript)) {
+    ytDlpCmd = candidateScript;
+    prefixArgs = [];
+  }
+
+  let ffmpegDir = "";
+  try {
+    const { ffmpeg } = getBinaryPaths();
+    ffmpegDir = path.dirname(ffmpeg);
+  } catch {}
+
+  const ytArgs = [
+    ...prefixArgs,
+    ...(ffmpegDir ? ["--ffmpeg-location", ffmpegDir] : []),
+    "--js-runtimes",
+    "node",
+    "-f",
+    "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+    "--download-sections",
+    "*00:00-02:30",
+    "--no-playlist",
+    "-o",
+    destPath,
+    sourceUrl,
+  ];
+
+  return new Promise((resolve, reject) => {
+    let stderr = "";
+    const proc = spawn(ytDlpCmd, ytArgs, {
+      windowsHide: true,
+    });
+
+    const timer = setTimeout(() => {
+      proc.kill("SIGKILL");
+      reject(
+        new AppError({
+          code: "PROCESSING_TIMEOUT",
+          message: `YouTube video download timed out after ${timeoutMs / 1000}s`,
+          status: 408,
+        }),
+      );
+    }, timeoutMs);
+
+    proc.stderr?.on("data", (chunk: Buffer) => {
+      stderr += chunk.toString();
+    });
+
+    proc.on("error", (err) => {
+      clearTimeout(timer);
+      reject(
+        new AppError({
+          code: "COMMAND_EXECUTION_FAILED",
+          message: `Failed to spawn yt-dlp process: ${err.message}`,
+          status: 500,
+        }),
+      );
+    });
+
+    proc.on("close", async (code) => {
+      clearTimeout(timer);
+      if (code !== 0) {
+        return reject(
+          new AppError({
+            code: "URL_DOWNLOAD_FAILED",
+            message: `yt-dlp exited with code ${code}. Stderr: ${stderr.slice(-500)}`,
+            status: 400,
+          }),
+        );
+      }
+
+      if (!fs.existsSync(destPath)) {
+        return reject(
+          new AppError({
+            code: "FILE_NOT_FOUND",
+            message: "Downloaded YouTube media file was not created at target path",
+            status: 500,
+          }),
+        );
+      }
+
+      const stat = await fs.promises.stat(destPath);
+      if (stat.size > maxSizeBytes) {
+        await fs.promises.unlink(destPath).catch(() => {});
+        return reject(
+          new AppError({
+            code: "FILE_TOO_LARGE",
+            message: `Downloaded size (${stat.size} bytes) exceeds limit (${maxSizeBytes} bytes)`,
+            status: 413,
+          }),
+        );
+      }
+
+      resolve({ sizeBytes: stat.size });
+    });
+  });
+}
 
 export interface DownloadOptions {
   supabase: SupabaseClient;
@@ -90,6 +210,19 @@ export async function downloadMedia(options: DownloadOptions): Promise<{ sizeByt
         message: "Job marked as url but source_url is missing",
         status: 400,
       });
+    }
+
+    if (isYouTubeUrl(job.source_url)) {
+      logger.info(
+        { jobId: job.id, sourceUrl: job.source_url },
+        "Downloading YouTube video via yt-dlp",
+      );
+      return downloadYouTubeVideo(
+        job.source_url,
+        destPath,
+        Math.max(timeoutMs, 120_000),
+        maxSizeBytes,
+      );
     }
 
     // SSRF Validation: resolves DNS, blocks private/loopback/link-local/metadata ranges
