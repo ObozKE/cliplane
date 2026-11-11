@@ -1,40 +1,42 @@
 @import "tailwindcss";
 
+@import "tailwindcss";
+
 @layer base {
   :root {
-    --bg-paper: #f3f1ec;
+    --bg-paper: #ffffff;
     --bg-raised: #fbfaf7;
-    --bg-card: #f7f5f0;
-    --bg-subtle: #ece8e0;
-    --bg-button-secondary: #e6e2da;
+    --bg-card: #ffffff;
+    --bg-subtle: #f6f6f4;
+    --bg-button-secondary: #f3f4f6;
     
-    --line-paper: #d6d1c6;
-    --line-strong: #e2ddd3;
+    --line-paper: #e5e7eb;
+    --line-strong: #d1d5db;
     
-    --text-primary: #1d1e22;
-    --text-muted: #656669;
+    --text-primary: #000000;
+    --text-muted: #6b7280;
     
-    --accent-default: #2f6bff;
-    --accent-mid: #275de8;
-    --accent-dark: #1e4fd1;
-    --accent-on: #ffffff;
+    --accent-default: #15E49E;
+    --accent-mid: #10c788;
+    --accent-dark: #0a7a50;
+    --accent-on: #000000;
 
-    --bg-panel: #1d1f26;
-    --bg-panel-raised: #2e323c;
-    --bg-panel-deep: #17191e;
-    --text-panel: #e3e4e7;
-    --text-panel-muted: #a2a5ab;
-    --text-panel-subtle: #6d7078;
-    --line-panel: #3f434c;
+    --bg-panel: #0a0d14;
+    --bg-panel-raised: #141824;
+    --bg-panel-deep: #05070a;
+    --text-panel: #ffffff;
+    --text-panel-muted: #9aa3b2;
+    --text-panel-subtle: #6b7280;
+    --line-panel: #1f2430;
 
-    --status-alert: #c4453a;
-    --status-success: #16a34a;
-    --status-warning: #d97706;
+    --status-alert: #ef4444;
+    --status-success: #15E49E;
+    --status-warning: #f59e0b;
   }
 
   body {
-    background-color: var(--bg-paper);
-    color: var(--text-primary);
+    background-color: #ffffff;
+    color: #000000;
     font-family: var(--font-poppins), "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -47,48 +49,192 @@
   }
 }
 
-.button-primary {
-  background-color: var(--accent-default);
-  color: var(--accent-on);
-  border-radius: 2px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
+/* -------------------------------------------------------------------------- */
+/* AUTOCLIPS DESIGN SYSTEM & ANIMATIONS                                       */
+/* -------------------------------------------------------------------------- */
+
+@keyframes lp-fade-up {
+  0% { opacity: 0; transform: translateY(14px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes lp-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes lp-rise {
+  0% { transform: translateY(14px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes lp-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes lp-marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.lp-fade-up {
+  animation: lp-fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.lp-fade-in {
+  animation: lp-fade-in 0.5s ease-out both;
+}
+
+.lp-rise {
+  animation: lp-rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.lp-float {
+  animation: lp-float 4.5s ease-in-out infinite;
+}
+
+.lp-marquee {
+  animation: lp-marquee 35s linear infinite;
+}
+
+.lp-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Background interactive dot grid pattern */
+.lp-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  --lp-mx: -9999px;
+  --lp-my: -9999px;
+}
+
+.lp-grid:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 22px 22px;
+  background-image: radial-gradient(circle, #d3d7de 1.1px, transparent 1.2px);
+  opacity: 0.45;
+}
+
+.lp-grid:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-size: 22px 22px;
+  background-image: radial-gradient(circle, #15e49e 1.5px, transparent 1.6px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  -webkit-mask-image: radial-gradient(260px circle at var(--lp-mx) var(--lp-my), #000 0, rgba(0,0,0,0.6) 40%, transparent 72%);
+  mask-image: radial-gradient(260px circle at var(--lp-mx) var(--lp-my), #000 0, rgba(0,0,0,0.6) 40%, transparent 72%);
+}
+
+.lp-grid.is-live:after {
+  opacity: 1;
+}
+
+.lp-grid-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  display: none;
+  background: rgba(0, 0, 0, 0.06);
+  left: max(0px, calc(50% - 36rem));
+}
+
+.lp-grid-line-r {
+  left: auto;
+  right: max(0px, calc(50% - 36rem));
+}
+
+@media (min-width: 1280px) {
+  .lp-grid-line {
+    display: block;
+  }
+}
+
+/* Halo blur behind critical headings */
+.lp-halo {
+  background: #ffffff;
+  box-shadow: 0 0 18px 10px #ffffff;
+}
+
+/* High-impact bottom CTA Card */
+.lp-cta-card {
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 35%, #e6fbf2);
+  border: 1px solid rgba(21, 228, 158, 0.3);
+}
+
+.lp-cta-card:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: radial-gradient(circle, #15e49e 1.3px, transparent 1.4px);
+  background-size: 22px 22px;
+  opacity: 0.45;
+  -webkit-mask-image: linear-gradient(180deg, transparent 25%, #000);
+  mask-image: linear-gradient(180deg, transparent 25%, #000);
+}
+
+/* Autoclips primary mint pill button */
+.button-primary, .btn-mint {
+  background-color: #15E49E;
+  color: #000000;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background-color 0.15s ease;
+  box-shadow: 0 12px 30px -12px rgba(21, 228, 158, 0.9);
+  transition: all 0.2s ease;
 }
 
-.button-primary:hover {
-  background-color: var(--accent-mid);
+.button-primary:hover, .btn-mint:hover {
+  filter: brightness(0.96);
+  transform: translateY(-1px);
+}
+
+.button-primary:active, .btn-mint:active {
+  transform: scale(0.98);
 }
 
 .button-secondary {
-  background-color: var(--bg-button-secondary);
-  color: var(--text-primary);
-  border-radius: 2px;
-  padding: 10px 18px;
-  font-size: 14px;
-  font-weight: 500;
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  transition: background-color 0.15s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
 }
 
 .button-secondary:hover {
-  background-color: var(--bg-subtle);
+  background-color: #f9fafb;
+  border-color: #d1d5db;
 }
 
 .button-outline {
-  background-color: var(--bg-raised);
-  color: var(--text-primary);
-  border: 1px solid var(--line-paper);
-  border-radius: 2px;
-  padding: 10px 18px;
+  background-color: transparent;
+  color: #000000;
+  border: 1px solid #e5e7eb;
+  border-radius: 9999px;
+  padding: 10px 22px;
   font-size: 14px;
   font-weight: 500;
   display: inline-flex;
@@ -99,19 +245,19 @@
 }
 
 .button-outline:hover {
-  background-color: var(--bg-card);
-  border-color: var(--text-primary);
+  border-color: #000000;
+  background-color: #f9fafb;
 }
 
 .card-paper {
-  background-color: var(--bg-card);
-  border: 1px solid var(--line-paper);
-  border-radius: 6px;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 1.5rem;
 }
 
 .panel-dark {
-  background-color: var(--bg-panel);
-  color: var(--text-panel);
-  border: 1px solid var(--line-panel);
-  border-radius: 16px;
+  background-color: #0a0d14;
+  color: #ffffff;
+  border: 1px solid #1f2430;
+  border-radius: 1.5rem;
 }
