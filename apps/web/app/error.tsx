@@ -9,12 +9,17 @@ interface ErrorProps {
 
 export default function ErrorBoundary({ error, reset }: ErrorProps) {
   useEffect(() => {
-    // Log the error digest or operational failure without leaking sensitive internals
+    // Log full error details for debugging
     console.error("ErrorBoundary caught error:", {
-      message: error.message,
-      digest: error.digest,
+      message: error?.message || "Unknown error",
+      digest: error?.digest,
+      stack: error?.stack,
     });
   }, [error]);
+
+  const isNetworkOrActionError =
+    error?.message?.includes("unexpected response") ||
+    error?.message?.includes("fetchServerAction");
 
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
@@ -36,10 +41,12 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
           </svg>
         </div>
         <h2 className="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
-          Something went wrong
+          {isNetworkOrActionError ? "Connection or Session Out of Sync" : "Something went wrong"}
         </h2>
         <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          we encountered an error while processing your request please try again later.
+          {isNetworkOrActionError
+            ? "Your browser session or request connection was interrupted. Please refresh the page or try again."
+            : "We encountered an error while processing your request. Please try again later."}
         </p>
         {error.digest && (
           <p className="mt-3 text-xs text-neutral-400 font-mono">
@@ -53,6 +60,14 @@ export default function ErrorBoundary({ error, reset }: ErrorProps) {
           >
             Try again
           </button>
+          {isNetworkOrActionError && (
+            <button
+              onClick={() => window.location.reload()}
+              className="inline-flex w-full items-center justify-center rounded-lg border border-neutral-300 bg-white px-4 py-2.5 text-sm font-medium text-neutral-700 hover:bg-neutral-50 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-offset-2 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-200 dark:hover:bg-neutral-700 transition-colors"
+            >
+              Refresh page
+            </button>
+          )}
         </div>
       </div>
     </div>

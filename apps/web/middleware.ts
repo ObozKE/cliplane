@@ -7,11 +7,49 @@ export async function middleware(request: NextRequest) {
 
   // 1. CORS & Origin validation for mutation requests
   const origin = request.headers.get("origin");
-  const allowedOrigins = (process.env.ALLOWED_ORIGINS || "http://localhost:3000,http://127.0.0.1:3000")
-    .split(",")
-    .map((o) => o.trim());
+  const host = request.headers.get("host");
+  const isDev = process.env.NODE_ENV !== "production";
 
-  if (origin && !allowedOrigins.includes(origin) && ["POST", "PUT", "DELETE", "PATCH"].includes(request.method)) {
+  // Build full list of allowed origins
+  const configuredOrigins = (
+    process.env.ALLOWED_ORIGINS ||
+    "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001,https://cliplane.tech,https://www.cliplane.tech"
+  )
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean);
+
+  const isSameOrigin = Boolean(
+    origin && (
+      origin === request.nextUrl.origin ||
+      (host && (origin === `http://${host}` || origin === `https://${host}`))
+    )
+  );
+
+  const isDevOrigin = Boolean(
+    isDev && origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+  );
+
+  const isAllowed = isSameOrigin || isDevOrigin || Boolean(origin && configuredOrigins.includes(origin));
+
+  // Handle preflight OPTIONS request
+  if (request.method === "OPTIONS") {
+    if (origin && isAllowed) {
+      return new NextResponse(null, {
+        status: 204,
+        headers: {
+          "Access-Control-Allow-Origin": origin,
+          "Access-Control-Allow-Credentials": "true",
+          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS, PATCH",
+          "Access-Control-Allow-Headers":
+            "Content-Type, Authorization, x-request-id, next-action, next-router-state-tree, rsc",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+    }
+  }
+
+  if (origin && !isAllowed && ["POST", "PUT", "DELETE", "PATCH"].includes(request.method)) {
     return new NextResponse(
       JSON.stringify({ error: "CORS origin rejected" }),
       { status: 403, headers: { "Content-Type": "application/json" } },
@@ -19,7 +57,6 @@ export async function middleware(request: NextRequest) {
   }
 
   // 2. Strict Content Security Policy (CSP)
-  const isDev = process.env.NODE_ENV !== "production";
   const cspHeader = `
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${isDev ? "'unsafe-eval'" : ""};
@@ -52,11 +89,14 @@ export async function middleware(request: NextRequest) {
   response.headers.set("Permissions-Policy", "camera=(), microphone=(), geolocation=(), browsing-topics=()");
   response.headers.set("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload");
 
-  if (origin && allowedOrigins.includes(origin)) {
+  if (origin && isAllowed) {
     response.headers.set("Access-Control-Allow-Origin", origin);
     response.headers.set("Access-Control-Allow-Credentials", "true");
-    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization, x-request-id");
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, PATCH");
+    response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, x-request-id, next-action, next-router-state-tree, rsc",
+    );
   }
 
   // 3. Supabase Auth Session Refresh & Route Protection
@@ -97,13 +137,19 @@ export async function middleware(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathname = request.nextUrl.pathname;
+  const isServerAction = request.headers.has("next-action");
 
   // Protect /dashboard and /jobs
   if (pathname.startsWith("/dashboard") || pathname.startsWith("/jobs")) {
     if (!user) {
-      const redirectUrl = new URL("/auth/login", request.url);
-      redirectUrl.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(redirectUrl);
+      // If this is a Server Action POST, allow it through so the Server Action
+      // can return a proper RSC action response or error rather than having
+      // middleware return an HTML redirect that causes fetchServerAction to crash.
+      if (!isServerAction) {
+        const redirectUrl = new URL("/auth/login", request.url);
+        redirectUrl.searchParams.set("redirect", pathname);
+        return NextResponse.redirect(redirectUrl);
+      }
     }
   }
 
