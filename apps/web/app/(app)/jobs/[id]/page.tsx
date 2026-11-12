@@ -166,10 +166,10 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="font-serif text-xl font-normal text-[var(--text-primary)]">
-                  Ready-to-Post Vertical Clips (9:16)
+                  Ready-to-Post Multi-Format Highlights
                 </h3>
                 <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                  Extracted with 2-second action lead-in and blurred-background formatting.
+                  Extracted with 2-second action lead-in, adaptive genre sound design, and instant 5-format exports (9:16, 1:1, 16:9, 4:5, MP3).
                 </p>
               </div>
             </div>

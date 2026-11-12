@@ -22,11 +22,74 @@ export interface VideoProbeResult {
   hasAudio: boolean;
 }
 
+export type ClipAspectFormat = "9:16" | "1:1" | "16:9" | "4:5";
+export type VideoGenreType = "gaming" | "podcast" | "lifestyle" | "general";
+
 export interface RenderClipOptions {
   inputPath: string;
   outputPath: string;
   startTime: number;
   duration: number;
+  format?: ClipAspectFormat;
+  videoType?: VideoGenreType;
+  hasAudio?: boolean;
+  enableSfx?: boolean;
+}
+
+/**
+ * Detects the content genre of video footage (gaming vs podcast vs lifestyle)
+ * based on URLs, filenames, and visual scene transition dynamics.
+ */
+export function detectVideoGenre(params: {
+  sourceUrl?: string | null;
+  filename?: string | null;
+  duration?: number;
+  sceneFrequency?: number;
+}): VideoGenreType {
+  const text = `${params.sourceUrl || ""} ${params.filename || ""}`.toLowerCase();
+
+  // Podcast / Interview / Commentary
+  if (
+    text.includes("podcast") ||
+    text.includes("mic cheque") ||
+    text.includes("interview") ||
+    text.includes("talk") ||
+    text.includes("episode") ||
+    text.includes("convo") ||
+    text.includes("discussion") ||
+    text.includes("dialogue") ||
+    text.includes("ep.")
+  ) {
+    return "podcast";
+  }
+
+  // Gaming (GTA 5/6, Twitch, FPS, RPG, VODs)
+  if (
+    text.includes("gta") ||
+    text.includes("game") ||
+    text.includes("gaming") ||
+    text.includes("gameplay") ||
+    text.includes("twitch") ||
+    text.includes("vod") ||
+    text.includes("stream") ||
+    text.includes("clutch") ||
+    text.includes("kill") ||
+    text.includes("frag") ||
+    text.includes("fps") ||
+    text.includes("speedrun") ||
+    text.includes("playthrough") ||
+    text.includes("boss") ||
+    text.includes("trailer")
+  ) {
+    return "gaming";
+  }
+
+  // Frequent scene shifts indicate high-action gaming footage
+  if (params.sceneFrequency !== undefined && params.sceneFrequency > 0.2) {
+    return "gaming";
+  }
+
+  return "general";
 }
 
 export interface RenderThumbnailOptions {
@@ -354,13 +417,22 @@ export async function analyzeAudioAndScenes(
 }
 
 /**
- * Renders a vertical 9:16 clip (1080x1920) with blurred background fill
- * for 16:9 gameplay footage.
+ * Renders a clip with multi-format aspect framing (9:16, 1:1, 16:9, 4:5)
+ * and genre-tailored audio sound design (gaming sub-bass/whooshes vs podcast stingers).
  */
 export async function renderVerticalClip(
   options: RenderClipOptions,
 ): Promise<{ outputPath: string; sizeBytes: number }> {
-  const { inputPath, outputPath, startTime, duration } = options;
+  const {
+    inputPath,
+    outputPath,
+    startTime,
+    duration,
+    format = "9:16",
+    videoType = "gaming",
+    hasAudio = true,
+    enableSfx = true,
+  } = options;
   const { ffmpeg } = getBinaryPaths();
 
   // Create destination directory if needed
@@ -369,17 +441,78 @@ export async function renderVerticalClip(
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  // Filter chain:
-  // 1. Split video into background [bg] and foreground [fg]
-  // 2. Background: downscale to 270:480, apply fast boxblur, then upscale to 1080:1920 (4x rendering speedup)
-  // 3. Foreground: scale to fit within 1080:1920 maintaining aspect ratio
-  // 4. Overlay centered foreground over blurred background
-  const filterComplex = [
-    "[0:v]split=2[bg][fg];",
-    "[bg]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920[bgblur];",
-    "[fg]scale=1080:1920:force_original_aspect_ratio=decrease[fgscaled];",
-    "[bgblur][fgscaled]overlay=(W-w)/2:(H-h)/2",
-  ].join("");
+  // 1. Build video filtergraph based on format
+  let videoFilter = "";
+  if (format === "1:1") {
+    // 1080x1080 Square (Instagram, X, LinkedIn)
+    videoFilter = [
+      "[0:v]split=2[bg][fg];",
+      "[bg]scale=270:270:force_original_aspect_ratio=increase,crop=270:270,boxblur=6:2,scale=1080:1080[bgblur];",
+      "[fg]scale=1080:1080:force_original_aspect_ratio=decrease[fgscaled];",
+      "[bgblur][fgscaled]overlay=(W-w)/2:(H-h)/2[vfinal]",
+    ].join("");
+  } else if (format === "16:9") {
+    // 1920x1080 Landscape (YouTube, Twitch, Discord)
+    videoFilter = "[0:v]scale=1920:1080:force_original_aspect_ratio=decrease,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:black[vfinal]";
+  } else if (format === "4:5") {
+    // 1080x1350 Portrait (Instagram, Facebook)
+    videoFilter = [
+      "[0:v]split=2[bg][fg];",
+      "[bg]scale=270:338:force_original_aspect_ratio=increase,crop=270:338,boxblur=6:2,scale=1080:1350[bgblur];",
+      "[fg]scale=1080:1350:force_original_aspect_ratio=decrease[fgscaled];",
+      "[bgblur][fgscaled]overlay=(W-w)/2:(H-h)/2[vfinal]",
+    ].join("");
+  } else {
+    // 9:16 Vertical (1080x1920 - TikTok, Reels, Shorts)
+    videoFilter = [
+      "[0:v]split=2[bg][fg];",
+      "[bg]scale=270:480:force_original_aspect_ratio=increase,crop=270:480,boxblur=6:2,scale=1080:1920[bgblur];",
+      "[fg]scale=1080:1920:force_original_aspect_ratio=decrease[fgscaled];",
+      "[bgblur][fgscaled]overlay=(W-w)/2:(H-h)/2[vfinal]",
+    ].join("");
+  }
+
+  // 2. Build audio filtergraph & inputs for genre sound effects
+  const extraInputs: string[] = [];
+  let audioFilter = "";
+
+  if (enableSfx) {
+    if (videoType === "podcast") {
+      // Podcast: Curiosity stinger chord & dialogue enhancement
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=523.25:d=0.35");
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=659.25:d=0.3");
+      const sfxGraph = [
+        "[1:a]afade=t=out:st=0.05:d=0.3,volume=0.28[tone1];",
+        "[2:a]afade=t=out:st=0.05:d=0.25,volume=0.22[tone2];",
+        "[tone1][tone2]amix=inputs=2[sfx];",
+      ].join("");
+
+      if (hasAudio) {
+        audioFilter = `${sfxGraph}[0:a]equalizer=f=3000:t=q:w=1.5:g=2[voice];[voice][sfx]amix=inputs=2:duration=first:dropout_transition=2[afinal]`;
+      } else {
+        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
+      }
+    } else {
+      // Gaming & Default: Sub-bass 808 drop & high-speed whoosh impact
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=80:d=0.7");
+      extraInputs.push("-f", "lavfi", "-i", "anoisesrc=d=0.5:c=pink:r=48000");
+      const sfxGraph = [
+        "[1:a]lowpass=f=120,afade=t=out:st=0.1:d=0.6,volume=0.45[bass];",
+        "[2:a]bandpass=f=900:w=500,afade=t=in:d=0.12,afade=t=out:st=0.22:d=0.28,volume=0.35[whoosh];",
+        "[bass][whoosh]amix=inputs=2[sfx];",
+      ].join("");
+
+      if (hasAudio) {
+        audioFilter = `${sfxGraph}[0:a][sfx]amix=inputs=2:duration=first:dropout_transition=2[afinal]`;
+      } else {
+        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
+      }
+    }
+  }
+
+  const fullFilter = audioFilter
+    ? `${videoFilter};${audioFilter}`
+    : videoFilter;
 
   const args = [
     "-y",
@@ -389,8 +522,12 @@ export async function renderVerticalClip(
     duration.toFixed(3),
     "-i",
     inputPath,
+    ...extraInputs,
     "-filter_complex",
-    filterComplex,
+    fullFilter,
+    "-map",
+    "[vfinal]",
+    ...(audioFilter ? ["-map", "[afinal]"] : ["-map", "0:a?"]),
     "-c:v",
     "libx264",
     "-crf",

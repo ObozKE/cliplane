@@ -16,6 +16,7 @@ interface CheckoutClientProps {
   userCredits: number;
   isVip?: boolean;
 }
+/* payments need to be tested set up stripe env values */
 
 export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
   const router = useRouter();
@@ -73,11 +74,14 @@ export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
   return (
     <div className="max-w-xl mx-auto space-y-8 py-6">
       <div className="border-b border-[var(--line-paper)] pb-4">
-        <h1 className="font-serif text-3xl font-normal text-[var(--text-primary)]">
-          Priority Checkout
+        <span className="text-[10px] font-mono uppercase tracking-wider text-[#0A7A50] font-bold">
+          High-Speed Express Pipeline
+        </span>
+        <h1 className="font-serif text-3xl font-normal text-[var(--text-primary)] mt-0.5">
+          {isBundle ? "Streamer & Agency Growth Vault" : "Viral Creator Launch Pack"}
         </h1>
         <p className="text-xs text-[var(--text-muted)] mt-1">
-          Instant worker processing. Truthful queue priority with zero artificial waiting window.
+          Instant dedicated worker processing. 3 viral clips across all 5 formats with adaptive genre sound design.
         </p>
       </div>
 
@@ -148,23 +152,50 @@ export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
 
         <div className="flex items-center justify-between text-xs py-2 border-b border-[var(--line-paper)]">
           <div>
-            <span className="font-medium text-[var(--text-primary)] block">
-              {isBundle ? "Creator Pack (5 Priority Credits)" : "Single Priority Lane Upgrade"}
-            </span>
-            <span className="text-[var(--text-muted)] text-[11px]">
+            <span className="font-semibold text-[var(--text-primary)] block text-sm">
               {isBundle
-                ? "5 credits deposited to account • No expiration"
-                : `Instant worker claiming for Job #${jobId.slice(0, 8)}`}
+                ? "Growth Vault: 5 Episode Passes (15 Viral Clips)"
+                : "Viral Creator Launch Pack (3 Finished Clips)"}
+            </span>
+            <span className="text-[var(--text-muted)] text-[11px] block mt-0.5">
+              {isBundle
+                ? "5 passes deposited to account • 15 clips total • 40% OFF ($1.99/pack) • Never expires"
+                : `Instant dedicated GPU worker claiming for Job #${jobId.slice(0, 8) || "new"}`}
             </span>
           </div>
-          <span className="font-mono text-sm font-semibold text-[var(--text-primary)]">
+          <span className="font-mono text-base font-bold text-[var(--text-primary)]">
             ${amount.toFixed(2)} USD
           </span>
         </div>
 
+        {/* Included Value Highlights */}
+        <div className="rounded-lg bg-[var(--bg-subtle)] p-3.5 space-y-2 text-[11px] text-[var(--text-muted)] border border-[var(--line-paper)]">
+          <div className="font-semibold text-[var(--text-primary)] text-xs mb-1">
+            What is included in this drop:
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+            <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-medium">
+              <span className="text-emerald-500 font-bold">✓</span>
+              <span>Zero queue line (ready in ~15s)</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-medium">
+              <span className="text-emerald-500 font-bold">✓</span>
+              <span>{isBundle ? "15 Viral clips (5 drops)" : "3 Viral clips engineered for views"}</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-medium">
+              <span className="text-emerald-500 font-bold">✓</span>
+              <span>All 5 formats (9:16, 1:1, 16:9, 4:5, MP3)</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[var(--text-primary)] font-medium">
+              <span className="text-emerald-500 font-bold">✓</span>
+              <span>Adaptive sound design mixed in</span>
+            </div>
+          </div>
+        </div>
+
         <div className="flex items-center justify-between text-sm font-semibold pt-1">
           <span>Total Due</span>
-          <span className="font-mono text-base text-[var(--accent-default)]">
+          <span className="font-mono text-lg font-extrabold text-[#0A7A50]">
             ${amount.toFixed(2)} USD
           </span>
         </div>

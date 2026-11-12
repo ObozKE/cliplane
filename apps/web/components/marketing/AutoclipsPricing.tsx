@@ -93,10 +93,10 @@ export function AutoclipsPricing() {
             <div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold uppercase tracking-wider text-gray-500">
-                  Standard Queue
+                  Free Starter Pass
                 </span>
                 <span className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
-                  100% Free
+                  100% Free Forever
                 </span>
               </div>
               <div className="mt-4 flex items-baseline gap-1">
@@ -104,28 +104,28 @@ export function AutoclipsPricing() {
                 <span className="text-sm text-gray-500">/ forever</span>
               </div>
               <p className="mt-2 text-sm text-gray-600">
-                Unlimited clips for creators on a budget. Zero watermarks, ever.
+                Test the clipping engine at zero cost. 3 highlight clips, high-definition 1080p, zero watermarks.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm text-gray-700 border-t border-gray-100 pt-6">
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span>3 AI-detected highlight clips per video</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span>Full 1080x1920 (9:16) Vertical HD</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span>100% watermark-free on all exports</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
                   <span>Unlimited video uploads</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>3 vertical clips generated per video</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Full 1080x1920 (9:16) HD resolution</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Zero watermarks or branding</span>
-                </li>
                 <li className="flex items-center gap-2.5 text-gray-400">
-                  <span>Standard queue wait window</span>
+                  <span>Standard fair-share community queue</span>
                 </li>
               </ul>
             </div>
@@ -138,49 +138,53 @@ export function AutoclipsPricing() {
             </Link>
           </div>
 
-          {/* Plan 2: Priority Skip Pass (Featured / Most Popular) */}
+          {/* Plan 2: Viral Creator Launch Pack (Featured / Most Popular) */}
           <div className="relative rounded-3xl border-2 border-black bg-white p-7 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.35)] flex flex-col justify-between scale-[1.02] z-10">
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-black px-4 py-1 text-xs font-extrabold text-white uppercase tracking-wider shadow-md">
-              Most Popular
+              Most Popular • Instant Skip
             </div>
 
             <div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold uppercase tracking-wider text-[#0A7A50]">
-                  Single Priority Pass
+                  Viral Creator Launch Pack
                 </span>
                 <span className="rounded-full bg-[#15E49E] px-2.5 py-0.5 text-xs font-bold text-black">
-                  Instant Skip
+                  3 Ready Clips
                 </span>
               </div>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-extrabold text-black">$2.99</span>
-                <span className="text-sm text-gray-500">/ single job</span>
+                <span className="text-sm text-gray-500">/ one-time drop</span>
               </div>
               <p className="mt-2 text-sm text-gray-600">
-                Skip the entire line instantly. Processed right now ahead of all free queue jobs.
+                Turn 1 gameplay stream or podcast into 3 viral high-retention clips in under 60s. Less than a cup of coffee for content that can pull 100k+ views.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm text-gray-700 border-t border-gray-100 pt-6">
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span className="font-semibold text-black">Instant priority lane skip</span>
+                  <span className="font-semibold text-black">Zero waiting line — processed instantly</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Processed in ~10 to 15 seconds</span>
+                  <span>3 high-retention clips (speech &amp; scene AI)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>3 vertical clips at 1080x1920 HD</span>
+                  <span className="font-semibold text-black">All 5 formats included (9:16, 1:1, 16:9, 4:5, MP3)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Zero watermarks + direct MP4 download</span>
+                  <span>Adaptive sound effects (808 bass drops &amp; stingers)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Dedicated worker thread allocation</span>
+                  <span>1080p Ultra-HD remastering + blurred backdrop</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span className="text-gray-600">100% satisfaction guarantee (re-clip free)</span>
                 </li>
               </ul>
             </div>
@@ -189,49 +193,53 @@ export function AutoclipsPricing() {
               href="/checkout"
               className="mt-8 inline-flex items-center justify-center rounded-full font-bold bg-[#15E49E] text-black hover:brightness-95 h-12 text-sm shadow-[0_12px_30px_-12px_rgba(21,228,158,0.9)] transition-all"
             >
-              Skip Queue for $2.99
+              Launch 3 Viral Clips for $2.99
             </Link>
           </div>
 
-          {/* Plan 3: Creator 5-Pack */}
+          {/* Plan 3: Streamer & Agency Growth Vault (5-Pack) */}
           <div className="rounded-3xl border border-gray-200 bg-white p-7 shadow-sm flex flex-col justify-between hover:border-gray-300 transition-all">
             <div>
               <div className="flex items-center justify-between">
                 <span className="text-sm font-bold uppercase tracking-wider text-gray-500">
-                  Creator Bundle
+                  Growth Vault (5 Passes)
                 </span>
                 <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
-                  Save 33%
+                  Save 40% • Best Value
                 </span>
               </div>
               <div className="mt-4 flex items-baseline gap-1">
                 <span className="text-4xl font-extrabold text-black">$9.99</span>
-                <span className="text-sm text-gray-500">/ 5 passes</span>
+                <span className="text-sm text-gray-500">/ 5 episode drops</span>
               </div>
               <p className="mt-2 text-sm text-gray-600">
-                5 Priority Passes ($1.99 per job). Never expire. Keep in your pocket for clutch VODs.
+                The complete 3-week content engine for growing channels. 15 viral clips across 5 full streams or podcast episodes ($1.99 per drop).
               </p>
 
               <ul className="mt-6 space-y-3 text-sm text-gray-700 border-t border-gray-100 pt-6">
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>5 Instant Priority Queue Skips</span>
+                  <span className="font-semibold text-black">15 ready-to-post viral clips (5 sessions)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span className="font-semibold text-black">Passes never expire</span>
+                  <span className="font-semibold text-black">Credits never expire — bank in your wallet</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>15 vertical clips total across jobs</span>
+                  <span>Full 5-format multi-platform suite on all clips</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Full 1080x1920 HD with blurred backdrop</span>
+                  <span>Genre-tailored sound design (gaming &amp; podcast)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>One-click redeem whenever you upload</span>
+                  <span>Instant VIP queue jump on every upload</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span className="text-emerald-700 font-medium">Massive 40% instant savings ($0.66/clip)</span>
                 </li>
               </ul>
             </div>
@@ -240,7 +248,7 @@ export function AutoclipsPricing() {
               href="/checkout?bundle=true"
               className="mt-8 inline-flex items-center justify-center rounded-full font-bold bg-black text-white hover:bg-neutral-800 h-12 text-sm transition-colors"
             >
-              Get 5-Job Pack for $9.99
+              Claim 15-Clip Growth Vault for $9.99
             </Link>
           </div>
         </div>

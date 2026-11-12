@@ -10,6 +10,7 @@ import {
   analyzeAudioAndScenes,
   renderVerticalClip,
   renderThumbnail,
+  detectVideoGenre,
 } from "./renderer";
 import { calculateHighlightWindows } from "./scorer";
 import { uploadClipAndThumbnail } from "./uploader";
@@ -138,6 +139,19 @@ export async function processJob(
       });
     }
 
+    // 6b. Detect content genre for adaptive sound design
+    const videoType = detectVideoGenre({
+      sourceUrl: job.source_url,
+      filename: job.source_path || job.original_filename,
+      duration: probe.duration,
+      sceneFrequency: sceneTimestamps.length / Math.max(1, probe.duration),
+    });
+
+    logger.info(
+      { jobId: job.id, videoType, sceneCount: sceneTimestamps.length },
+      "Detected video genre for adaptive sound effects",
+    );
+
     // 7. Render clips & thumbnails, upload to storage, and insert clips rows
     const generatedClips: Array<{
       id: string;
@@ -154,12 +168,16 @@ export async function processJob(
       const localClipPath = path.join(tempDir, `clip_${clipIndex}.mp4`);
       const localThumbPath = path.join(tempDir, `thumb_${clipIndex}.jpg`);
 
-      // Render 9:16 vertical clip with blurred background fill
+      // Render vertical clip with blurred background fill and genre-tailored sound design
       await renderVerticalClip({
         inputPath: downloadedMediaFile,
         outputPath: localClipPath,
         startTime: window.startTime,
         duration: window.duration,
+        format: "9:16",
+        videoType,
+        hasAudio: probe.hasAudio,
+        enableSfx: true,
       });
 
       // Render thumbnail at 1s into the clip or midpoint

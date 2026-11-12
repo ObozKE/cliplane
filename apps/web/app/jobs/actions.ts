@@ -106,13 +106,16 @@ export async function getClipSignedUrlsAction(
   }
 }
 
+export type ClipDownloadFormat = "9:16" | "1:1" | "16:9" | "4:5" | "audio";
+
 /**
- * Generates a short-lived (5 min) signed download URL for a clip.
+ * Generates a short-lived (5 min) signed download URL for a clip across formats.
  * IDOR Protection: verifies that the requesting user owns the job associated with this clip.
  */
 export async function getClipDownloadUrlAction(
   clipId: string,
-): Promise<ActionResult<{ downloadUrl: string; filename: string }>> {
+  format: ClipDownloadFormat = "9:16",
+): Promise<ActionResult<{ downloadUrl: string; filename: string; format: ClipDownloadFormat }>> {
   try {
     const user = await getAuthenticatedUser();
     const supabase = await createClient();
@@ -133,7 +136,16 @@ export async function getClipDownloadUrlAction(
       return errorResult("You do not have permission to download this clip.", "FORBIDDEN");
     }
 
-    const filename = `cliplane_highlight_${clip.id.slice(0, 8)}.mp4`;
+    let filename = `cliplane_highlight_${clip.id.slice(0, 8)}.mp4`;
+    if (format === "1:1") {
+      filename = `cliplane_highlight_${clip.id.slice(0, 8)}_1x1_square.mp4`;
+    } else if (format === "16:9") {
+      filename = `cliplane_highlight_${clip.id.slice(0, 8)}_16x9_landscape.mp4`;
+    } else if (format === "4:5") {
+      filename = `cliplane_highlight_${clip.id.slice(0, 8)}_4x5_portrait.mp4`;
+    } else if (format === "audio") {
+      filename = `cliplane_highlight_${clip.id.slice(0, 8)}_audio.mp3`;
+    }
 
     const { data, error: signError } = await supabase.storage
       .from("clips")
@@ -148,6 +160,7 @@ export async function getClipDownloadUrlAction(
     return successResult({
       downloadUrl: data.signedUrl,
       filename,
+      format,
     });
   } catch {
     return errorResult("Unable to prepare clip download.", "INTERNAL_ERROR");
