@@ -193,6 +193,25 @@ describe("Payments & Priority Lane Upgrades", () => {
       });
 
       expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.checkoutUrl).toContain("crypto");
+        expect(result.data.status).toBe("pending");
+      }
+    });
+
+    it("initiates Paystack checkout for priority upgrade", async () => {
+      const result = await initiateCheckoutAction({
+        jobId: ALICE_JOB_ID,
+        provider: "paystack",
+        isBundle: false,
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.checkoutUrl).toContain("paystack");
+        expect(result.data.status).toBe("pending");
+        expect(result.data.checkoutRequestId).toContain("pstk_");
+      }
     });
   });
 

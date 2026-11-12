@@ -7,7 +7,7 @@ import { logBusinessEvent, logger } from "@cliplane/shared";
 import { createClient } from "@/lib/supabase/server";
 import { MockPaymentProvider } from "./mock";
 import { CryptoPaymentProvider } from "./crypto";
-import { StripePaymentProvider } from "./stripe";
+import { PaystackPaymentProvider } from "./paystack";
 
 import {
   PRIORITY_JOB_PRICE_USD,
@@ -22,18 +22,18 @@ export {
 };
 
 const providers: Record<PaymentProviderType, PaymentProvider> = {
-  mock: new MockPaymentProvider(),
+  paystack: new PaystackPaymentProvider(),
   crypto: new CryptoPaymentProvider(),
-  stripe: new StripePaymentProvider(),
+  mock: new MockPaymentProvider(),
 };
 
 /**
  * Resolves the payment provider instance.
  */
 export function getPaymentProvider(
-  providerType: PaymentProviderType = (process.env.PAYMENT_PROVIDER as PaymentProviderType) || "mock",
+  providerType: PaymentProviderType = (process.env.PAYMENT_PROVIDER as PaymentProviderType) || "paystack",
 ): PaymentProvider {
-  return providers[providerType] || providers.mock;
+  return providers[providerType] || providers.paystack || providers.mock;
 }
 
 export interface PaymentConfirmationParams {

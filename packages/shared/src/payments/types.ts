@@ -1,4 +1,4 @@
-export type PaymentProviderType = "mock" | "stripe" | "crypto";
+export type PaymentProviderType = "paystack" | "crypto" | "mock";
 
 export type PaymentStatus = "pending" | "completed" | "failed" | "canceled";
 

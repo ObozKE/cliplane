@@ -24,7 +24,7 @@ export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
   const jobId = searchParams.get("jobId") || "";
   const isBundle = searchParams.get("bundle") === "true" || !jobId;
 
-  const [selectedProvider, setSelectedProvider] = useState<PaymentProviderType>("stripe");
+  const [selectedProvider, setSelectedProvider] = useState<PaymentProviderType>("paystack");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [isRedeeming, setIsRedeeming] = useState(false);
@@ -215,30 +215,33 @@ export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
 
         {/* Payment Providers Radio Grid */}
         <div className="space-y-3">
-          {/* 1. Stripe (Card / USD) */}
+          {/* 1. Paystack (Card, Apple Pay, Bank, Mobile Money) */}
           <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
-            selectedProvider === "stripe"
-              ? "border-[var(--accent-default)] bg-blue-50/20"
+            selectedProvider === "paystack"
+              ? "border-[var(--accent-default)] bg-blue-50/20 shadow-2xs"
               : "border-[var(--line-paper)] hover:border-[var(--text-muted)]"
           }`}>
             <input
               type="radio"
               name="provider"
-              value="stripe"
-              checked={selectedProvider === "stripe"}
-              onChange={() => setSelectedProvider("stripe")}
+              value="paystack"
+              checked={selectedProvider === "paystack"}
+              onChange={() => setSelectedProvider("paystack")}
               className="mt-0.5 text-[var(--accent-default)]"
             />
-            <div className="text-xs">
-              <strong className="block text-[var(--text-primary)] font-medium">Credit or Debit Card (USD)</strong>
-              <span className="text-[var(--text-muted)]">Visa, Mastercard, American Express via secure Stripe Checkout.</span>
+            <div className="text-xs space-y-0.5">
+              <div className="flex items-center gap-2">
+                <strong className="block text-[var(--text-primary)] font-medium">Paystack (Debit/Credit Card & Apple Pay)</strong>
+                <span className="text-[10px] font-mono uppercase bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-semibold">Recommended</span>
+              </div>
+              <span className="text-[var(--text-muted)] block">Visa, Mastercard, Verve, Apple Pay, and Bank Transfer via encrypted Paystack checkout.</span>
             </div>
           </label>
 
-          {/* 2. Crypto */}
+          {/* 2. Crypto (BTC / ETH / USDT / SOL) */}
           <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
             selectedProvider === "crypto"
-              ? "border-[var(--accent-default)] bg-blue-50/20"
+              ? "border-[var(--accent-default)] bg-blue-50/20 shadow-2xs"
               : "border-[var(--line-paper)] hover:border-[var(--text-muted)]"
           }`}>
             <input
@@ -249,31 +252,36 @@ export function CheckoutClient({ userCredits, isVip }: CheckoutClientProps) {
               onChange={() => setSelectedProvider("crypto")}
               className="mt-0.5 text-[var(--accent-default)]"
             />
-            <div className="text-xs">
-              <strong className="block text-[var(--text-primary)] font-medium">Cryptocurrency (BTC / ETH / USDT / LTC)</strong>
-              <span className="text-[var(--text-muted)]">Instant crypto payments with automated confirmation.</span>
+            <div className="text-xs space-y-0.5">
+              <div className="flex items-center gap-2">
+                <strong className="block text-[var(--text-primary)] font-medium">Cryptocurrency (BTC / ETH / USDT / SOL)</strong>
+                <span className="text-[10px] font-mono uppercase bg-purple-100 text-purple-800 px-1.5 py-0.2 rounded font-semibold">Web3</span>
+              </div>
+              <span className="text-[var(--text-muted)] block">Pay with Bitcoin, Ethereum, USDT or Solana with automated blockchain confirmation.</span>
             </div>
           </label>
 
-          {/* 3. Mock / Sandbox Simulator (Dev / Free-Tier Friendly) */}
-          <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
-            selectedProvider === "mock"
-              ? "border-[var(--accent-default)] bg-blue-50/20"
-              : "border-[var(--line-paper)] hover:border-[var(--text-muted)]"
-          }`}>
-            <input
-              type="radio"
-              name="provider"
-              value="mock"
-              checked={selectedProvider === "mock"}
-              onChange={() => setSelectedProvider("mock")}
-              className="mt-0.5 text-[var(--accent-default)]"
-            />
-            <div className="text-xs">
-              <strong className="block text-[var(--text-primary)] font-medium">Sandbox Simulator (Test Mode)</strong>
-              <span className="text-[var(--text-muted)]">Simulate instant successful payment confirmation without real funds.</span>
-            </div>
-          </label>
+          {/* 3. Mock / Sandbox Simulator (Dev & Testing) */}
+          {process.env.NODE_ENV !== "production" && (
+            <label className={`flex items-start gap-3 p-3.5 rounded-[4px] border cursor-pointer transition-colors ${
+              selectedProvider === "mock"
+                ? "border-[var(--accent-default)] bg-blue-50/20 shadow-2xs"
+                : "border-[var(--line-paper)] hover:border-[var(--text-muted)]"
+            }`}>
+              <input
+                type="radio"
+                name="provider"
+                value="mock"
+                checked={selectedProvider === "mock"}
+                onChange={() => setSelectedProvider("mock")}
+                className="mt-0.5 text-[var(--accent-default)]"
+              />
+              <div className="text-xs">
+                <strong className="block text-[var(--text-primary)] font-medium">Sandbox Simulator (Dev Mode)</strong>
+                <span className="text-[var(--text-muted)]">Simulate instant successful payment confirmation without real funds.</span>
+              </div>
+            </label>
+          )}
         </div>
 
         <button

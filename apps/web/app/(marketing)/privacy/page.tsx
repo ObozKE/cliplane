@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             <strong>Temporary Media Files:</strong> Source videos uploaded via TUS and generated 9:16 vertical MP4 clips and JPG thumbnails are stored in private Supabase Storage buckets accessible only through short-lived (signed) URLs.
           </li>
           <li>
-            <strong>Payment Data:</strong> Payment transactions are handled directly through authorized third-party gateways (Stripe, Crypto processors, M-Pesa). ClipLane never stores full credit card numbers or private crypto keys.
+            <strong>Payment Data:</strong> Payment transactions are handled directly through authorized third-party gateways (Paystack, Crypto gateways). ClipLane never stores full credit card numbers or private crypto keys.
           </li>
         </ul>
 

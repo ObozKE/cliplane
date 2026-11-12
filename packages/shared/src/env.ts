@@ -26,7 +26,7 @@ export const commonEnvSchema = z.object({
   // Pricing
   PRIORITY_JOB_PRICE_USD: z.coerce.number().positive().default(2.99),
   PRIORITY_BUNDLE_PRICE_USD: z.coerce.number().positive().default(9.99),
-  PAYMENT_PROVIDER: z.enum(["mock", "stripe", "crypto"]).default("mock"),
+  PAYMENT_PROVIDER: z.enum(["mock", "paystack", "crypto"]).default("paystack"),
 
   // Admin & Compliance
   ADMIN_EMAIL: z.string().email().default("admin@cliplane.tech"),
@@ -43,6 +43,8 @@ export const webEnvSchema = commonEnvSchema.extend({
   DATABASE_URL: z.string().min(1).optional(),
   UPSTASH_REDIS_REST_URL: z.string().url().optional().or(z.literal("")),
   UPSTASH_REDIS_REST_TOKEN: z.string().optional().or(z.literal("")),
+  PAYSTACK_SECRET_KEY: z.string().optional(),
+  PAYSTACK_PUBLIC_KEY: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   CRYPTO_COMMERCE_API_KEY: z.string().optional(),

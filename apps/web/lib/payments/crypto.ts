@@ -101,12 +101,10 @@ export class CryptoPaymentProvider implements PaymentProvider {
       hmac.update(params.rawBody);
       const expectedSignature = hmac.digest("hex");
 
-      const isValid = crypto.timingSafeEqual(
-        Buffer.from(signature, "utf8"),
-        Buffer.from(expectedSignature, "utf8"),
-      );
+      const sigBuf = Buffer.from(signature, "utf8");
+      const expBuf = Buffer.from(expectedSignature, "utf8");
 
-      if (!isValid) {
+      if (sigBuf.length !== expBuf.length || !crypto.timingSafeEqual(sigBuf, expBuf)) {
         return { isValid: false, error: "Invalid cryptographic signature" };
       }
 

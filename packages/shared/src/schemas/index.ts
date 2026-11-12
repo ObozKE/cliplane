@@ -72,7 +72,7 @@ export const phoneNormalizationSchema = z.string().transform((val, ctx) => {
  */
 export const initiatePaymentSchema = z.object({
   jobId: z.string().uuid("Invalid Job ID").optional().nullable(),
-  provider: z.enum(["mock", "stripe", "crypto"]).default("mock"),
+  provider: z.enum(["mock", "paystack", "crypto"]).default("paystack"),
   phoneNumber: z.string().optional(),
 });
 

@@ -10,7 +10,7 @@ export async function POST(request: NextRequest, { params }: RouteParams) {
   const { provider: providerParam } = await params;
   const providerType = providerParam as PaymentProviderType;
 
-  if (!["mock", "crypto", "stripe"].includes(providerType)) {
+  if (!["mock", "crypto", "paystack"].includes(providerType)) {
     return NextResponse.json({ error: `Unsupported payment provider: ${providerParam}` }, { status: 400 });
   }
 
