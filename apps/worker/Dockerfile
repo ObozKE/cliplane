@@ -26,8 +26,8 @@ RUN corepack enable
 FROM base AS deps
 WORKDIR /app
 
-# Copy root workspace configurations
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+# Copy root workspace configurations including base tsconfig
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* tsconfig.base.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/worker/package.json ./apps/worker/
 
@@ -40,6 +40,7 @@ RUN pnpm install --frozen-lockfile --filter @cliplane/shared --filter @cliplane/
 FROM deps AS builder
 WORKDIR /app
 
+COPY tsconfig.base.json ./
 COPY packages/shared/ ./packages/shared/
 COPY apps/worker/ ./apps/worker/
 
@@ -54,13 +55,13 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 
-# Copy built artifacts and dependencies
+# Copy built artifacts, configs, and dependencies
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/packages/shared/node_modules ./packages/shared/node_modules
 COPY --from=deps /app/apps/worker/node_modules ./apps/worker/node_modules
 COPY --from=builder /app/packages/shared ./packages/shared
 COPY --from=builder /app/apps/worker ./apps/worker
-COPY package.json pnpm-workspace.yaml ./
+COPY tsconfig.base.json package.json pnpm-workspace.yaml ./
 
 # Non-root user for security
 RUN useradd -m -u 1001 workeruser && chown -R workeruser:workeruser /app

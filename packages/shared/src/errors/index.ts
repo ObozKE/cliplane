@@ -63,8 +63,11 @@ export class AppError extends Error {
     statusCode: number = 500,
     isOperational: boolean = true,
   ) {
-    if (typeof messageOrOptions === "object" && messageOrOptions !== null) {
-      super(messageOrOptions.message);
+    const isObj = typeof messageOrOptions === "object" && messageOrOptions !== null;
+    const msg = isObj ? messageOrOptions.message : (messageOrOptions || "An error occurred");
+    super(msg);
+
+    if (isObj) {
       this.name = "AppError";
       this.code = messageOrOptions.code || "INTERNAL_ERROR";
       this.statusCode = messageOrOptions.status || messageOrOptions.statusCode || 500;
@@ -73,13 +76,12 @@ export class AppError extends Error {
         ? messageOrOptions.message
         : "An unexpected error occurred. Please try again.";
     } else {
-      super(messageOrOptions);
       this.name = "AppError";
       this.code = code;
       this.statusCode = statusCode;
       this.isOperational = isOperational;
       this.userMessage = isOperational
-        ? messageOrOptions
+        ? msg
         : "An unexpected error occurred. Please try again.";
     }
 
