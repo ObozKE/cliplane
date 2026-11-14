@@ -1,6 +1,7 @@
 services:
   # ClipLane Background Processing Worker (Node.js 22 + FFmpeg)
-  - type: worker
+  # Uses type: web so it runs on Render's 100% Free Plan ($0/mo) with health check
+  - type: web
     name: cliplane-worker
     runtime: docker
     dockerfilePath: apps/worker/Dockerfile
@@ -8,10 +9,15 @@ services:
     plan: free
     region: oregon
     autoDeploy: true
+    healthCheckPath: /health
     envVars:
+      - key: PORT
+        value: "10000"
       - key: NODE_ENV
         value: production
-      - key: SUPABASE_URL
+      - key: RUN_WORKER_IMMEDIATELY
+        value: "true"
+      - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
       - key: SUPABASE_SERVICE_ROLE_KEY
         sync: false

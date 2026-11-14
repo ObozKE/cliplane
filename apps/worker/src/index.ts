@@ -1,3 +1,4 @@
+import http from "node:http";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { logger } from "@cliplane/shared";
 import { workerEnv } from "./env";
@@ -163,6 +164,35 @@ export async function startWorkerLoop(): Promise<void> {
   logger.info("Worker loop shut down cleanly");
 }
 
+/**
+ * Lightweight HTTP server for Render / Cloud health checks
+ * Allows running on Render's 100% Free Plan ($0/mo) as a Web Service.
+ */
+export function startHealthServer(port = Number(process.env.PORT) || 10000): http.Server {
+  const server = http.createServer((req, res) => {
+    const url = req.url || "/";
+    if (url === "/health" || url === "/") {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          status: "healthy",
+          worker: getWorkerStatus(),
+        }),
+      );
+      return;
+    }
+
+    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.end("Not Found");
+  });
+
+  server.listen(port, "0.0.0.0", () => {
+    logger.info({ port }, "Worker health server listening for cloud health checks");
+  });
+
+  return server;
+}
+
 function handleShutdown(signal: string) {
   logger.info({ signal }, "Shutdown signal received, gracefully closing worker");
   isRunning = false;
@@ -174,8 +204,9 @@ function handleShutdown(signal: string) {
 process.on("SIGINT", () => handleShutdown("SIGINT"));
 process.on("SIGTERM", () => handleShutdown("SIGTERM"));
 
-// If run directly via node / tsx, start the loop
+// If run directly via node / tsx, start the health server and worker loop
 if (require.main === module || process.env.RUN_WORKER_IMMEDIATELY === "true") {
+  startHealthServer();
   startWorkerLoop().catch((err) => {
     logger.fatal({ err }, "Fatal crash in worker daemon");
     process.exit(1);

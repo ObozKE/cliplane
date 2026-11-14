@@ -66,5 +66,7 @@ COPY package.json pnpm-workspace.yaml ./
 RUN useradd -m -u 1001 workeruser && chown -R workeruser:workeruser /app
 USER workeruser
 
-# Start worker loop
+EXPOSE 10000
+
+# Start worker loop and health server
 CMD ["pnpm", "--filter", "@cliplane/worker", "start"]

@@ -57,7 +57,7 @@ export const webEnvSchema = commonEnvSchema.extend({
 export const workerEnvSchema = commonEnvSchema.extend({
   NEXT_PUBLIC_SUPABASE_URL: z.string().url(),
   SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  DATABASE_URL: z.string().min(1),
+  DATABASE_URL: z.string().optional().or(z.literal("")),
   WORKER_ID: z.string().default("worker-1"),
   POLL_INTERVAL_MS: z.coerce.number().int().min(500).default(3000),
 });
