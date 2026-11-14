@@ -178,6 +178,9 @@ importers:
       eslint:
         specifier: ^9.21.0
         version: 9.39.5(jiti@2.7.0)(supports-color@7.2.0)
+      next:
+        specifier: 15.1.7
+        version: 15.1.7(react-dom@19.3.1(react@19.3.1))(react@19.3.1)
       pg-mem:
         specifier: ^3.0.14
         version: 3.0.14(postgres@3.4.9)
