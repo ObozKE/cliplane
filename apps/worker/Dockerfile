@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Verify FFmpeg installation
 RUN ffmpeg -version && ffprobe -version
 
-# Enable pnpm
+# Enable pnpm for dependencies stage
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable
@@ -44,9 +44,6 @@ COPY tsconfig.base.json ./
 COPY packages/shared/ ./packages/shared/
 COPY apps/worker/ ./apps/worker/
 
-# Build shared package
-RUN pnpm --filter @cliplane/shared build
-
 # -----------------------------------------------------------------------------
 # Production Runner Stage
 # -----------------------------------------------------------------------------
@@ -64,10 +61,10 @@ COPY --from=builder /app/apps/worker ./apps/worker
 COPY tsconfig.base.json package.json pnpm-workspace.yaml ./
 
 # Non-root user for security
-RUN useradd -m -u 1001 workeruser && chown -R workeruser:workeruser /app
+RUN useradd -m -u 1001 workeruser
 USER workeruser
 
 EXPOSE 10000
 
-# Start worker loop and health server
-CMD ["pnpm", "--filter", "@cliplane/worker", "start"]
+# Start worker loop and health server via local tsx runner (no runtime downloads)
+CMD ["node", "apps/worker/node_modules/tsx/dist/cli.mjs", "apps/worker/src/index.ts"]

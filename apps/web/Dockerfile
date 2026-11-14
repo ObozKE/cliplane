@@ -16,7 +16,7 @@ RUN corepack enable
 FROM base AS deps
 WORKDIR /app
 
-COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml* tsconfig.base.json ./
 COPY packages/shared/package.json ./packages/shared/
 COPY apps/web/package.json ./apps/web/
 
@@ -28,6 +28,7 @@ RUN pnpm install --frozen-lockfile --filter @cliplane/shared --filter @cliplane/
 FROM deps AS builder
 WORKDIR /app
 
+COPY tsconfig.base.json ./
 COPY packages/shared/ ./packages/shared/
 COPY apps/web/ ./apps/web/
 
@@ -56,6 +57,7 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/web/.next ./apps/web/.next
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/web/node_modules ./apps/web/node_modules
 COPY --from=builder /app/apps/web/package.json ./apps/web/package.json
+COPY tsconfig.base.json package.json pnpm-workspace.yaml ./
 
 USER nextjs
 
