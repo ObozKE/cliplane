@@ -30,7 +30,11 @@ export async function middleware(request: NextRequest) {
     isDev && origin && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
   );
 
-  const isAllowed = isSameOrigin || isDevOrigin || Boolean(origin && configuredOrigins.includes(origin));
+  const isVercelOrigin = Boolean(
+    origin && /^https:\/\/[a-z0-9-.]+\.vercel\.app$/.test(origin)
+  );
+
+  const isAllowed = isSameOrigin || isDevOrigin || isVercelOrigin || Boolean(origin && configuredOrigins.includes(origin));
 
   // Handle preflight OPTIONS request
   if (request.method === "OPTIONS") {

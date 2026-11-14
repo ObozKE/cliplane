@@ -23,9 +23,18 @@ const defaultDevHosts = [
   "127.0.0.1:3005",
   "cliplane.tech",
   "www.cliplane.tech",
+  "*.vercel.app",
 ];
 
-const allowedOrigins = Array.from(new Set([...rawOrigins, ...defaultDevHosts]));
+const vercelEnvHosts = [
+  process.env.VERCEL_URL,
+  process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  process.env.NEXT_PUBLIC_APP_URL,
+]
+  .filter(Boolean)
+  .map((o) => (o as string).trim().replace(/^https?:\/\//, ""));
+
+const allowedOrigins = Array.from(new Set([...rawOrigins, ...defaultDevHosts, ...vercelEnvHosts]));
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
