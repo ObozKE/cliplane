@@ -6,14 +6,18 @@
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 
-# Install system dependencies: FFmpeg & CA certificates
+# Install system dependencies: FFmpeg, CA certificates, Python3, and standalone yt-dlp
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ffmpeg \
     ca-certificates \
+    curl \
+    python3 \
+    && curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp \
+    && chmod a+rx /usr/local/bin/yt-dlp \
     && rm -rf /var/lib/apt/lists/*
 
-# Verify FFmpeg installation
-RUN ffmpeg -version && ffprobe -version
+# Verify FFmpeg and yt-dlp installation
+RUN ffmpeg -version && ffprobe -version && yt-dlp --version
 
 # Enable pnpm for dependencies stage
 ENV PNPM_HOME="/pnpm"

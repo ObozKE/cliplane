@@ -16,20 +16,26 @@ async function downloadYouTubeVideo(
   timeoutMs: number,
   maxSizeBytes: number,
 ): Promise<{ sizeBytes: number }> {
-  let ytDlpCmd = "py";
-  let prefixArgs = ["-m", "yt_dlp"];
+  let ytDlpCmd = "yt-dlp";
+  let prefixArgs: string[] = [];
 
-  const candidateScript = path.join(
-    process.env.LOCALAPPDATA || "C:\\Users\\Admin\\AppData\\Local",
-    "Programs",
-    "Python",
-    "Python313",
-    "Scripts",
-    "yt-dlp.exe",
-  );
-  if (fs.existsSync(candidateScript)) {
-    ytDlpCmd = candidateScript;
-    prefixArgs = [];
+  // Check common Windows standalone script first, then fall back to Python launcher on Windows
+  if (process.platform === "win32") {
+    const candidateScript = path.join(
+      process.env.LOCALAPPDATA || "C:\\Users\\Admin\\AppData\\Local",
+      "Programs",
+      "Python",
+      "Python313",
+      "Scripts",
+      "yt-dlp.exe",
+    );
+    if (fs.existsSync(candidateScript)) {
+      ytDlpCmd = candidateScript;
+      prefixArgs = [];
+    } else {
+      ytDlpCmd = "py";
+      prefixArgs = ["-m", "yt_dlp"];
+    }
   }
 
   let ffmpegDir = "";
@@ -43,8 +49,12 @@ async function downloadYouTubeVideo(
     ...(ffmpegDir ? ["--ffmpeg-location", ffmpegDir] : []),
     "--js-runtimes",
     "node",
+    "--format-sort",
+    "hasaud,res,fps",
     "-f",
-    "bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
+    "bestvideo[height<=1080]+bestaudio/bestvideo+bestaudio/best",
+    "--merge-output-format",
+    "mp4",
     "--download-sections",
     "*00:00-02:30",
     "--no-playlist",
@@ -227,6 +237,14 @@ export async function downloadMedia(options: DownloadOptions): Promise<{ sizeByt
 
     // SSRF Validation: resolves DNS, blocks private/loopback/link-local/metadata ranges
     try {
+      const parsedUrl = new URL(job.source_url);
+      if (parsedUrl.protocol !== "https:") {
+        throw new AppError({
+          code: "SSRF_URL_REJECTED",
+          message: "Only HTTPS direct URLs are allowed",
+          status: 400,
+        });
+      }
       await validateDirectVideoUrl(job.source_url);
     } catch (err) {
       if (err instanceof AppError) {

@@ -101,7 +101,9 @@ describe("Part 10 — Production Pre-Deployment & Integrity Checklist", () => {
     });
 
     it("Check 4: Vercel production headers include strict security and framing defenses", () => {
-      const vercelPath = path.resolve(__dirname, "../../..", "vercel.json");
+      const rootVercelPath = path.resolve(__dirname, "../../..", "vercel.json");
+      const webVercelPath = path.resolve(__dirname, "../../..", "apps/web/vercel.json");
+      const vercelPath = fs.existsSync(webVercelPath) ? webVercelPath : rootVercelPath;
       expect(fs.existsSync(vercelPath)).toBe(true);
 
       const vercelConfig = JSON.parse(fs.readFileSync(vercelPath, "utf-8"));

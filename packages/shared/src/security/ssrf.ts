@@ -88,13 +88,21 @@ export async function validateDirectVideoUrl(urlString: string): Promise<{
     throw AppError.badRequest("Invalid URL format.", "INVALID_URL");
   }
 
-  // Must be HTTPS (or HTTP in local dev/test if specifically targeting mock)
+  // Check if hostname itself is directly an IP
+  const hostname = parsedUrl.hostname.toLowerCase();
+  if (ipaddr.isValid(hostname)) {
+    if (isPrivateOrReservedIP(hostname)) {
+      throw AppError.badRequest("Target host is not an allowed public address.", "SSRF_DETECTED");
+    }
+    return { validUrl: parsedUrl, resolvedIp: hostname };
+  }
+
+  // Must be HTTPS (or HTTP in local/testing environments)
   if (parsedUrl.protocol !== "https:" && parsedUrl.protocol !== "http:") {
     throw AppError.badRequest("Only HTTP/HTTPS URLs are supported.", "INVALID_URL");
   }
 
   // Check social page URLs
-  const hostname = parsedUrl.hostname.toLowerCase();
   for (const pattern of BLOCKED_HOST_PATTERNS) {
     if (pattern.test(hostname)) {
       throw AppError.badRequest(
@@ -102,14 +110,6 @@ export async function validateDirectVideoUrl(urlString: string): Promise<{
         "INVALID_URL",
       );
     }
-  }
-
-  // Check if hostname itself is directly an IP
-  if (ipaddr.isValid(hostname)) {
-    if (isPrivateOrReservedIP(hostname)) {
-      throw AppError.badRequest("Target host is not an allowed public address.", "SSRF_DETECTED");
-    }
-    return { validUrl: parsedUrl, resolvedIp: hostname };
   }
 
   // Resolve DNS to verify IP

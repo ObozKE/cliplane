@@ -24,6 +24,7 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
   const [currentTime, setCurrentTime] = useState(0);
   const [totalDuration, setTotalDuration] = useState(clip.duration || 0);
   const [isMuted, setIsMuted] = useState(false);
+  const [volume, setVolume] = useState(1);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
@@ -39,16 +40,23 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
       if (video.duration && !isNaN(video.duration)) {
         setTotalDuration(video.duration);
       }
+      video.muted = isMuted;
+      video.volume = volume;
     };
     const handlePlay = () => setIsPlaying(true);
     const handlePause = () => setIsPlaying(false);
     const handleEnded = () => setIsPlaying(false);
+    const handleVolumeChange = () => {
+      setIsMuted(video.muted);
+      setVolume(video.volume);
+    };
 
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
     video.addEventListener("play", handlePlay);
     video.addEventListener("pause", handlePause);
     video.addEventListener("ended", handleEnded);
+    video.addEventListener("volumechange", handleVolumeChange);
 
     return () => {
       video.removeEventListener("timeupdate", handleTimeUpdate);
@@ -56,15 +64,25 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
       video.removeEventListener("play", handlePlay);
       video.removeEventListener("pause", handlePause);
       video.removeEventListener("ended", handleEnded);
+      video.removeEventListener("volumechange", handleVolumeChange);
     };
-  }, []);
+  }, [isMuted, volume]);
 
   function togglePlay() {
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
     } else {
-      videoRef.current.play();
+      videoRef.current.muted = isMuted;
+      videoRef.current.volume = volume;
+      videoRef.current.play().catch(() => {
+        // Fallback for browsers that block unmuted autoplay
+        if (videoRef.current) {
+          videoRef.current.muted = true;
+          setIsMuted(true);
+          videoRef.current.play().catch(() => {});
+        }
+      });
     }
   }
 
@@ -77,8 +95,24 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
 
   function toggleMute() {
     if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
+    const nextMuted = !isMuted;
+    videoRef.current.muted = nextMuted;
+    setIsMuted(nextMuted);
+    if (!nextMuted && (volume === 0 || videoRef.current.volume === 0)) {
+      videoRef.current.volume = 1;
+      setVolume(1);
+    }
+  }
+
+  function handleVolumeChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const val = parseFloat(e.target.value);
+    setVolume(val);
+    if (videoRef.current) {
+      videoRef.current.volume = val;
+      const isZero = val === 0;
+      videoRef.current.muted = isZero;
+      setIsMuted(isZero);
+    }
   }
 
   function toggleFullscreen() {
@@ -234,18 +268,34 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
                 </span>
               </div>
 
-              <div className="flex items-center gap-2.5">
-                <button
-                  onClick={toggleMute}
-                  className="hover:text-white"
-                  aria-label={isMuted ? "Unmute" : "Mute"}
-                >
-                  {isMuted ? "🔇" : "🔊"}
-                </button>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                {/* Volume slider & mute button */}
+                <div className="flex items-center gap-1 group/vol">
+                  <button
+                    onClick={toggleMute}
+                    className="hover:text-white p-0.5 cursor-pointer"
+                    aria-label={isMuted || volume === 0 ? "Unmute" : "Mute"}
+                    title={isMuted || volume === 0 ? "Unmute" : "Mute"}
+                  >
+                    {isMuted || volume === 0 ? "🔇" : volume < 0.5 ? "🔉" : "🔊"}
+                  </button>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={isMuted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    className="w-12 sm:w-16 h-1 bg-white/40 rounded appearance-none cursor-pointer accent-[var(--accent-default)] opacity-75 group-hover/vol:opacity-100 transition-opacity"
+                    aria-label="Volume control"
+                    title={`Volume: ${Math.round((isMuted ? 0 : volume) * 100)}%`}
+                  />
+                </div>
                 <button
                   onClick={toggleFullscreen}
-                  className="hover:text-white"
+                  className="hover:text-white p-0.5 cursor-pointer ml-1"
                   aria-label="Toggle Fullscreen"
+                  title="Fullscreen"
                 >
                   ⛶
                 </button>

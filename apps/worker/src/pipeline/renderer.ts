@@ -478,34 +478,34 @@ export async function renderVerticalClip(
 
   if (enableSfx) {
     if (videoType === "podcast") {
-      // Podcast: Curiosity stinger chord & dialogue enhancement
-      extraInputs.push("-f", "lavfi", "-i", "sine=f=523.25:d=0.35");
-      extraInputs.push("-f", "lavfi", "-i", "sine=f=659.25:d=0.3");
+      // Podcast: Curiosity stinger chord & speech clarity enhancement
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=523.25:d=0.35,aformat=channel_layouts=stereo:sample_rates=48000");
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=659.25:d=0.3,aformat=channel_layouts=stereo:sample_rates=48000");
       const sfxGraph = [
         "[1:a]afade=t=out:st=0.05:d=0.3,volume=0.28[tone1];",
         "[2:a]afade=t=out:st=0.05:d=0.25,volume=0.22[tone2];",
-        "[tone1][tone2]amix=inputs=2[sfx];",
+        "[tone1][tone2]amix=inputs=2:weights='1 1'[sfx];",
       ].join("");
 
       if (hasAudio) {
-        audioFilter = `${sfxGraph}[0:a]equalizer=f=3000:t=q:w=1.5:g=2[voice];[voice][sfx]amix=inputs=2:duration=first:dropout_transition=2[afinal]`;
+        audioFilter = `${sfxGraph}[0:a]aformat=channel_layouts=stereo:sample_rates=48000,equalizer=f=3000:t=q:w=1.5:g=2[voice];[voice][sfx]amix=inputs=2:duration=first:weights='1 0.35'[afinal]`;
       } else {
-        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
+        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo:sample_rates=48000,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
       }
     } else {
       // Gaming & Default: Sub-bass 808 drop & high-speed whoosh impact
-      extraInputs.push("-f", "lavfi", "-i", "sine=f=80:d=0.7");
-      extraInputs.push("-f", "lavfi", "-i", "anoisesrc=d=0.5:c=pink:r=48000");
+      extraInputs.push("-f", "lavfi", "-i", "sine=f=80:d=0.7,aformat=channel_layouts=stereo:sample_rates=48000");
+      extraInputs.push("-f", "lavfi", "-i", "anoisesrc=d=0.5:c=pink:r=48000,aformat=channel_layouts=stereo");
       const sfxGraph = [
         "[1:a]lowpass=f=120,afade=t=out:st=0.1:d=0.6,volume=0.45[bass];",
         "[2:a]bandpass=f=900:w=500,afade=t=in:d=0.12,afade=t=out:st=0.22:d=0.28,volume=0.35[whoosh];",
-        "[bass][whoosh]amix=inputs=2[sfx];",
+        "[bass][whoosh]amix=inputs=2:weights='1 1'[sfx];",
       ].join("");
 
       if (hasAudio) {
-        audioFilter = `${sfxGraph}[0:a][sfx]amix=inputs=2:duration=first:dropout_transition=2[afinal]`;
+        audioFilter = `${sfxGraph}[0:a]aformat=channel_layouts=stereo:sample_rates=48000[voice];[voice][sfx]amix=inputs=2:duration=first:weights='1 0.45'[afinal]`;
       } else {
-        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
+        audioFilter = `${sfxGraph}[sfx]aformat=channel_layouts=stereo:sample_rates=48000,apad=whole_dur=${duration.toFixed(1)}[afinal]`;
       }
     }
   }

@@ -41,6 +41,7 @@ export class PaystackPaymentProvider implements PaymentProvider {
             Authorization: `Bearer ${this.secretKey}`,
             "Content-Type": "application/json",
           },
+          signal: AbortSignal.timeout(4000),
           body: JSON.stringify({
             email: params.userEmail || "customer@cliplane.tech",
             amount: amountInKobo,

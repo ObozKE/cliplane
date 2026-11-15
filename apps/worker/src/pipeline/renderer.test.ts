@@ -145,6 +145,7 @@ describe("FFmpeg Renderer & Video Pipeline", () => {
       expect(clipProbe.videoStream.height).toBe(1920);
       expect(clipProbe.duration).toBeGreaterThanOrEqual(4);
       expect(clipProbe.duration).toBeLessThanOrEqual(6);
+      expect(clipProbe.hasAudio).toBe(true);
 
       // 3. Render thumbnail
       const thumbRes = await renderThumbnail({

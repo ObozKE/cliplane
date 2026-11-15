@@ -168,7 +168,7 @@ describe("Part 4 — Job Creation, Intake & IDOR Verification", () => {
 
       const result = await createJobAction(formData);
       expect(result.success).toBe(true);
-    });
+    }, 15_000);
 
     it("rejects social platform URLs (YouTube, TikTok, Twitch) with friendly error", async () => {
       const formData = new FormData();

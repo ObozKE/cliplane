@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "node:crypto";
 import { PaystackPaymentProvider } from "./paystack";
 import { CryptoPaymentProvider } from "./crypto";
@@ -6,6 +6,31 @@ import { CryptoPaymentProvider } from "./crypto";
 describe("Paystack Payment Gateway & Security", () => {
   const TEST_SECRET = "sk_test_paystack_secret_key_1234567890abcdef";
   const provider = new PaystackPaymentProvider(TEST_SECRET);
+
+  beforeEach(() => {
+    vi.spyOn(globalThis, "fetch").mockImplementation(async (url) => {
+      if (typeof url === "string" && url.includes("paystack.co")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => ({
+            status: true,
+            message: "Authorization URL created",
+            data: {
+              authorization_url: "https://checkout.paystack.com/test-auth-url",
+              access_code: "access_code_test_123",
+              reference: "pstk_test_mock_ref",
+            },
+          }),
+        } as unknown as Response;
+      }
+      return { ok: true, status: 200, json: async () => ({}) } as unknown as Response;
+    });
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it("initiates Paystack transaction with proper reference and amount", async () => {
     const result = await provider.initiatePayment({

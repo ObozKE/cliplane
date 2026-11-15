@@ -109,8 +109,14 @@ export function InteractiveClipSimulator() {
   const toggleMute = () => {
     const nextMute = !isMuted;
     setIsMuted(nextMute);
-    if (verticalFgVideoRef.current) verticalFgVideoRef.current.muted = nextMute;
-    if (widescreenVideoRef.current) widescreenVideoRef.current.muted = nextMute;
+    if (verticalFgVideoRef.current) {
+      verticalFgVideoRef.current.muted = nextMute;
+      verticalFgVideoRef.current.volume = 1;
+    }
+    if (widescreenVideoRef.current) {
+      widescreenVideoRef.current.muted = nextMute;
+      widescreenVideoRef.current.volume = 1;
+    }
   };
 
   const handleTimeUpdate = (e: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -126,6 +132,8 @@ export function InteractiveClipSimulator() {
     if (video.duration && !isNaN(video.duration)) {
       setDuration(video.duration);
     }
+    video.muted = isMuted;
+    video.volume = 1;
   };
 
   const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -152,7 +160,7 @@ export function InteractiveClipSimulator() {
     setTimeout(() => setCopiedNotification(false), 2500);
   }
 
-  // Effect to keep video playing when switching moments
+  // Effect to keep video playing and audio sync when switching moments
   useEffect(() => {
     const fg = verticalFgVideoRef.current;
     const bg = verticalBgVideoRef.current;
@@ -165,8 +173,16 @@ export function InteractiveClipSimulator() {
         }
       }
     });
+    if (fg) {
+      fg.muted = isMuted;
+      fg.volume = 1;
+    }
+    if (ws) {
+      ws.muted = isMuted;
+      ws.volume = 1;
+    }
     setCurrentTime(0);
-  }, [selectedMoment, formatMode, isPlaying]);
+  }, [selectedMoment, formatMode, isPlaying, isMuted]);
 
   const progressPercent = duration > 0 ? (currentTime / duration) * 100 : 0;
 
@@ -315,9 +331,10 @@ export function InteractiveClipSimulator() {
                     <div className="flex items-center gap-3">
                       <button
                         onClick={toggleMute}
-                        className="text-white/80 hover:text-white cursor-pointer"
+                        className="text-white/80 hover:text-white cursor-pointer font-bold"
+                        aria-label={isMuted ? "Unmute audio" : "Mute audio"}
                       >
-                        {isMuted ? "UNMUTE" : "MUTED"}
+                        {isMuted ? "🔊 UNMUTE" : "🔇 MUTE"}
                       </button>
                       <button
                         onClick={togglePlay}
