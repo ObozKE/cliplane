@@ -43,7 +43,8 @@ export type BusinessEvent =
   | "payment_initiated"
   | "payment_confirmed"
   | "upgrade_applied"
-  | "takedown_received";
+  | "takedown_received"
+  | "clip_social_published";
 
 export interface LogEventPayload {
   event: BusinessEvent;
@@ -51,17 +52,17 @@ export interface LogEventPayload {
   jobId?: string;
   paymentId?: string;
   requestId?: string;
+  clipId?: string;
   details?: Record<string, unknown>;
+  [key: string]: unknown;
 }
 
 export function logBusinessEvent(payload: LogEventPayload): void {
+  const { event, details, ...rest } = payload;
   logger.info({
     type: "business_event",
-    businessEvent: payload.event,
-    userId: payload.userId,
-    jobId: payload.jobId,
-    paymentId: payload.paymentId,
-    requestId: payload.requestId,
-    ...payload.details,
-  }, `Event: ${payload.event}`);
+    businessEvent: event,
+    ...rest,
+    ...details,
+  }, `Event: ${event}`);
 }

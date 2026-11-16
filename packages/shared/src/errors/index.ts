@@ -41,6 +41,7 @@ export type ErrorCode =
   | "NO_HIGHLIGHTS_DETECTED"
   | "CLIP_INSERT_FAILED"
   | "FILE_NOT_FOUND"
+  | "WEBHOOK_FAILED"
   | "PROCESSING_ERROR";
 
 export interface AppErrorOptions {

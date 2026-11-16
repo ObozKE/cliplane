@@ -169,7 +169,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                   Ready-to-Post Multi-Format Highlights
                 </h3>
                 <p className="text-xs text-[var(--text-muted)] mt-0.5">
-                  Extracted with 2-second action lead-in, adaptive genre sound design, and instant 5-format exports (9:16, 1:1, 16:9, 4:5, MP3).
+                  Extracted with 2-second action lead-in, adaptive sound design, instant 5-format exports, and 1-click direct upload to TikTok, YouTube Shorts, Reels, and X.
                 </p>
               </div>
             </div>

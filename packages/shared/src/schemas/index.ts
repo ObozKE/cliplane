@@ -99,6 +99,32 @@ export const updateProfileSchema = z.object({
 });
 
 /**
+ * Social Platform Publish & Webhook Schema
+ */
+export const socialPlatformSchema = z.enum([
+  "tiktok",
+  "youtube_shorts",
+  "instagram_reels",
+  "x_twitter",
+  "linkedin",
+  "facebook",
+  "webhook",
+]);
+
+export type SocialPlatform = z.infer<typeof socialPlatformSchema>;
+
+export const socialPublishSchema = z.object({
+  clipId: z.string().min(1, "Invalid Clip ID"),
+  platform: socialPlatformSchema,
+  caption: z.string().max(2500).optional(),
+  hashtags: z.array(z.string()).optional(),
+  format: z.enum(["9:16", "1:1", "16:9", "4:5", "audio"]).default("9:16"),
+  webhookUrl: z.string().url("Must be a valid Webhook URL").optional().nullable(),
+});
+
+export type SocialPublishInput = z.infer<typeof socialPublishSchema>;
+
+/**
  * Health check response
  */
 export const healthCheckSchema = z.object({

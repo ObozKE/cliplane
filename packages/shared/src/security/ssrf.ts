@@ -74,6 +74,35 @@ export function isPrivateOrReservedIP(ipString: string): boolean {
 }
 
 /**
+ * Validates whether a destination URL (e.g. for webhooks or notifications)
+ * is safe and does not target loopback, metadata, or private IP networks.
+ */
+export function isSafePublicUrl(urlString: string): boolean {
+  try {
+    const parsed = new URL(urlString);
+    if (parsed.protocol !== "https:" && parsed.protocol !== "http:") {
+      return false;
+    }
+    const hostname = parsed.hostname.toLowerCase();
+    if (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "0.0.0.0" ||
+      hostname === "::1" ||
+      hostname.startsWith("169.254.")
+    ) {
+      return false;
+    }
+    if (ipaddr.isValid(hostname)) {
+      return !isPrivateOrReservedIP(hostname);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
  * Validates direct video URL format, detects blocked platform URLs,
  * resolves DNS and verifies the target IP is publicly routable.
  */

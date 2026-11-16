@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { isPrivateOrReservedIP, validateDirectVideoUrl } from "./ssrf";
+import { isPrivateOrReservedIP, validateDirectVideoUrl, isSafePublicUrl } from "./ssrf";
 import { AppError } from "../errors/index";
 
 describe("SSRF Protection & IP Range Checker", () => {
@@ -68,5 +68,20 @@ describe("SSRF Protection & IP Range Checker", () => {
     await expect(validateDirectVideoUrl("http://169.254.169.254/latest/meta-data")).rejects.toThrow(
       AppError,
     );
+  });
+
+  it("validates isSafePublicUrl for webhooks and notification targets", () => {
+    // Valid public domains
+    expect(isSafePublicUrl("https://hook.eu2.make.com/abc")).toBe(true);
+    expect(isSafePublicUrl("https://api.ayrshare.com/api/post")).toBe(true);
+    expect(isSafePublicUrl("https://hooks.zapier.com/hooks/catch/123/456")).toBe(true);
+
+    // Private / local / metadata targets
+    expect(isSafePublicUrl("http://127.0.0.1:8080/hook")).toBe(false);
+    expect(isSafePublicUrl("http://localhost:3000/hook")).toBe(false);
+    expect(isSafePublicUrl("http://169.254.169.254/latest/meta-data")).toBe(false);
+    expect(isSafePublicUrl("http://10.0.0.5/api")).toBe(false);
+    expect(isSafePublicUrl("ftp://example.com/file")).toBe(false);
+    expect(isSafePublicUrl("not-a-url")).toBe(false);
   });
 });

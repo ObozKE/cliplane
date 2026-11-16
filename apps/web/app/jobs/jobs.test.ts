@@ -3,6 +3,7 @@ import {
   getClipSignedUrlsAction,
   getClipDownloadUrlAction,
   reportClipAction,
+  publishClipToSocialAction,
 } from "./actions";
 
 // Mock Supabase Server client and authenticated user
@@ -51,7 +52,11 @@ vi.mock("@/lib/supabase/server", () => ({
                       return {
                         data: {
                           id: "clip-alice-1",
+                          title: "Highlight #1 (88%)",
                           storage_path: "user-alice-1111/job-1/clip_1.mp4",
+                          thumbnail_path: "user-alice-1111/job-1/thumbnail_1.jpg",
+                          score: 0.88,
+                          duration: 18.0,
                           job_id: "job-alice-1",
                           jobs: { id: "job-alice-1", user_id: "user-alice-1111" },
                         },
@@ -62,7 +67,11 @@ vi.mock("@/lib/supabase/server", () => ({
                       return {
                         data: {
                           id: "clip-bob-1",
+                          title: "Bob's Clip #1",
                           storage_path: "user-bob-9999/job-2/clip_1.mp4",
+                          thumbnail_path: "user-bob-9999/job-2/thumbnail_1.jpg",
+                          score: 0.91,
+                          duration: 20.0,
                           job_id: "job-bob-1",
                           jobs: { id: "job-bob-1", user_id: "user-bob-9999" },
                         },
@@ -228,6 +237,109 @@ describe("Clips & Guardrails Actions", () => {
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.code).toBe("VALIDATION_FAILED");
+      }
+    });
+  });
+
+  describe("Direct Social Upload & Publishing: publishClipToSocialAction", () => {
+    it("generates TikTok upload intent with viral caption and deep-link for owner", async () => {
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-alice-1",
+        platform: "tiktok",
+        customCaption: "Best gaming clutch moment ever!",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.platform).toBe("tiktok");
+        expect(result.data.studioUrl).toBe("https://www.tiktok.com/creator-center/upload");
+        expect(result.data.deepLinkUrl).toBe("snssdk1233://");
+        expect(result.data.caption).toContain("Best gaming clutch moment ever!");
+        expect(result.data.hashtags).toContain("#ClipLane");
+        expect(result.data.hashtags).toContain("#FYP");
+        expect(result.data.videoUrl).toContain("user-alice-1111/job-1/clip_1.mp4");
+      }
+    });
+
+    it("generates YouTube Shorts upload portal and formats shorts tags", async () => {
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-alice-1",
+        platform: "youtube_shorts",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.platform).toBe("youtube_shorts");
+        expect(result.data.studioUrl).toBe("https://www.youtube.com/upload");
+        expect(result.data.hashtags).toContain("#Shorts");
+        expect(result.data.hashtags).toContain("#YouTubeShorts");
+      }
+    });
+
+    it("generates encoded X (Twitter) intent link with viral hashtags", async () => {
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-alice-1",
+        platform: "x_twitter",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.platform).toBe("x_twitter");
+        expect(result.data.studioUrl).toContain("https://x.com/intent/tweet?text=");
+      }
+    });
+
+    it("prevents IDOR: forbids publishing another user's clip to socials", async () => {
+      // Alice tries to publish Bob's clip
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-bob-1",
+        platform: "tiktok",
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.code).toBe("FORBIDDEN");
+        expect(result.error).toContain("permission");
+      }
+    });
+
+    it("dispatches webhook payload when webhook platform is selected", async () => {
+      const fetchSpy = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce({
+        ok: true,
+        status: 200,
+      } as Response);
+
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-alice-1",
+        platform: "webhook",
+        webhookUrl: "https://hook.eu2.make.com/test-webhook-endpoint",
+      });
+
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect(result.data.webhookDelivered).toBe(true);
+        expect(result.data.webhookStatusCode).toBe(200);
+      }
+      expect(fetchSpy).toHaveBeenCalled();
+      fetchSpy.mockRestore();
+    });
+
+    it("rejects SSRF attacks targeting private IP webhooks", async () => {
+      currentAuthenticatedUser = mockUser;
+      const result = await publishClipToSocialAction({
+        clipId: "clip-alice-1",
+        platform: "webhook",
+        webhookUrl: "http://127.0.0.1:8080/internal-webhook",
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.code).toBe("SSRF_DETECTED");
       }
     });
   });

@@ -3,6 +3,9 @@
 import { headers } from "next/headers";
 import {
   takedownRequestSchema,
+  socialPublishSchema,
+  type SocialPlatform,
+  isSafePublicUrl,
   logBusinessEvent,
   successResult,
   errorResult,
@@ -222,4 +225,210 @@ export async function reportClipAction(
   });
 
   return successResult({ reportId: data.id });
+}
+
+export interface PublishClipToSocialParams {
+  clipId: string;
+  platform: SocialPlatform;
+  customCaption?: string;
+  customHashtags?: string[];
+  format?: ClipDownloadFormat;
+  webhookUrl?: string;
+}
+
+export interface PublishClipToSocialResult {
+  platform: SocialPlatform;
+  clipTitle: string;
+  videoUrl: string;
+  thumbnailUrl: string | null;
+  caption: string;
+  hashtags: string[];
+  fullPostText: string;
+  studioUrl: string;
+  deepLinkUrl: string;
+  webhookDelivered?: boolean;
+  webhookStatusCode?: number;
+}
+
+/**
+ * Prepares direct social upload, generates platform deep-links,
+ * formats viral captions/hashtags, and delivers webhook dispatches.
+ * IDOR Protection: strictly verifies user owns the clip's job.
+ */
+export async function publishClipToSocialAction(
+  params: PublishClipToSocialParams,
+): Promise<ActionResult<PublishClipToSocialResult>> {
+  try {
+    const parsed = socialPublishSchema.safeParse({
+      clipId: params.clipId,
+      platform: params.platform,
+      caption: params.customCaption,
+      hashtags: params.customHashtags,
+      format: params.format || "9:16",
+      webhookUrl: params.webhookUrl,
+    });
+
+    if (!parsed.success) {
+      const issue = parsed.error.issues[0]?.message || "Invalid social publishing parameters";
+      return errorResult(issue, "VALIDATION_FAILED");
+    }
+
+    const user = await getAuthenticatedUser();
+    const supabase = await createClient();
+
+    // Verify clip ownership via job join
+    const { data: clip, error: clipError } = await supabase
+      .from("clips")
+      .select("id, title, storage_path, thumbnail_path, score, duration, jobs!inner(id, user_id)")
+      .eq("id", params.clipId)
+      .single();
+
+    if (clipError || !clip) {
+      return errorResult("Clip not found or access denied.", "NOT_FOUND");
+    }
+
+    const job = clip.jobs as unknown as { id: string; user_id: string } | null;
+    if (!job || job.user_id !== user.id) {
+      return errorResult("You do not have permission to publish this clip.", "FORBIDDEN");
+    }
+
+    // Generate signed download URL (24 hours TTL for social upload ingestion)
+    const { data: vData, error: signError } = await supabase.storage
+      .from("clips")
+      .createSignedUrl(clip.storage_path, 86400);
+
+    if (signError || !vData?.signedUrl) {
+      return errorResult("Failed to generate secure video link for social upload.", "INTERNAL_ERROR");
+    }
+
+    const videoUrl = vData.signedUrl;
+
+    let thumbnailUrl: string | null = null;
+    if (clip.thumbnail_path) {
+      const { data: tData } = await supabase.storage
+        .from("clips")
+        .createSignedUrl(clip.thumbnail_path, 86400);
+      thumbnailUrl = tData?.signedUrl || null;
+    }
+
+    const scorePct = Math.round(Number(clip.score || 0) * 100);
+    const defaultCaption =
+      params.customCaption?.trim() ||
+      `${clip.title} 🔥 Unbelievable highlight moment clipped with @ClipLane! (${scorePct}% peak score)`;
+
+    let hashtags = params.customHashtags && params.customHashtags.length > 0
+      ? params.customHashtags
+      : ["#ClipLane", "#Shorts", "#Viral", "#Gaming"];
+
+    if (params.platform === "tiktok") {
+      hashtags = params.customHashtags || ["#ClipLane", "#FYP", "#ForYou", "#ViralClips", "#Shorts"];
+    } else if (params.platform === "youtube_shorts") {
+      hashtags = params.customHashtags || ["#Shorts", "#YouTubeShorts", "#ClipLane", "#ViralHighlight"];
+    } else if (params.platform === "instagram_reels") {
+      hashtags = params.customHashtags || ["#Reels", "#ExplorePage", "#ReelsInstagram", "#ClipLane"];
+    } else if (params.platform === "x_twitter") {
+      hashtags = params.customHashtags || ["#ClipLane", "#Highlights"];
+    } else if (params.platform === "linkedin") {
+      hashtags = params.customHashtags || ["#VideoContent", "#ContentCreation", "#AI", "#ClipLane"];
+    } else if (params.platform === "facebook") {
+      hashtags = params.customHashtags || ["#Reels", "#FacebookReels", "#ClipLane"];
+    }
+
+    const fullPostText = `${defaultCaption}\n\n${hashtags.join(" ")}`;
+
+    // Resolve platform Studio upload URLs and mobile deep-links
+    let studioUrl = "https://www.youtube.com/upload";
+    let deepLinkUrl = "vnd.youtube://";
+
+    if (params.platform === "tiktok") {
+      studioUrl = "https://www.tiktok.com/creator-center/upload";
+      deepLinkUrl = "snssdk1233://";
+    } else if (params.platform === "youtube_shorts") {
+      studioUrl = "https://www.youtube.com/upload";
+      deepLinkUrl = "vnd.youtube://";
+    } else if (params.platform === "instagram_reels") {
+      studioUrl = "https://www.instagram.com/reels/create/";
+      deepLinkUrl = "instagram://share";
+    } else if (params.platform === "x_twitter") {
+      studioUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(fullPostText)}`;
+      deepLinkUrl = `twitter://post?message=${encodeURIComponent(fullPostText)}`;
+    } else if (params.platform === "linkedin") {
+      studioUrl = `https://www.linkedin.com/feed/?shareActive=true&text=${encodeURIComponent(fullPostText)}`;
+      deepLinkUrl = "linkedin://";
+    } else if (params.platform === "facebook") {
+      studioUrl = "https://www.facebook.com/reels/create";
+      deepLinkUrl = "fb://";
+    }
+
+    let webhookDelivered = false;
+    let webhookStatusCode: number | undefined;
+
+    // Webhook dispatch if requested
+    if (params.webhookUrl) {
+      if (!isSafePublicUrl(params.webhookUrl)) {
+        return errorResult("Webhook URL cannot target private or local networks.", "SSRF_DETECTED");
+      }
+
+      try {
+
+        const webhookPayload = {
+          event: "clip.social.publish",
+          clipId: clip.id,
+          title: clip.title,
+          caption: defaultCaption,
+          hashtags,
+          fullPostText,
+          videoUrl,
+          thumbnailUrl,
+          format: params.format || "9:16",
+          score: Number(clip.score),
+          duration: Number(clip.duration),
+          platform: params.platform,
+          publishedAt: new Date().toISOString(),
+        };
+
+        const res = await fetch(params.webhookUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "User-Agent": "ClipLane-SocialPublisher/1.0",
+          },
+          body: JSON.stringify(webhookPayload),
+          signal: AbortSignal.timeout(6000),
+        });
+
+        webhookDelivered = res.ok;
+        webhookStatusCode = res.status;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : String(err);
+        return errorResult(`Failed to deliver webhook payload: ${msg}`, "WEBHOOK_FAILED");
+      }
+    }
+
+    logBusinessEvent({
+      event: "clip_social_published",
+      clipId: clip.id,
+      userId: user.id,
+      platform: params.platform,
+      format: params.format || "9:16",
+      webhookDelivered,
+    });
+
+    return successResult({
+      platform: params.platform,
+      clipTitle: clip.title,
+      videoUrl,
+      thumbnailUrl,
+      caption: defaultCaption,
+      hashtags,
+      fullPostText,
+      studioUrl,
+      deepLinkUrl,
+      webhookDelivered,
+      webhookStatusCode,
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return errorResult(`Social publish error: ${msg}`, "INTERNAL_ERROR");
+  }
 }

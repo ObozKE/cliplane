@@ -4,6 +4,7 @@ import {
   phoneNormalizationSchema,
   createJobUploadSchema,
   takedownRequestSchema,
+  socialPublishSchema,
 } from "./index";
 import { isVipUser } from "../security/vip";
 
@@ -73,5 +74,28 @@ describe("Validation Schemas & Gate Constraints", () => {
     expect(isVipUser("mkiplangat15@gmail.com")).toBe(true);
     expect(isVipUser("regular_user@example.com")).toBe(false);
     expect(isVipUser(null)).toBe(false);
+  });
+
+  it("validates socialPublishSchema for supported platforms and webhooks", () => {
+    const valid = socialPublishSchema.safeParse({
+      clipId: "11111111-1111-1111-1111-111111111111",
+      platform: "tiktok",
+      caption: "Crazy highlight moment #gaming #shorts",
+      format: "9:16",
+    });
+    expect(valid.success).toBe(true);
+
+    const invalidPlatform = socialPublishSchema.safeParse({
+      clipId: "11111111-1111-1111-1111-111111111111",
+      platform: "myspace",
+    });
+    expect(invalidPlatform.success).toBe(false);
+
+    const validWebhook = socialPublishSchema.safeParse({
+      clipId: "11111111-1111-1111-1111-111111111111",
+      platform: "webhook",
+      webhookUrl: "https://hook.eu2.make.com/abc123xyz",
+    });
+    expect(validWebhook.success).toBe(true);
   });
 });

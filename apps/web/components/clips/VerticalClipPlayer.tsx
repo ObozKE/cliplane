@@ -6,6 +6,7 @@ import {
   type ClipDownloadFormat,
 } from "@/app/jobs/actions";
 import { ReportClipModal } from "./ReportClipModal";
+import { SocialUploadModal } from "./SocialUploadModal";
 
 export interface ClipProps {
   id: string;
@@ -27,6 +28,7 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
   const [volume, setVolume] = useState(1);
   const [isDownloading, setIsDownloading] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [isSocialModalOpen, setIsSocialModalOpen] = useState(false);
   const [downloadError, setDownloadError] = useState<string | null>(null);
   const [selectedFormat, setSelectedFormat] = useState<ClipDownloadFormat>("9:16");
 
@@ -335,28 +337,52 @@ export function VerticalClipPlayer({ clip }: { clip: ClipProps }) {
           <p className="text-[11px] text-red-600">{downloadError}</p>
         )}
 
-        <div className="flex items-center justify-between pt-2 border-t border-[var(--line-paper)]">
-          <button
-            onClick={() => handleDownload(selectedFormat)}
-            disabled={isDownloading || !clip.videoUrl}
-            className="button-primary text-xs !py-1.5 !px-3 flex items-center gap-1.5"
-          >
-            <span>↓</span>
-            <span>
-              {isDownloading
-                ? "Preparing..."
-                : `Download (${formatLabels[selectedFormat].name})`}
-            </span>
-          </button>
+        <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--line-paper)]">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <button
+              onClick={() => setIsSocialModalOpen(true)}
+              disabled={!clip.videoUrl}
+              className="px-3 py-1.5 rounded-[4px] text-xs font-semibold bg-[var(--accent-default)] text-white hover:opacity-90 transition-all flex items-center gap-1.5 shadow-xs cursor-pointer disabled:opacity-50"
+              title="Upload directly to TikTok, YouTube Shorts, Reels, and X"
+            >
+              <span>🚀</span>
+              <span>Post to Socials</span>
+            </button>
+
+            <button
+              onClick={() => handleDownload(selectedFormat)}
+              disabled={isDownloading || !clip.videoUrl}
+              className="button-secondary text-xs !py-1.5 !px-2.5 flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
+            >
+              <span>↓</span>
+              <span>
+                {isDownloading
+                  ? "Preparing..."
+                  : `Download (${formatLabels[selectedFormat].name})`}
+              </span>
+            </button>
+          </div>
 
           <button
             onClick={() => setIsReportModalOpen(true)}
-            className="text-[11px] text-[var(--text-muted)] hover:text-red-700 transition-colors"
+            className="text-[11px] text-[var(--text-muted)] hover:text-red-700 transition-colors p-1"
           >
             Report
           </button>
         </div>
       </div>
+
+      {/* Direct Social Media Upload Studio Modal */}
+      <SocialUploadModal
+        clipId={clip.id}
+        clipTitle={clip.title}
+        videoUrl={clip.videoUrl}
+        thumbnailUrl={clip.thumbnailUrl}
+        score={clip.score}
+        duration={clip.duration}
+        isOpen={isSocialModalOpen}
+        onClose={() => setIsSocialModalOpen(false)}
+      />
 
       {/* Report Modal */}
       <ReportClipModal
