@@ -223,7 +223,7 @@ describe("Payments & Priority Lane Upgrades", () => {
         id: paymentId,
         user_id: "user-alice-1111",
         job_id: ALICE_JOB_ID,
-        amount: 2.99,
+        amount: 5.99,
         currency: "USD",
         status: "pending",
       });
@@ -254,7 +254,7 @@ describe("Payments & Priority Lane Upgrades", () => {
         id: paymentId,
         user_id: "user-alice-1111",
         job_id: ALICE_JOB_ID,
-        amount: 2.99,
+        amount: 5.99,
         currency: "USD",
         status: "completed", // Already completed
       });
@@ -276,7 +276,7 @@ describe("Payments & Priority Lane Upgrades", () => {
         id: paymentId,
         user_id: "user-alice-1111",
         job_id: null, // Bundle purchase
-        amount: 9.99,
+        amount: 19.99,
         currency: "USD",
         status: "pending",
       });

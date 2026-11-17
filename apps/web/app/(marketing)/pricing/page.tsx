@@ -5,9 +5,9 @@ import { AutoclipsCTA } from "@/components/marketing/AutoclipsCTA";
 import { CreditCard, ShieldCheck } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Pricing — ClipLane | Turn Streams & Podcasts into Viral Clips",
+  title: "Pricing — ClipLane | Turn Streams, Podcasts & Videos into Viral Clips",
   description:
-    "100% free unlimited clipping, or launch 3 high-retention viral clips instantly across all 5 formats with adaptive sound effects for $2.99. Zero watermarks, full 1080p HD.",
+    "100% free unlimited clipping, or launch high-retention viral clips instantly across all 5 formats with adaptive sound effects and 1-click social upload. Zero watermarks, full 1080p HD.",
 };
 
 export default function PricingPage() {

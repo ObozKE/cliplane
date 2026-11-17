@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireAdminUser } from "@/lib/supabase/server";
+import { ClipLaneIcon } from "@/components/brand/ClipLaneLogo";
 
 export default async function AdminLayout({
   children,
@@ -20,12 +21,10 @@ export default async function AdminLayout({
       <header className="border-b border-[var(--line-paper)] bg-[var(--bg-panel)] text-[var(--text-panel)] sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/admin" className="flex items-center gap-2">
-              <span className="flex h-6 w-6 items-center justify-center rounded-[2px] bg-red-600 text-white text-xs font-bold font-mono">
-                AD
-              </span>
+            <Link href="/admin" className="flex items-center gap-2.5">
+              <ClipLaneIcon className="w-6 h-6" />
               <span className="font-serif text-lg tracking-tight text-[var(--text-panel)]">
-                ClipLane Admin
+                ClipLane <span className="text-xs font-mono font-bold uppercase tracking-wider text-red-400 bg-red-950/60 px-1.5 py-0.5 rounded border border-red-500/30">Admin</span>
               </span>
             </Link>
 

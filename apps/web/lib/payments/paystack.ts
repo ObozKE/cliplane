@@ -113,7 +113,7 @@ export class PaystackPaymentProvider implements PaymentProvider {
             paymentId: body.data?.metadata?.paymentId || body.data?.reference || body.paymentId,
             checkoutRequestId: body.data?.reference || body.checkoutRequestId,
             providerTxId: String(body.data?.id || body.data?.reference || `pstk_tx_${Date.now()}`),
-            amount: body.data?.amount ? body.data.amount / 100 : Number(body.amount || 2.99),
+            amount: body.data?.amount ? body.data.amount / 100 : Number(body.amount || 5.99),
             currency: body.data?.currency || "USD",
             status: "completed",
             rawPayload: body,

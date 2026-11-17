@@ -35,7 +35,7 @@ describe("Paystack Payment Gateway & Security", () => {
   it("initiates Paystack transaction with proper reference and amount", async () => {
     const result = await provider.initiatePayment({
       userId: "user-123",
-      amount: 2.99,
+      amount: 5.99,
       currency: "USD",
       userEmail: "gamer@example.com",
     });
@@ -53,7 +53,7 @@ describe("Paystack Payment Gateway & Security", () => {
       data: {
         id: 99887766,
         reference: paymentId,
-        amount: 299, // $2.99 in kobo
+        amount: 599, // $5.99 in kobo
         currency: "USD",
         status: "success",
         metadata: {
@@ -80,7 +80,7 @@ describe("Paystack Payment Gateway & Security", () => {
     expect(verification.isValid).toBe(true);
     expect(verification.status).toBe("completed");
     expect(verification.paymentId).toBe(paymentId);
-    expect(verification.amount).toBe(2.99);
+    expect(verification.amount).toBe(5.99);
     expect(verification.providerTxId).toBe("99887766");
   });
 
@@ -90,7 +90,7 @@ describe("Paystack Payment Gateway & Security", () => {
       data: {
         id: 99887766,
         reference: "pstk_tampered",
-        amount: 299,
+        amount: 599,
       },
     });
 
@@ -135,7 +135,7 @@ describe("Crypto Payment Gateway & Security", () => {
   it("initiates crypto payment with order ID and hosted invoice fallback", async () => {
     const result = await cryptoProvider.initiatePayment({
       userId: "user-crypto-1",
-      amount: 9.99,
+      amount: 19.99,
       currency: "USD",
       userEmail: "crypto@example.com",
     });
@@ -151,8 +151,8 @@ describe("Crypto Payment Gateway & Security", () => {
       payment_status: "finished",
       order_id: "crypto_order_555",
       payment_id: "tx_nowpayments_999",
-      price_amount: 9.99,
-      amount: 9.99,
+      price_amount: 19.99,
+      amount: 19.99,
     });
 
     const signature = crypto
@@ -170,7 +170,7 @@ describe("Crypto Payment Gateway & Security", () => {
     expect(verification.isValid).toBe(true);
     expect(verification.status).toBe("completed");
     expect(verification.paymentId).toBe("crypto_order_555");
-    expect(verification.amount).toBe(9.99);
+    expect(verification.amount).toBe(19.99);
   });
 
   it("rejects tampered crypto webhook payload", async () => {

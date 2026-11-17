@@ -58,7 +58,7 @@ export class MockPaymentProvider implements PaymentProvider {
       paymentId: paymentReference,
       status: "completed",
       providerTxId: `mock_tx_${Date.now()}`,
-      amount: 2.99,
+      amount: 5.99,
     };
   }
 }

@@ -10,7 +10,7 @@ export function PaystackCheckoutClient() {
   const paymentId = searchParams.get("paymentId") || "";
   const reference = searchParams.get("reference") || paymentId;
   const jobId = searchParams.get("jobId") || "";
-  const amount = searchParams.get("amount") || "2.99";
+  const amount = searchParams.get("amount") || "5.99";
 
   const [activeTab, setActiveTab] = useState<"card" | "bank" | "apple_pay">("card");
   const [isProcessing, setIsProcessing] = useState(false);

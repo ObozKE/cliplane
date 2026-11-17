@@ -75,7 +75,7 @@ export default async function DashboardPage() {
             Priority Lane Upgrade
           </span>
           <span className="mt-2 block font-serif text-2xl font-normal text-[var(--accent-default)]">
-            $2.99 / Job
+            $5.99 / Job
           </span>
           <span className="mt-1 block text-xs text-[var(--text-muted)]">
             Skip the 24h wait • Zero hold time

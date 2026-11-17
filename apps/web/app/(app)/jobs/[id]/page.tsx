@@ -128,7 +128,7 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
                   href={`/checkout?jobId=${job.id}`}
                   className="button-primary text-xs !py-2 !px-4"
                 >
-                  Upgrade to Priority ($2.99)
+                  Upgrade to Priority ($5.99)
                 </Link>
               </div>
             )}

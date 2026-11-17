@@ -9,7 +9,7 @@ export function MockConfirmClient() {
   const searchParams = useSearchParams();
   const paymentId = searchParams.get("paymentId") || "";
   const jobId = searchParams.get("jobId") || "";
-  const amount = searchParams.get("amount") || "2.99";
+  const amount = searchParams.get("amount") || "5.99";
 
   const [isConfirming, setIsConfirming] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);

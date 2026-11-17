@@ -10,8 +10,15 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "ClipLane — Precision Gameplay Vertical Clip Generation",
-  description: "Automated, highlight-scored 9:16 vertical gameplay clipping for creators. Zero false claims, 100% honest queue.",
+  title: "ClipLane — AI Highlight Clipper for Creators, Streamers & Podcasts",
+  description:
+    "Turn full-length videos, podcasts, and gameplay streams into high-retention vertical clips with mathematical peak detection, genre sound design, and 1-click social upload.",
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({

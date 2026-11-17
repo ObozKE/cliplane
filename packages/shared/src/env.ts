@@ -24,8 +24,8 @@ export const commonEnvSchema = z.object({
   MAX_CLIP_DURATION_SECONDS: z.coerce.number().int().max(120).default(30),
 
   // Pricing
-  PRIORITY_JOB_PRICE_USD: z.coerce.number().positive().default(2.99),
-  PRIORITY_BUNDLE_PRICE_USD: z.coerce.number().positive().default(9.99),
+  PRIORITY_JOB_PRICE_USD: z.coerce.number().positive().default(5.99),
+  PRIORITY_BUNDLE_PRICE_USD: z.coerce.number().positive().default(19.99),
   PAYMENT_PROVIDER: z.enum(["mock", "paystack", "crypto"]).default("paystack"),
 
   // Admin & Compliance

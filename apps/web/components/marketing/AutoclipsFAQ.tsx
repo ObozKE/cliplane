@@ -12,27 +12,27 @@ const FAQS: FAQItem[] = [
   {
     question: "What is ClipLane and how does it work?",
     answer:
-      "ClipLane is an automated AI video engine built specifically for gaming and faceless creators. You upload gameplay footage or paste a video link, and ClipLane automatically analyzes audio loudness spikes (shouts, explosions, clutches), detects visual scene cuts, and crops your 16:9 widescreen footage into 9:16 vertical shorts formatted with clean blurred ambient backgrounds ready for TikTok, Shorts, and Reels.",
+      "ClipLane is an automated AI video engine built for gamers, podcasters, streamers, and short-form creators. You upload footage or paste a video link, and ClipLane automatically analyzes audio loudness peaks (dialogue highlights, shouts, punchlines, clutches), detects visual scene cuts, and crops your 16:9 widescreen footage into 9:16 vertical shorts formatted with clean blurred ambient backgrounds ready for TikTok, Shorts, and Reels with 1-click social upload.",
   },
   {
-    question: "How does the highlight detection find my clutch moments?",
+    question: "How does the highlight detection find my best moments?",
     answer:
-      "ClipLane implements professional broadcast audio analysis using the EBU R128 loudness standard combined with visual scene transition detection. When your audio volume bursts (screaming, celebratory shouts, sudden gunfire) and the screen action changes rapidly, the engine identifies that exact time-window, applies smart pre-roll padding, and renders 3 top non-overlapping clips.",
+      "ClipLane implements professional broadcast audio analysis using the EBU R128 loudness standard combined with visual scene transition detection. When dialogue spikes, laughter hits, or high-action gameplay erupts, the engine identifies that exact time-window, applies smart pre-roll padding, and renders 3 top non-overlapping viral clips.",
   },
   {
     question: "Is the Free tier really 100% free?",
     answer:
-      "Yes. You can upload gameplay and receive 9:16 vertical clips in full 1080x1920 HD with zero watermarks for free. Free jobs enter our transparent queue and process as worker capacity becomes available.",
+      "Yes. You can upload video footage and receive 9:16 vertical clips in full 1080x1920 HD with zero watermarks for free. Free jobs enter our transparent queue and process as worker capacity becomes available.",
   },
   {
-    question: "What is the $2.99 Priority Pass?",
+    question: "What is the $5.99 Priority Pass?",
     answer:
-      "If you just had an incredible clutch match and want to post it immediately to catch the viral wave, a Priority Pass skips the free queue entirely. Your job jumps to the front of the line and renders in approximately 10 to 15 seconds.",
+      "If you just had an incredible podcast episode, reaction stream, or gaming clutch match and want to post immediately to catch the viral wave, a Priority Pass skips the free queue entirely. Your job jumps to the front of the line and renders in approximately 10 to 15 seconds.",
   },
   {
     question: "Do Priority Passes expire?",
     answer:
-      "Never. If you buy the $9.99 5-Job Pack, your passes stay in your account balance permanently. You can use them whenever you drop fresh footage.",
+      "Never. If you buy the $19.99 5-Job Pack, your passes stay in your account balance permanently. You can use them whenever you drop fresh footage.",
   },
   {
     question: "Are there any watermarks on exported clips?",

@@ -49,7 +49,7 @@ export function CryptoCheckoutClient() {
   const paymentId = searchParams.get("paymentId") || "";
   const orderId = searchParams.get("orderId") || paymentId;
   const jobId = searchParams.get("jobId") || "";
-  const amount = searchParams.get("amount") || "2.99";
+  const amount = searchParams.get("amount") || "5.99";
 
   const [selectedCoin, setSelectedCoin] = useState<CoinOption>(COINS[0]!);
   const [copied, setCopied] = useState(false);

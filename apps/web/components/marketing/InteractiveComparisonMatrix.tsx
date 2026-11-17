@@ -6,7 +6,7 @@ export function InteractiveComparisonMatrix() {
           Side-By-Side Comparison
         </span>
         <h2 className="text-2xl sm:text-4xl font-serif text-[var(--text-primary)]">
-          Why Streamers Are Ditching Manual Scrubbing
+          Why Creators &amp; Streamers Are Ditching Manual Scrubbing
         </h2>
         <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
           See how ClipLane compares to editing by hand in Premiere or paying expensive AI subscriptions with forced watermarks.
@@ -104,7 +104,7 @@ export function InteractiveComparisonMatrix() {
                   $29 – $49/mo recurring trap
                 </td>
                 <td className="p-4 sm:p-5 font-semibold text-emerald-600 bg-blue-50/10">
-                  ✓ Free or $2.99 on demand
+                  ✓ Free or $5.99 on demand
                 </td>
               </tr>
             </tbody>

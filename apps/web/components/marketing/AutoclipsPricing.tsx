@@ -154,11 +154,11 @@ export function AutoclipsPricing() {
                 </span>
               </div>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold text-black">$2.99</span>
+                <span className="text-4xl font-extrabold text-black">$5.99</span>
                 <span className="text-sm text-gray-500">/ one-time drop</span>
               </div>
               <p className="mt-2 text-sm text-gray-600">
-                Turn 1 gameplay stream or podcast into 3 viral high-retention clips in under 60s. Less than a cup of coffee for content that can pull 100k+ views.
+                Turn 1 video, podcast, or stream into 3 viral high-retention clips in under 60s. Less than a fast-food snack for content that can pull 100k+ views.
               </p>
 
               <ul className="mt-6 space-y-3 text-sm text-gray-700 border-t border-gray-100 pt-6">
@@ -168,7 +168,11 @@ export function AutoclipsPricing() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>3 high-retention clips (speech &amp; scene AI)</span>
+                  <span>3 high-retention clips (audio burst &amp; scene cut AI)</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
+                  <span className="font-semibold text-black">1-click direct upload to TikTok, Shorts, Reels &amp; X</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
@@ -176,15 +180,11 @@ export function AutoclipsPricing() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Adaptive sound effects (808 bass drops &amp; stingers)</span>
+                  <span>Adaptive sound effects (808 bass drops &amp; vocal stingers)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>1080p Ultra-HD remastering + blurred backdrop</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span className="text-gray-600">100% satisfaction guarantee (re-clip free)</span>
+                  <span>1080p Ultra-HD remastering + blurred ambient fill</span>
                 </li>
               </ul>
             </div>
@@ -193,7 +193,7 @@ export function AutoclipsPricing() {
               href="/checkout"
               className="mt-8 inline-flex items-center justify-center rounded-full font-bold bg-[#15E49E] text-black hover:brightness-95 h-12 text-sm shadow-[0_12px_30px_-12px_rgba(21,228,158,0.9)] transition-all"
             >
-              Launch 3 Viral Clips for $2.99
+              Launch 3 Viral Clips for $5.99
             </Link>
           </div>
 
@@ -205,15 +205,15 @@ export function AutoclipsPricing() {
                   Growth Vault (5 Passes)
                 </span>
                 <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-bold text-emerald-800">
-                  Save 40% • Best Value
+                  Save 33% • Best Value
                 </span>
               </div>
               <div className="mt-4 flex items-baseline gap-1">
-                <span className="text-4xl font-extrabold text-black">$9.99</span>
-                <span className="text-sm text-gray-500">/ 5 episode drops</span>
+                <span className="text-4xl font-extrabold text-black">$19.99</span>
+                <span className="text-sm text-gray-500">/ 5 video drops</span>
               </div>
               <p className="mt-2 text-sm text-gray-600">
-                The complete 3-week content engine for growing channels. 15 viral clips across 5 full streams or podcast episodes ($1.99 per drop).
+                The complete monthly content vault for growing channels. 15 viral clips across 5 full streams, podcasts, or videos ($1.33 per clip).
               </p>
 
               <ul className="mt-6 space-y-3 text-sm text-gray-700 border-t border-gray-100 pt-6">
@@ -223,23 +223,23 @@ export function AutoclipsPricing() {
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span className="font-semibold text-black">Credits never expire — bank in your wallet</span>
+                  <span className="font-semibold text-black">Credits never expire — stored in your balance</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Full 5-format multi-platform suite on all clips</span>
+                  <span>Direct 1-click social upload &amp; automation webhooks</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Genre-tailored sound design (gaming &amp; podcast)</span>
+                  <span>Full 5-format multi-platform exports for every clip</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span>Instant VIP queue jump on every upload</span>
+                  <span>Adaptive sound design (gaming, podcast &amp; speeches)</span>
                 </li>
                 <li className="flex items-center gap-2.5">
                   <Check className="h-4 w-4 text-[#15E49E] stroke-[3]" />
-                  <span className="text-emerald-700 font-medium">Massive 40% instant savings ($0.66/clip)</span>
+                  <span className="text-emerald-700 font-medium">Save $10 vs single passes ($1.33/clip)</span>
                 </li>
               </ul>
             </div>
@@ -248,7 +248,7 @@ export function AutoclipsPricing() {
               href="/checkout?bundle=true"
               className="mt-8 inline-flex items-center justify-center rounded-full font-bold bg-black text-white hover:bg-neutral-800 h-12 text-sm transition-colors"
             >
-              Claim 15-Clip Growth Vault for $9.99
+              Claim 15-Clip Growth Vault for $19.99
             </Link>
           </div>
         </div>

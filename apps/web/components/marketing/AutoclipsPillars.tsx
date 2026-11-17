@@ -41,7 +41,7 @@ export function AutoclipsPillars() {
 
         {/* 3 Pillar Cards */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {/* Card 1: GTA 6 Vice City Cinematics (Most Popular) */}
+          {/* Card 1: Podcasts & Studio Interviews */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-black shadow-[0_30px_60px_-35px_rgba(0,0,0,0.4)] flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between">
@@ -52,12 +52,12 @@ export function AutoclipsPillars() {
                   Trending
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">GTA 6 Vice City Cinematics</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">Podcasts &amp; Studio Interviews</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                Next-gen neon aesthetics &amp; story trailers
+                High-energy dialogue, debates &amp; punchlines
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Transform raw GTA 6 footage, Vice City neon strip cruises, and Lucia &amp; Jason story moments into viral 9:16 vertical clips with dynamic blurred background fills.
+                Transform full podcast episodes and interview streams into punchy, high-retention 9:16 vertical shorts with smart vocal pitch and loudness peak detection.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
@@ -65,7 +65,7 @@ export function AutoclipsPillars() {
             </p>
           </div>
 
-          {/* Card 2: GTA 5 Heists & Escapes */}
+          {/* Card 2: Competitive Esports & FPS Clutches */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-gray-200 shadow-sm flex flex-col justify-between hover:border-gray-400 transition-colors">
             <div>
               <div className="flex items-center justify-between">
@@ -73,12 +73,12 @@ export function AutoclipsPillars() {
                   <Zap className="h-5 w-5 text-black" />
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">GTA 5 Heists &amp; Pursuits</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">Competitive Esports &amp; FPS</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                5-Star police chases &amp; bank jobs
+                Tactical defuses, aces &amp; squad wipes
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Turn intense Los Santos 5-star police pursuits, high-velocity highway weaving, and Paleto Bay bank heists into algorithm-ready vertical Shorts and TikToks.
+                Turn intense moments from Valorant, CS2, Apex Legends, and Warzone into algorithm-ready vertical Shorts and TikToks with zero manual keyframing.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
@@ -86,7 +86,7 @@ export function AutoclipsPillars() {
             </p>
           </div>
 
-          {/* Card 3: FiveM & Roleplay Highlights */}
+          {/* Card 3: Open-World Gaming & Livestreams */}
           <div className="rounded-2xl border bg-white p-6 sm:p-7 border-gray-200 shadow-sm flex flex-col justify-between hover:border-gray-400 transition-colors">
             <div>
               <div className="flex items-center justify-between">
@@ -94,16 +94,16 @@ export function AutoclipsPillars() {
                   <Video className="h-5 w-5 text-black" />
                 </span>
               </div>
-              <h3 className="mt-5 text-xl font-bold text-black">FiveM &amp; Gameplay Highlights</h3>
+              <h3 className="mt-5 text-xl font-bold text-black">Gaming &amp; Livestream VODs</h3>
               <p className="mt-1 text-sm font-semibold text-[#0A7A50]">
-                Streamer VODs into top 3 clutch moments
+                Streamer VODs into top 3 clutch highlights
               </p>
               <p className="mt-3 text-sm leading-relaxed text-gray-600">
-                Turn your long Twitch/YouTube stream recordings into 3 curated, highest-clutch highlights scored by voice reaction bursts and visual scene switches.
+                Turn your long Twitch/YouTube stream recordings into 3 curated, highest-scoring highlights scored by voice reaction bursts and visual scene switches.
               </p>
             </div>
             <p className="mt-6 text-sm font-semibold text-gray-500 pt-4 border-t border-gray-100">
-              Zero Watermarks • 100% Rights Kept
+              Zero Watermarks • 1-Click Social Upload
             </p>
           </div>
         </div>

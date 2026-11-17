@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LpGridBackground } from "@/components/marketing/LpGridBackground";
+import { ClipLaneLogo } from "@/components/brand/ClipLaneLogo";
 
 export default function MarketingLayout({
   children,
@@ -31,13 +32,8 @@ export default function MarketingLayout({
       <header className="sticky top-0 z-40 border-b border-gray-100 bg-white/95 backdrop-blur-md transition-all">
         <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-5 sm:px-8">
           {/* Logo */}
-          <Link href="/" className="inline-flex items-center gap-2.5 group">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-black text-[#15E49E] font-extrabold text-sm shadow-md group-hover:scale-105 transition-transform">
-              CL
-            </span>
-            <span className="text-xl font-extrabold tracking-tight text-black">
-              ClipLane
-            </span>
+          <Link href="/" className="inline-flex items-center group">
+            <ClipLaneLogo size="md" className="group-hover:scale-102 transition-transform" />
           </Link>
 
           {/* Navigation Links */}
@@ -91,13 +87,8 @@ export default function MarketingLayout({
           <div className="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,3.2fr)] lg:gap-16">
             {/* Left Brand Column */}
             <div>
-              <Link className="inline-flex items-center gap-2.5" href="/">
-                <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-black text-[#15E49E] font-bold text-sm shadow-sm">
-                  CL
-                </span>
-                <span className="text-lg font-bold tracking-tight text-black">
-                  ClipLane
-                </span>
+              <Link className="inline-flex items-center" href="/">
+                <ClipLaneLogo size="md" />
               </Link>
               <p className="mt-4 max-w-xs text-sm leading-relaxed text-gray-500">
                 Create faceless, trending vertical gameplay clips in minutes with ClipLane app.

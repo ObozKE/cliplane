@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ClipLaneLogo } from "@/components/brand/ClipLaneLogo";
 
 export default function AuthLayout({
   children,
@@ -8,13 +9,8 @@ export default function AuthLayout({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-[var(--bg-paper)]">
       <div className="mb-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-[2px] bg-[var(--text-primary)] text-[var(--accent-on)] text-xs font-bold font-mono">
-            CN
-          </span>
-          <span className="font-serif text-2xl tracking-tight text-[var(--text-primary)]">
-            ClipLane
-          </span>
+        <Link href="/" className="flex items-center">
+          <ClipLaneLogo size="lg" />
         </Link>
       </div>
 

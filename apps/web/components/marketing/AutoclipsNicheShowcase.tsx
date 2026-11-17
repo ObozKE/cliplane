@@ -16,88 +16,88 @@ interface NicheItem {
 const NICHES: NicheItem[] = [
   {
     id: 0,
-    style: "GTA 6 Vice City Neon Cruise",
-    title: "Ocean Drive Sunset & Supercars",
-    views: "14.2M",
+    style: "Studio Podcast & Debate",
+    title: "Heated Discussion & Viral Knowledge Drop",
+    views: "18.4M",
     isNew: true,
     videoSrc: "/videos/clip-1.mp4",
     posterSrc: "/videos/clip-1.jpg",
   },
   {
     id: 1,
-    style: "GTA 5 5-Star Police Chase",
-    title: "Freeway Pursuit & Spike Strips",
-    views: "22.8M",
+    style: "Tactical FPS & Esports",
+    title: "Valorant & CS2 1v4 Clutch Defuse",
+    views: "24.1M",
     videoSrc: "/videos/clip-2.mp4",
     posterSrc: "/videos/clip-2.jpg",
   },
   {
     id: 2,
-    style: "GTA 6 Lucia & Jason Heist",
-    title: "Convenience Store Holdup & Getaway",
-    views: "19.5M",
+    style: "GTA 6 Vice City Neon Pursuit",
+    title: "Ocean Drive High-Speed Evade & Drift",
+    views: "28.7M",
     isNew: true,
     videoSrc: "/videos/clip-3.mp4",
     posterSrc: "/images/gta/gta6-lucia.png",
   },
   {
     id: 3,
-    style: "GTA 5 Trevor Stunt Chaos",
-    title: "Train Collision & Skydiving Escape",
-    views: "8.7M",
+    style: "Battle Royale & Warzone",
+    title: "Final Circle Victory & Sniper Squad Wipe",
+    views: "19.5M",
     videoSrc: "/videos/clip-4.mp4",
-    posterSrc: "/images/gta/gta5-trevor.jpg",
+    posterSrc: "/videos/clip-4.jpg",
   },
   {
     id: 4,
-    style: "GTA 6 Everglades Airboat",
-    title: "Grassrivers Wildlife & Swamp Drift",
-    views: "6.4M",
+    style: "IRL & Live Streamer Reaction",
+    title: "Chat Interaction & Explosive Banter",
+    views: "14.2M",
     isNew: true,
     videoSrc: "/videos/clip-5.mp4",
     posterSrc: "/images/gta/gta6-beach.jpg",
   },
   {
     id: 5,
-    style: "GTA 5 Paleto Bay Score",
-    title: "Heavy Armor Bank Heist & Minigun",
-    views: "11.1M",
+    style: "GTA 5 Heist & Tactical Action",
+    title: "Union Depository Vault Score & Minigun",
+    views: "16.8M",
     videoSrc: "/videos/clip-6.mp4",
     posterSrc: "/images/gta/gta5-heist.jpg",
   },
   {
     id: 6,
-    style: "GTA 6 Vice City Nightlife",
-    title: "Downtown Club Strip & Lowrider Meet",
-    views: "16.8M",
+    style: "Tech Demos & Product Walkthroughs",
+    title: "Real-Time Feature Breakdown & Fast Build",
+    views: "9.3M",
     isNew: true,
     videoSrc: "/videos/clip-1.mp4",
     posterSrc: "/images/gta/gta6-vicecity.jpg",
   },
   {
     id: 7,
-    style: "GTA 5 Los Santos Freeway Run",
-    title: "Night Skyline High-Speed Sprint",
-    views: "5.9M",
+    style: "Competitive Fighting & Speedruns",
+    title: "Frame-Perfect Combo & Record Pace",
+    views: "8.1M",
     videoSrc: "/videos/clip-2.mp4",
     posterSrc: "/images/gta/gta5-night.jpg",
   },
   {
     id: 8,
-    style: "GTA 6 Ambrosia Raceway",
-    title: "Port Gellhorn Supercar Time Trial",
-    views: "9.3M",
+    style: "GTA 6 Everglades Wild Stunt",
+    title: "Grassrivers Wildlife & Swamp Drift",
+    views: "12.4M",
     isNew: true,
     videoSrc: "/videos/clip-5.mp4",
     posterSrc: "/images/gta/gta6-raceway.png",
   },
   {
     id: 9,
-    style: "GTA 5 Franklin & Chop",
-    title: "Chamberlain Hills Pursuit",
-    views: "7.8M",
+    style: "Horror & Survival Gaming",
+    title: "Jumpscare Scream & Dark Hallway Run",
+    views: "11.7M",
     videoSrc: "/videos/clip-4.mp4",
-    posterSrc: "/images/gta/gta5-franklin.jpg",
+    posterSrc: "/videos/clip-4.jpg",
   },
 ];
 
@@ -114,10 +114,10 @@ export function AutoclipsNicheShowcase() {
             className="text-3xl font-extrabold tracking-[-0.02em] text-black sm:text-4xl lg:text-5xl"
             style={{ textWrap: "balance" }}
           >
-            AUTHENTIC GTA 5 &amp; GTA 6 FORMATS
+            BUILT FOR EVERY CREATOR FORMAT
           </h2>
           <p className="mt-3 text-base sm:text-lg font-semibold tracking-wider text-gray-500 uppercase">
-            CHOOSE YOUR FAVORITE HIGH-VELOCITY HEIST OR PURSUIT STYLE
+            PODCASTS, ESPORTS, OPEN-WORLD GAMING, AND IRL LIVESTREAMS
           </p>
         </div>
 

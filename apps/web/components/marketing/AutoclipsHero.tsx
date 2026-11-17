@@ -103,7 +103,7 @@ export function AutoclipsHero() {
 
           {/* Subtitle */}
           <p className="lp-fade-up lp-halo mt-6 rounded-2xl text-lg leading-relaxed text-gray-500 sm:text-xl max-w-2xl">
-            One prompt or gameplay link becomes a month of viral 9:16 vertical clips, written, voiced, captioned, and scheduled to TikTok, YouTube, Instagram and Facebook. You just watch the numbers.
+            One video link or raw upload becomes a stream of viral 9:16 vertical clips, auto-reframed, loudness-balanced, captioned, and ready for 1-click publishing to TikTok, YouTube Shorts, Instagram and Facebook.
           </p>
 
           {/* Interactive Input Form Container */}
@@ -121,7 +121,7 @@ export function AutoclipsHero() {
                   id="lp-grow-idea"
                   type="text"
                   required
-                  placeholder="Your video idea or gameplay link..."
+                  placeholder="Paste podcast link, stream URL, or upload..."
                   autoComplete="off"
                   className="h-12 w-full bg-transparent text-base text-black outline-none placeholder:text-gray-400 sm:h-11"
                   value={idea}
@@ -130,9 +130,9 @@ export function AutoclipsHero() {
               </div>
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-all duration-200 active:scale-[0.98] focus:outline-none h-12 px-6 text-base bg-[#15E49E] text-black shadow-[0_12px_30px_-12px_rgba(21,228,158,0.9)] hover:brightness-95 w-full sm:w-auto shrink-0"
+                className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full font-semibold transition-all duration-200 active:scale-[0.98] focus:outline-none h-12 px-6 text-base bg-[#15E49E] text-black shadow-[0_12px_30px_-12px_rgba(21,228,158,0.9)] hover:brightness-95 w-full sm:w-auto shrink-0 cursor-pointer"
               >
-                Create video
+                Create clips
                 <ArrowRight className="h-4 w-4" />
               </button>
             </form>
@@ -141,16 +141,16 @@ export function AutoclipsHero() {
             <div className="mt-3 flex flex-wrap justify-center items-center gap-2 text-xs text-gray-500">
               <span className="text-gray-400">Try:</span>
               {[
-                "GTA 6 Vice City Neon Cruise",
-                "GTA 5 5-Star Police Chase",
-                "GTA 6 Lucia & Jason Heist",
-                "GTA 5 Trevor Stunt Plane",
+                "Studio Podcast Highlight",
+                "Tactical Esports 1v4 Clutch",
+                "GTA 6 Vice City Evade",
+                "Live Streamer Reaction",
               ].map((s) => (
                 <button
                   key={s}
                   type="button"
                   onClick={() => handleSuggestionClick(s)}
-                  className="rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 transition-colors"
+                  className="rounded-full bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1 transition-colors cursor-pointer"
                 >
                   {s}
                 </button>
@@ -195,7 +195,7 @@ export function AutoclipsHero() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-[#15E49E] animate-pulse" />
-                GTA 6 • Vice City Neon Drive
+                Podcast • Peak Dialogue Clip
               </span>
               <button
                 type="button"
@@ -221,7 +221,7 @@ export function AutoclipsHero() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse" />
-                GTA 5 • 5-Star Police Chase
+                Esports • Tactical 1v4 Clutch
               </span>
             </div>
 
@@ -239,7 +239,7 @@ export function AutoclipsHero() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none" />
               <span className="absolute bottom-3 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-full bg-white/95 px-3 py-1 text-xs font-bold text-black backdrop-blur shadow-sm flex items-center gap-1.5">
                 <span className="h-2 w-2 rounded-full bg-[#15E49E] animate-pulse" />
-                GTA 6 • Lucia &amp; Jason Heist
+                Gaming • Open-World Pursuit
               </span>
             </div>
           </div>

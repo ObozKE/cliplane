@@ -26,15 +26,15 @@ const FAQS: FAQItem[] = [
   },
   {
     question: "Do Priority Credits expire?",
-    answer: "No. Priority Passes purchased via the Single Upgrade ($2.99) or 5-Job Creator Pack ($9.99) remain deposited in your account indefinitely. You can use one today and save the rest for next week or next month.",
+    answer: "No. Priority Passes purchased via the Single Upgrade ($5.99) or 5-Job Creator Pack ($19.99) remain deposited in your account indefinitely. You can use one today and save the rest for next week or next month.",
   },
   {
     question: "How long are my files kept?",
-    answer: "Both raw uploads and rendered clips are safely stored in private cloud storage for 3 days. This gives you plenty of time to preview, test, and download your MP4 files and JPG cover thumbnails to your computer or phone.",
+    answer: "Both raw uploads and rendered clips are safely stored in private cloud storage for 3 days. This gives you plenty of time to preview, test, directly publish to socials, or download your MP4 files and JPG cover thumbnails to your computer or phone.",
   },
   {
-    question: "What games work best with ClipLane?",
-    answer: "Any game with energetic audio or fast camera action: tactical shooters (CS2, Valorant), battle royales (Apex, Warzone), open-world action (GTA, Cyberpunk), fighting games, horror streams, and speedruns. If you have intense moments, ClipLane will find them.",
+    question: "What types of content work best with ClipLane?",
+    answer: "ClipLane excels across podcasts, interview shows, competitive esports (Valorant, CS2, Apex), action gaming (GTA, Call of Duty, Cyberpunk), live reactions, and commentary streams. Any video with energetic dialogue, dynamic punchlines, or intense visual action will yield viral-ready vertical shorts.",
   },
 ];
 

@@ -87,7 +87,7 @@ export class CryptoPaymentProvider implements PaymentProvider {
             isValid: true,
             paymentId: body.paymentId || body.order_id,
             providerTxId: body.payment_id || `crypto_tx_${Date.now()}`,
-            amount: Number(body.price_amount || body.amount || 2.99),
+            amount: Number(body.price_amount || body.amount || 5.99),
             currency: "USD",
             status: "completed",
             rawPayload: body,
@@ -131,7 +131,7 @@ export class CryptoPaymentProvider implements PaymentProvider {
       paymentId: paymentReference,
       status: "completed",
       providerTxId: `crypto_tx_${Date.now()}`,
-      amount: 2.99,
+      amount: 5.99,
     };
   }
 }

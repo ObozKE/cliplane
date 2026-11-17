@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getAuthenticatedUser } from "@/lib/supabase/server";
 import { signOut } from "@/app/auth/actions";
 
+import { ClipLaneLogo } from "@/components/brand/ClipLaneLogo";
+
 export default async function AppLayout({
   children,
 }: {
@@ -21,13 +23,8 @@ export default async function AppLayout({
       <header className="border-b border-[var(--line-paper)] bg-[var(--bg-paper)]/95 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="/dashboard" className="flex items-center gap-2.5">
-              <span className="flex h-6 w-6 items-center justify-center rounded-[2px] bg-[var(--text-primary)] text-[var(--accent-on)] text-xs font-bold font-mono">
-                CL
-              </span>
-              <span className="font-serif text-xl tracking-tight text-[var(--text-primary)]">
-                ClipLane
-              </span>
+            <Link href="/dashboard" className="flex items-center">
+              <ClipLaneLogo size="sm" />
             </Link>
 
             <nav className="hidden md:flex items-center gap-5 text-sm text-[var(--text-primary)]">
